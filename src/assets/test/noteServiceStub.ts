@@ -1,4 +1,4 @@
-import { of } from "rxjs";
+import { of, throwError } from "rxjs";
 import { NoteService } from "src/app/services";
 
 import { testNotes } from 'src/assets/test';
@@ -14,8 +14,7 @@ export const noteServiceStub = {
 	move: (id: number, toGroupId: number) => {
 		let subject = notes.find(note => note.id === id);
 		if (!subject) {
-			console.log('note to move not found');
-			return of();
+			return throwError('note to move not found');
 		} 
 		subject.groupId = toGroupId;
 		notes = [ 
