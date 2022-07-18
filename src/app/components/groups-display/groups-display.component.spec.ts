@@ -6,6 +6,7 @@ import { GroupsDisplayComponent } from './groups-display.component';
 import { GroupService, NoteService } from 'src/app/services';
 import { testNotes, testEnvObject, groupServiceStub, noteServiceStub} from 'src/assets/test';
 import { DebugElement } from '@angular/core';
+import { Note } from 'src/app/model';
 
 describe('GroupsDisplayComponent', () => {
   let component: GroupsDisplayComponent;
@@ -81,8 +82,8 @@ describe('GroupsDisplayComponent', () => {
 	// move this test to the app component and actually compare the group ids
 	it('moves dropped note to group over which it was dropped', () => {
 
-		const firstNote = noteServiceStub.get(0);
-		const secondNote = noteServiceStub.get(1);
+		let firstNote = testNotes[0];
+		let secondNote = testNotes[1]
 		const toGroupId = secondNote.id;
 		const dataTransfer = new DataTransfer();
 		dataTransfer.setData('Note', JSON.stringify(firstNote));
