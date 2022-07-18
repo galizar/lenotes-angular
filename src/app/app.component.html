@@ -1,0 +1,18 @@
+<div class="app-container" cdkDropListGroup>
+	<app-groups-display class="col-3" 
+		[groupOnDisplayId]="groupOnDisplayId" 
+		(setGroupOnDisplayIdEvent)="setGroupOnDisplayId($event)"
+	>
+	</app-groups-display>
+
+	<div class="col-6">
+		Dummy
+	</div>
+
+	<app-notes-display class="col-3"
+		[groupOnDisplayId]="groupOnDisplayId"
+		[noteOnDisplayId]="noteOnDisplayId"
+		(setNoteOnDisplayIdEvent)="setNoteOnDisplayId($event)"
+	>
+	</app-notes-display>
+</div>

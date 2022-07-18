@@ -1,0 +1,19 @@
+import { Group } from 'src/app/model';
+
+export const testGroups: Group[] = [
+		{
+			id: 0,
+			name: 'group A',
+			isTrashed: false
+		},
+		{
+			id: 1,
+			name: 'group B',
+			isTrashed: true 
+		},
+		{
+			id: 2,
+			name: 'group C',
+			isTrashed: false
+		}
+];

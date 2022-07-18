@@ -1,0 +1,18 @@
+<div
+	class="notes-list"
+>
+	<div
+		*ngFor="let note of notes"
+	>
+		<button class="note-button" 
+			*ngIf="!note.isTrashed && ((note.groupId === groupOnDisplayId) || (groupOnDisplayId === undefined))"
+		  [attr.data-note-id]="note.id"
+			data-test-id="select-note-button"
+			(click)="setNoteOnDisplayId(note.id)"
+			draggable="true"
+			(dragstart)="drag($event, note)"
+		>
+			{{note.name}}
+		</button>
+	</div>
+</div>

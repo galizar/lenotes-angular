@@ -1,0 +1,16 @@
+<div class="groups-list">
+	<div
+		*ngFor="let group of groups"
+		(drop)="dropOnGroup($event, group.id)"
+		(dragover)="allowDrop($event)"
+	>
+		<button class="group-button"
+		  *ngIf="!group.isTrashed"
+		  (click)="setGroupOnDisplayId(group.id)"
+			[attr.data-group-id]="group.id"
+			data-test-id="select-group-button"
+		>
+			{{group.name}}
+		</button>
+	</div>
+</div>
