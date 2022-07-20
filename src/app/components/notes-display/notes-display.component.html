@@ -1,14 +1,16 @@
 <div
+	*ngIf="vm$ | async as vm"
 	class="notes-list"
 >
+	<span>Selected note id: {{vm.noteOnDisplayId}}</span>
 	<div
 		*ngFor="let note of notes"
 	>
 		<button class="note-button" 
-			*ngIf="!note.isTrashed && ((note.groupId === groupOnDisplayId) || (groupOnDisplayId === undefined))"
+			*ngIf="!note.isTrashed && ((note.groupId === vm.groupOnDisplayId) || (vm.groupOnDisplayId === undefined))"
 		  [attr.data-note-id]="note.id"
 			data-test-id="select-note-button"
-			(click)="setNoteOnDisplayId(note.id)"
+			(click)="stateService.setNoteOnDisplayId(note.id)"
 			draggable="true"
 			(dragstart)="drag($event, note)"
 		>

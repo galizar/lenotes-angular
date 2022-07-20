@@ -1,10 +1,9 @@
 import { Component, OnInit, OnChanges, EventEmitter, Input, Output} from '@angular/core';
-import { CdkDragDrop } from '@angular/cdk/drag-drop'
-import { catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { combineLatest, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
-import { Group, Note } from '../../model';
-import { GroupService, NoteService } from '../../services/';
+import { Group, Note } from 'src/app/model';
+import { GroupService, NoteService, AppStateService} from 'src/app/services/';
 
 @Component({
   selector: 'app-groups-display',
@@ -13,14 +12,25 @@ import { GroupService, NoteService } from '../../services/';
 })
 export class GroupsDisplayComponent implements OnInit {
 
-  @Input() groupOnDisplayId?: number;
-	@Output() setGroupOnDisplayIdEvent = new EventEmitter<number>();
+	// unnecesary to use combineLatest as of now, but will keep
+	// this structure for consistency and for ease of addition of more state
+	// view model
+	vm$ = combineLatest(
+		[
+			this.stateService.groupOnDisplayId$
+		]
+	).pipe(
+		map(([groupOnDisplayId]) => {
+			return {groupOnDisplayId}
+		})
+	);
 
   groups: Group[] = [];
 
   constructor(
 		private service: GroupService,
-		private noteService: NoteService) { }
+		public noteService: NoteService,
+		public stateService: AppStateService) { }
 
   ngOnInit(): void {
     this.service.getAll()
@@ -28,11 +38,6 @@ export class GroupsDisplayComponent implements OnInit {
 				this.groups = groups
 			});
   }
-
-	setGroupOnDisplayId(id: number): void {
-		console.log('triggered setGroupOnDisplayIdEvent');
-		this.setGroupOnDisplayIdEvent.emit(id);
-	}
 
 	dropOnGroup(event: DragEvent, groupId: number): void {
 

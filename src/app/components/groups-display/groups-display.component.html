@@ -1,4 +1,7 @@
-<div class="groups-list">
+<div *ngIf="vm$ | async as vm" class="groups-list">
+	
+	<span>Selected group id: {{ vm.groupOnDisplayId }}</span>
+
 	<div
 		*ngFor="let group of groups"
 		(drop)="dropOnGroup($event, group.id)"
@@ -6,7 +9,7 @@
 	>
 		<button class="group-button"
 		  *ngIf="!group.isTrashed"
-		  (click)="setGroupOnDisplayId(group.id)"
+		  (click)="stateService.setGroupOnDisplayId(group.id)"
 			[attr.data-group-id]="group.id"
 			data-test-id="select-group-button"
 		>

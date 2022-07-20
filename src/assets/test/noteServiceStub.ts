@@ -7,20 +7,23 @@ import { Note } from 'src/app/model';
 let notes: Note[] = testNotes;
 
 export const noteServiceStub = {
+	get: (id: number) => {
+		return of(notes.find(n => n.id === id));
+	},
 	getAll: () => {
 		return of(notes)
 	},
-	// unefficient, but it's just for testing purposes
 	move: (id: number, toGroupId: number) => {
 		let subject = notes.find(note => note.id === id);
 		if (!subject) {
 			return throwError('note to move not found');
 		} 
-		subject.groupId = toGroupId;
-		notes = [ 
-			subject,
-			...notes.filter(n => n.id !== id)
-		];	
+		notes = notes.map((note) => {
+			if (note.id === id) {
+				note.groupId = toGroupId;
+			}
+			return note;
+		})
 		return of();
 	}
 } as NoteService;
