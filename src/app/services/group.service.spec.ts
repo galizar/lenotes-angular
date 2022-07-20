@@ -50,6 +50,7 @@ describe('GroupService', () => {
 	it('handles an HTTP error response getting all groups', () => {
 
 		const expectedResponse = new HttpErrorResponse({status: 404, statusText: 'Not Found'});
+		const errorMsg = "Not Found";
 		let actualResponse: HttpErrorResponse | undefined;
 
 		service.getAll().subscribe({
@@ -61,7 +62,7 @@ describe('GroupService', () => {
 		});
 
 		const request = httpController.expectOne(TestEnvObj.GROUPS_API_ROOT);
-		request.flush(expectedResponse);
+		request.flush(errorMsg, expectedResponse);
 
 		if (!actualResponse) {
 			throw new Error('Error needs to be defined');
