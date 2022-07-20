@@ -2,7 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { NoteService } from 'src/app/services';
+import { AppStateService, NoteService } from 'src/app/services';
 import { NotesDisplayComponent } from './notes-display.component';
 import { 
 	testEnvObject, 
@@ -13,7 +13,7 @@ import { DebugElement } from '@angular/core';
 describe('NotesDisplayComponent', () => {
   let component: NotesDisplayComponent;
   let fixture: ComponentFixture<NotesDisplayComponent>;
-	let rootDebugElement: DebugElement;
+	let debugElement: DebugElement;
 
   beforeEach(async () => {
 
@@ -23,6 +23,7 @@ describe('NotesDisplayComponent', () => {
 			providers: [
 				{provide: 'env', useValue: testEnvObject},
 				{provide: NoteService, useValue: noteServiceStub},
+				AppStateService
 			]
     })
     .compileComponents();
@@ -33,7 +34,7 @@ describe('NotesDisplayComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
 
-		rootDebugElement = fixture.debugElement;
+		debugElement = fixture.debugElement;
   });
 
   it('should create', () => {
@@ -47,23 +48,40 @@ describe('NotesDisplayComponent', () => {
 			expectedButtonCount = notes.filter(note => !note.isTrashed).length;
 		})
 
-		const buttonElements = rootDebugElement.queryAll(By.css('.note-button'));
-		const gottenButtonCount = buttonElements.length;
+		const buttonElements = debugElement.queryAll(By.css('.note-button'));
+		const actualButtonCount = buttonElements.length;
 
-		expect(gottenButtonCount).toEqual(expectedButtonCount)
+		expect(actualButtonCount).toEqual(expectedButtonCount)
 	});
 
-	it('emits event to display note in editor when button is clicked', () => {
+	it('displays the correct list of notes when a group is selected', () => {
 
-		let emittedNoteId: number | undefined;
-		component.setNoteOnDisplayIdEvent.subscribe(id => {
-			emittedNoteId = id;
+		let groupOnDisplayId = 0;
+		component.stateService.setGroupOnDisplayId(groupOnDisplayId);
+		fixture.detectChanges();
+		let expectedButtonCount = -1; // assignment to dummy to please the compiler 
+		noteServiceStub.getAll().subscribe(notes => {
+			expectedButtonCount =
+				notes.filter(note => note.groupId === groupOnDisplayId && !note.isTrashed).length;
 		});
-		const firstNoteButton = rootDebugElement.query(By.css('[data-test-id="select-note-button"]'));
-		const expectedNoteId = Number(firstNoteButton.attributes['data-note-id']);
 
-		firstNoteButton.triggerEventHandler('click', {});
+		const actualButtonCount = debugElement.queryAll(By.css('.note-button')).length;
 
-		expect(emittedNoteId).toEqual(expectedNoteId);
+		expect(actualButtonCount).toEqual(expectedButtonCount);
 	});
+
+	it('selects note when note button is clicked', () => {
+
+		let expectedNoteOnDisplayId: number | undefined;
+		const firstNoteButton = debugElement.query(By.css('.note-button'));
+		expectedNoteOnDisplayId = Number(firstNoteButton.attributes['data-note-id']);
+
+		firstNoteButton.triggerEventHandler('click');
+
+		fixture.detectChanges();
+		let actualNoteOnDisplayId: number | undefined;
+		component.vm$.subscribe(vm => actualNoteOnDisplayId = vm.noteOnDisplayId);
+
+		expect(actualNoteOnDisplayId).toEqual(expectedNoteOnDisplayId);
+	})
 });

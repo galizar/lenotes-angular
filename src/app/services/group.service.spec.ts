@@ -17,7 +17,7 @@ describe('GroupService', () => {
 	}
 
 	let httpClient: HttpClient;
-	let controller: HttpTestingController;
+	let httpController: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -25,7 +25,7 @@ describe('GroupService', () => {
 			providers: [ GroupService ]
 		});
 		httpClient = TestBed.inject(HttpClient);
-		controller = TestBed.inject(HttpTestingController);
+		httpController = TestBed.inject(HttpTestingController);
 		service = new GroupService(TestEnvObj, httpClient);
   });
 
@@ -35,45 +35,39 @@ describe('GroupService', () => {
 
 	it('gets all groups', () => {
 
-		let gottenGroups: Group[] | undefined;
+		let actualGroups: Group[] | undefined;
 		service.getAll().subscribe(
 			(groups) => {
-				gottenGroups = groups;
+				actualGroups = groups;
 			}
 		);
-		const request = controller.expectOne(TestEnvObj.GROUPS_API_ROOT);
+		const request = httpController.expectOne(TestEnvObj.GROUPS_API_ROOT);
 		request.flush(testGroups);
-		controller.verify(); // this verifies that there no outstanding requests
-		expect(gottenGroups).toEqual(testGroups);
+		httpController.verify(); // this verifies that there no outstanding requests
+		expect(actualGroups).toEqual(testGroups);
 	});
 
-	it('handles an HTTP error getting all groups', () => {
+	it('handles an HTTP error response getting all groups', () => {
 
-		const status = 404;
-		const statusText = 'Not Found';
-		const errorEvent = new ErrorEvent('Not Found Error');
-
-		let gottenError: HttpErrorResponse | undefined;
+		const expectedResponse = new HttpErrorResponse({status: 404, statusText: 'Not Found'});
+		const errorMsg = "Not Found";
+		let actualResponse: HttpErrorResponse | undefined;
 
 		service.getAll().subscribe({
 			next: groups => fail('expected an error, not groups'),
 			error: error => {
-				gottenError = error;
+				actualResponse = error;
 			},
 			complete: () => fail('expected an error, not a complete')
 		});
 
-		const request = controller.expectOne(TestEnvObj.GROUPS_API_ROOT);
-		request.error(
-			errorEvent,
-			{ status, statusText }
-		);
+		const request = httpController.expectOne(TestEnvObj.GROUPS_API_ROOT);
+		request.flush(errorMsg, expectedResponse);
 
-		if (!gottenError) {
+		if (!actualResponse) {
 			throw new Error('Error needs to be defined');
 		}
-		expect(gottenError.error).toBe(errorEvent);
-		expect(gottenError.status).toBe(status);
-		expect(gottenError.statusText).toBe(statusText);
+		expect(actualResponse.status).toBe(expectedResponse.status);
+		expect(actualResponse.statusText).toBe(expectedResponse.statusText);
 	});
 });

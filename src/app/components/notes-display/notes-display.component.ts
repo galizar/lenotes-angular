@@ -1,6 +1,8 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
+import { combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { NoteService } from '../../services/note.service';
+import { NoteService, AppStateService } from 'src/app/services';
 
 import { Note } from '../../model';
 
@@ -11,23 +13,34 @@ import { Note } from '../../model';
 })
 export class NotesDisplayComponent implements OnInit {
 
-	@Input() groupOnDisplayId?: number;
-	@Input() noteOnDisplayId?: number;
-	@Output() setNoteOnDisplayIdEvent = new EventEmitter<number>();
+	// view model
+	vm$ = combineLatest(
+		[
+			this.stateService.groupOnDisplayId$,
+			this.stateService.noteOnDisplayId$
+		]
+	).pipe(
+		map(([groupOnDisplayId, noteOnDisplayId]) => {
+			return {groupOnDisplayId, noteOnDisplayId};
+		})
+	);
 
   notes: Note[] = [];
 
-  constructor(private service: NoteService) { }
+  constructor(
+		public service: NoteService,
+		public stateService: AppStateService) { 
+	}
 
   ngOnInit(): void {
 		this.service.getAll()
 			.subscribe(notes => this.notes = notes);
   }
 
-	setNoteOnDisplayId(id: number): void {
-		this.setNoteOnDisplayIdEvent.emit(id);
-		console.log('triggered setNoteOnDisplayId');
-	}
+	//setNoteOnDisplayId(id: number): void {
+	//	this.setNoteOnDisplayIdEvent.emit(id);
+	//	console.log('triggered setNoteOnDisplayId');
+	//}
 
 	drag(event: DragEvent, note: Note): void {
 		event.dataTransfer?.setData('Note', JSON.stringify(note));

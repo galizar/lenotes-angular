@@ -11,7 +11,7 @@ import { Note } from 'src/app/model';
 describe('GroupsDisplayComponent', () => {
   let component: GroupsDisplayComponent;
   let fixture: ComponentFixture<GroupsDisplayComponent>;
-	let rootDebugElement: DebugElement;
+	let debugElement: DebugElement;
 	
   beforeEach(async () => {
 
@@ -30,7 +30,7 @@ describe('GroupsDisplayComponent', () => {
 	beforeEach(() => {
     fixture = TestBed.createComponent(GroupsDisplayComponent);
     component = fixture.componentInstance;
-		rootDebugElement = fixture.debugElement;
+		debugElement = fixture.debugElement;
     fixture.detectChanges();
 	});
 
@@ -45,41 +45,26 @@ describe('GroupsDisplayComponent', () => {
 		// elsewhere
 		const expectedButtonCount = component.groups.filter(group => !group.isTrashed).length;
 
-		const groupButtons = rootDebugElement.queryAll(By.css('.group-button'));
+		const groupButtons = debugElement.queryAll(By.css('.group-button'));
 
 		expect(groupButtons.length).toEqual(expectedButtonCount);
 	});
 
-	it('emits setGroupOnDisplayIdEvent', () => {
+	it('selects group when group button is clicked', () => {
 
-		let expectedGroupId: number | undefined;
-		let emittedGroupId: number | undefined;
-		component.setGroupOnDisplayIdEvent.subscribe(id => {
-			emittedGroupId = id;
-		});
-		const firstGroupButton = rootDebugElement.query(By.css('[data-test-id="select-group-button"]'));
-		expectedGroupId = Number(firstGroupButton.attributes['data-group-id']);
+		let expectedGroupOnDisplayId: number | undefined;
+		const firstGroupButton = debugElement.query(By.css('.group-button'));
+		expectedGroupOnDisplayId = Number(firstGroupButton.attributes['data-group-id']);
 
-		firstGroupButton.triggerEventHandler('click', {});
+		firstGroupButton.triggerEventHandler('click');
 
-		expect(emittedGroupId).toEqual(expectedGroupId);
+		fixture.detectChanges();
+		let actualGroupOnDisplayId: number | undefined;
+		component.vm$.subscribe(vm => actualGroupOnDisplayId = vm.groupOnDisplayId);
+
+		expect(actualGroupOnDisplayId).toEqual(expectedGroupOnDisplayId);
 	});
 
-	it('triggers event to move dropped note to group over which it was dropped', () => {
-
-		const note = testNotes[0];
-		let dataTransfer = new DataTransfer();
-		dataTransfer.setData('Note', JSON.stringify(note));
-		const droppedNoteEvent = new DragEvent('drop', {dataTransfer});
-		const firstGroupButton = rootDebugElement.query(By.css('[data-test-id="select-group-button"]'));
-
-		spyOn(component, 'dropOnGroup');
-		firstGroupButton.parent?.triggerEventHandler('drop', droppedNoteEvent);
-
-		expect(component.dropOnGroup).toHaveBeenCalled();
-	});
-
-	// move this test to the app component and actually compare the group ids
 	it('moves dropped note to group over which it was dropped', () => {
 
 		let firstNote = testNotes[0];
@@ -87,13 +72,13 @@ describe('GroupsDisplayComponent', () => {
 		const toGroupId = secondNote.id;
 		const dataTransfer = new DataTransfer();
 		dataTransfer.setData('Note', JSON.stringify(firstNote));
-		const droppedNoteName = firstNote.name;
 		const droppedNoteEvent = new DragEvent('drop', {dataTransfer});
 
-		spyOn(console, 'log');
 		component.dropOnGroup(droppedNoteEvent, toGroupId);
+		let actualNote: Note | undefined;
+		noteServiceStub.get(firstNote.id).subscribe(note => actualNote = note);
 
-		expect(console.log)
-			.toHaveBeenCalledWith(`Succesfully moved note ${droppedNoteName} to group with id: ${toGroupId}`);
+		if (!actualNote) throw Error('cant get note from note service');
+		expect(actualNote.groupId).toEqual(toGroupId);
 	});
 });

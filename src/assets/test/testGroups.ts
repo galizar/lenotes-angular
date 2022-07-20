@@ -9,11 +9,11 @@ export const testGroups: Group[] = [
 		{
 			id: 1,
 			name: 'group B',
-			isTrashed: true 
+			isTrashed: false 
 		},
 		{
 			id: 2,
 			name: 'group C',
-			isTrashed: false
+			isTrashed: true 
 		}
 ];
