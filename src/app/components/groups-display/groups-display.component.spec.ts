@@ -29,9 +29,9 @@ describe('GroupsDisplayComponent', () => {
 
 	beforeEach(() => {
     fixture = TestBed.createComponent(GroupsDisplayComponent);
+    fixture.detectChanges();
     component = fixture.componentInstance;
 		debugElement = fixture.debugElement;
-    fixture.detectChanges();
 	});
 
   it('should create', () => {

@@ -1,4 +1,3 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -6,7 +5,8 @@ import { AppStateService, NoteService } from 'src/app/services';
 import { NotesDisplayComponent } from './notes-display.component';
 import { 
 	testEnvObject, 
-	noteServiceStub
+	noteServiceStub,
+	appStateServiceStub
 } from 'src/assets/test';
 import { DebugElement } from '@angular/core';
 
@@ -16,24 +16,22 @@ describe('NotesDisplayComponent', () => {
 	let debugElement: DebugElement;
 
   beforeEach(async () => {
-
     await TestBed.configureTestingModule({
-			imports: [ HttpClientTestingModule ],
+			imports: [ ],
       declarations: [ NotesDisplayComponent ],
-			providers: [
-				{provide: 'env', useValue: testEnvObject},
+			providers: [ {provide: 'env', useValue: testEnvObject},
 				{provide: NoteService, useValue: noteServiceStub},
-				AppStateService
+				{provide: AppStateService, useValue: appStateServiceStub}
+				//AppStateService // not much difference between the stub and the real thing
 			]
     })
-    .compileComponents();
+		.compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NotesDisplayComponent);
+    fixture.detectChanges()
     component = fixture.componentInstance;
-    fixture.detectChanges();
-
 		debugElement = fixture.debugElement;
   });
 
@@ -41,7 +39,9 @@ describe('NotesDisplayComponent', () => {
     expect(component).toBeTruthy();
   });
 
-	it('displays the correct list of note buttons when none group is selected', () => {
+	// this test fails if the test below it runs before it. the AppStateService instance
+	// is being shared between tests for some reason
+	it('displays the correct list of note buttons when no group is selected', () => {
 
 		let expectedButtonCount = -1;
 		noteServiceStub.getAll().subscribe(notes => {
@@ -51,7 +51,7 @@ describe('NotesDisplayComponent', () => {
 		const buttonElements = debugElement.queryAll(By.css('.note-button'));
 		const actualButtonCount = buttonElements.length;
 
-		expect(actualButtonCount).toEqual(expectedButtonCount)
+		expect(actualButtonCount).toEqual(expectedButtonCount);
 	});
 
 	it('displays the correct list of notes when a group is selected', () => {
@@ -59,7 +59,8 @@ describe('NotesDisplayComponent', () => {
 		let groupOnDisplayId = 0;
 		component.stateService.setGroupOnDisplayId(groupOnDisplayId);
 		fixture.detectChanges();
-		let expectedButtonCount = -1; // assignment to dummy to please the compiler 
+
+		let expectedButtonCount = -1; // dummy to please the compiler 
 		noteServiceStub.getAll().subscribe(notes => {
 			expectedButtonCount =
 				notes.filter(note => note.groupId === groupOnDisplayId && !note.isTrashed).length;
@@ -77,8 +78,8 @@ describe('NotesDisplayComponent', () => {
 		expectedNoteOnDisplayId = Number(firstNoteButton.attributes['data-note-id']);
 
 		firstNoteButton.triggerEventHandler('click');
-
 		fixture.detectChanges();
+
 		let actualNoteOnDisplayId: number | undefined;
 		component.vm$.subscribe(vm => actualNoteOnDisplayId = vm.noteOnDisplayId);
 

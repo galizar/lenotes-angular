@@ -33,9 +33,8 @@ export class NotesDisplayComponent implements OnInit {
 	}
 
   ngOnInit(): void {
-		this.service.getAll()
-			.subscribe(notes => this.notes = notes);
-  }
+		this.service.getAll().subscribe(notes => this.notes = notes);
+	}
 
 	//setNoteOnDisplayId(id: number): void {
 	//	this.setNoteOnDisplayIdEvent.emit(id);

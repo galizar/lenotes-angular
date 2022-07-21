@@ -2,23 +2,19 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject } from 'rxjs';
 import { map, distinctUntilChanged } from 'rxjs/operators';
 
-interface AppState {
-	noteOnDisplayId?: number,
-	groupOnDisplayId?: number,
-}
-
-// initialize state
-let _state: AppState = {
-	noteOnDisplayId: undefined,
-	groupOnDisplayId: undefined 
-}
+import { AppState } from 'src/app/model';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class AppStateService {
 
-	private store = new BehaviorSubject<AppState>(_state);
+	private state: AppState = {
+		noteOnDisplayId: undefined,
+		groupOnDisplayId: undefined
+	}
+
+	private store = new BehaviorSubject<AppState>(this.state);
 	private state$ = this.store.asObservable();
 
 	constructor() {}
@@ -34,14 +30,14 @@ export class AppStateService {
 	);
 
 	setGroupOnDisplayId(id: number) {
-		this.updateState({ ..._state, groupOnDisplayId: id });
+		this.updateState({ ...this.state, groupOnDisplayId: id });
   }
 
 	setNoteOnDisplayId(id: number) {
-    this.updateState({ ..._state, noteOnDisplayId: id });
+    this.updateState({ ...this.state, noteOnDisplayId: id });
 	}
 
 	private updateState(state: AppState) {
-		this.store.next((_state = state));
+		this.store.next((this.state = state));
 	}
 }

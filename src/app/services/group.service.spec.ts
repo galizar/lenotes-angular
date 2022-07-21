@@ -22,7 +22,6 @@ describe('GroupService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
 			imports: [ HttpClientTestingModule ],
-			providers: [ GroupService ]
 		});
 		httpClient = TestBed.inject(HttpClient);
 		httpController = TestBed.inject(HttpTestingController);
