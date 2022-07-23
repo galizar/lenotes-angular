@@ -1,17 +1,22 @@
 import { of, throwError } from "rxjs";
-import { NoteService } from "src/app/services";
+import { INoteService } from "src/app/interfaces";
 
 import { testNotes } from 'src/assets/test';
 import { Note } from 'src/app/model';
 
 let notes: Note[] = testNotes;
 
-export const noteServiceStub = {
+export const noteServiceStub: INoteService = {
 	get: (id: number) => {
-		return of(notes.find(n => n.id === id));
+		const note = notes.find(n => n.id === id);
+		if (note === undefined) {
+			return throwError('Not Found');
+		}
+		return of(note);
 	},
-	getAll: () => {
-		return of(notes)
+	getInGroup: (groupId: number) => {
+		const notesInGroup = notes.filter(note => note.groupId === groupId);
+		return of(notesInGroup);
 	},
 	move: (id: number, toGroupId: number) => {
 		let subject = notes.find(note => note.id === id);
@@ -26,4 +31,4 @@ export const noteServiceStub = {
 		})
 		return of();
 	}
-} as NoteService;
+};

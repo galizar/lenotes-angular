@@ -23,8 +23,4 @@ describe('NoteService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
-
-	it('gets all notes', () => {
-
-	});
 });

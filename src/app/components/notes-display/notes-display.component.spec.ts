@@ -22,7 +22,6 @@ describe('NotesDisplayComponent', () => {
 			providers: [ {provide: 'env', useValue: testEnvObject},
 				{provide: NoteService, useValue: noteServiceStub},
 				{provide: AppStateService, useValue: appStateServiceStub}
-				//AppStateService // not much difference between the stub and the real thing
 			]
     })
 		.compileComponents();
@@ -39,31 +38,15 @@ describe('NotesDisplayComponent', () => {
     expect(component).toBeTruthy();
   });
 
-	// this test fails if the test below it runs before it. the AppStateService instance
-	// is being shared between tests for some reason
-	it('displays the correct list of note buttons when no group is selected', () => {
-
-		let expectedButtonCount = -1;
-		noteServiceStub.getAll().subscribe(notes => {
-			expectedButtonCount = notes.filter(note => !note.isTrashed).length;
-		})
-
-		const buttonElements = debugElement.queryAll(By.css('.note-button'));
-		const actualButtonCount = buttonElements.length;
-
-		expect(actualButtonCount).toEqual(expectedButtonCount);
-	});
-
 	it('displays the correct list of notes when a group is selected', () => {
 
 		let groupOnDisplayId = 0;
-		component.stateService.setGroupOnDisplayId(groupOnDisplayId);
+		component.appStateService.setGroupOnDisplayId(groupOnDisplayId);
 		fixture.detectChanges();
 
 		let expectedButtonCount = -1; // dummy to please the compiler 
-		noteServiceStub.getAll().subscribe(notes => {
-			expectedButtonCount =
-				notes.filter(note => note.groupId === groupOnDisplayId && !note.isTrashed).length;
+		noteServiceStub.getInGroup(groupOnDisplayId).subscribe(notes => {
+			expectedButtonCount = notes.filter(n => !n.isTrashed).length;
 		});
 
 		const actualButtonCount = debugElement.queryAll(By.css('.note-button')).length;
@@ -74,6 +57,9 @@ describe('NotesDisplayComponent', () => {
 	it('selects note when note button is clicked', () => {
 
 		let expectedNoteOnDisplayId: number | undefined;
+		// making sure here a group is on display, otherwise there may be no note buttons
+		appStateServiceStub.setGroupOnDisplayId(1);
+		fixture.detectChanges();
 		const firstNoteButton = debugElement.query(By.css('.note-button'));
 		expectedNoteOnDisplayId = Number(firstNoteButton.attributes['data-note-id']);
 

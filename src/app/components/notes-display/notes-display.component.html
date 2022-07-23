@@ -3,18 +3,19 @@
 	class="notes-list"
 >
 	<span>Selected note id: {{vm.noteOnDisplayId}}</span>
-	<div
-		*ngFor="let note of notes"
-	>
-		<button class="note-button" 
-			*ngIf="!note.isTrashed && ((note.groupId === vm.groupOnDisplayId) || (vm.groupOnDisplayId === undefined))"
-		  [attr.data-note-id]="note.id"
-			data-test-id="select-note-button"
-			(click)="stateService.setNoteOnDisplayId(note.id)"
-			draggable="true"
-			(dragstart)="drag($event, note)"
-		>
-			{{note.name}}
-		</button>
-	</div>
+		<div *ngFor="let note of vm.notes">
+			<button 
+				class="note-button"
+				[attr.data-note-id]="note.id" 
+				data-test-id="select-note-button" 
+				draggable="true" 
+				(dragstart)="drag($event, note)"
+				(click)="appStateService.setNoteOnDisplayId(note.id)"
+				>
+				{{note.name}}
+			</button>
+		</div>
+		<div *ngIf="vm.groupOnDisplayId === undefined">
+			Select a group to start
+		</div>
 </div>

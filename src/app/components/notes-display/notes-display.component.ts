@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { NoteService, AppStateService } from 'src/app/services';
 
 import { Note } from '../../model';
+import { NoteStateService } from './note-state.service';
 
 @Component({
   selector: 'app-notes-display',
@@ -16,30 +17,24 @@ export class NotesDisplayComponent implements OnInit {
 	// view model
 	vm$ = combineLatest(
 		[
-			this.stateService.groupOnDisplayId$,
-			this.stateService.noteOnDisplayId$
+			this.appStateService.groupOnDisplayId$,
+			this.appStateService.noteOnDisplayId$,
+			this.noteStateService.notes$
 		]
 	).pipe(
-		map(([groupOnDisplayId, noteOnDisplayId]) => {
-			return {groupOnDisplayId, noteOnDisplayId};
+		map(([groupOnDisplayId, noteOnDisplayId, notes]) => {
+			return {groupOnDisplayId, noteOnDisplayId, notes};
 		})
 	);
 
-  notes: Note[] = [];
-
   constructor(
-		public service: NoteService,
-		public stateService: AppStateService) { 
+		public appStateService: AppStateService,
+		public noteStateService: NoteStateService) { 
 	}
 
   ngOnInit(): void {
-		this.service.getAll().subscribe(notes => this.notes = notes);
+		//this.service.getAll().subscribe(notes => this.notes = notes);
 	}
-
-	//setNoteOnDisplayId(id: number): void {
-	//	this.setNoteOnDisplayIdEvent.emit(id);
-	//	console.log('triggered setNoteOnDisplayId');
-	//}
 
 	drag(event: DragEvent, note: Note): void {
 		event.dataTransfer?.setData('Note', JSON.stringify(note));
