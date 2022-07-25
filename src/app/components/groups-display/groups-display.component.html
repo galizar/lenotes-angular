@@ -3,13 +3,13 @@
 	<span>Selected group id: {{ vm.groupOnDisplayId }}</span>
 
 	<div
-		*ngFor="let group of groups"
+		*ngFor="let group of vm.groups"
 		(drop)="dropOnGroup($event, group.id)"
 		(dragover)="allowDrop($event)"
 	>
 		<button class="group-button"
 		  *ngIf="!group.isTrashed"
-		  (click)="stateService.setGroupOnDisplayId(group.id)"
+		  (click)="appStateService.setGroupOnDisplayId(group.id)"
 			[attr.data-group-id]="group.id"
 			data-test-id="select-group-button"
 		>

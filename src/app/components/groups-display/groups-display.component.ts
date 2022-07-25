@@ -4,6 +4,7 @@ import { catchError, map } from 'rxjs/operators';
 
 import { Group, Note } from 'src/app/model';
 import { GroupService, NoteService, AppStateService} from 'src/app/services/';
+import { GroupStateService } from './group-state.service';
 
 @Component({
   selector: 'app-groups-display',
@@ -17,26 +18,21 @@ export class GroupsDisplayComponent implements OnInit {
 	// view model
 	vm$ = combineLatest(
 		[
-			this.stateService.groupOnDisplayId$
+			this.appStateService.groupOnDisplayId$,
+			this.groupStateService.groups$
 		]
 	).pipe(
-		map(([groupOnDisplayId]) => {
-			return {groupOnDisplayId}
+		map(([groupOnDisplayId, groups]) => {
+			return {groupOnDisplayId, groups}
 		})
 	);
 
-  groups: Group[] = [];
-
   constructor(
-		private service: GroupService,
 		public noteService: NoteService,
-		public stateService: AppStateService) { }
+		public appStateService: AppStateService,
+		public groupStateService: GroupStateService) { }
 
   ngOnInit(): void {
-    this.service.getAll()
-      .subscribe(groups => {
-				this.groups = groups
-			});
   }
 
 	dropOnGroup(event: DragEvent, groupId: number): void {
@@ -45,8 +41,6 @@ export class GroupsDisplayComponent implements OnInit {
 		const stringifiedNote = event.dataTransfer?.getData('Note');
 		if (!stringifiedNote) throw Error('stringified note not extracted correctly');
 		const note = JSON.parse(stringifiedNote) as Note;
-
-		console.log('dropOnGroup was called');
 
 		this.noteService.move(note.id, groupId)
 			.pipe(

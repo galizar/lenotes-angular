@@ -43,7 +43,10 @@ describe('GroupsDisplayComponent', () => {
 		// it should display only buttons for groups that
 		// are not trashed. trashed groups will be handled
 		// elsewhere
-		const expectedButtonCount = component.groups.filter(group => !group.isTrashed).length;
+		let expectedButtonCount = -1; // dummy, otherwise the compiler blabs
+		component.vm$.subscribe(vm => {
+			expectedButtonCount = vm.groups.filter(group => !group.isTrashed).length;
+		});
 
 		const groupButtons = debugElement.queryAll(By.css('.group-button'));
 
@@ -76,7 +79,7 @@ describe('GroupsDisplayComponent', () => {
 
 		component.dropOnGroup(droppedNoteEvent, toGroupId);
 		let actualNote: Note | undefined;
-		noteServiceStub.get(firstNote.id).subscribe(note => actualNote = note);
+		component.noteService.get(firstNote.id).subscribe(note => actualNote = note);
 
 		if (!actualNote) throw Error('cant get note from note service');
 		expect(actualNote.groupId).toEqual(toGroupId);

@@ -45,7 +45,7 @@ describe('NotesDisplayComponent', () => {
 		fixture.detectChanges();
 
 		let expectedButtonCount = -1; // dummy to please the compiler 
-		noteServiceStub.getInGroup(groupOnDisplayId).subscribe(notes => {
+		component.noteStateService.notes$.subscribe(notes => {
 			expectedButtonCount = notes.filter(n => !n.isTrashed).length;
 		});
 
@@ -58,7 +58,7 @@ describe('NotesDisplayComponent', () => {
 
 		let expectedNoteOnDisplayId: number | undefined;
 		// making sure here a group is on display, otherwise there may be no note buttons
-		appStateServiceStub.setGroupOnDisplayId(1);
+		component.appStateService.setGroupOnDisplayId(1);
 		fixture.detectChanges();
 		const firstNoteButton = debugElement.query(By.css('.note-button'));
 		expectedNoteOnDisplayId = Number(firstNoteButton.attributes['data-note-id']);

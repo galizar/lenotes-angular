@@ -11,6 +11,7 @@ import { AppStateService, NoteService } from 'src/app/services';
 export class NoteStateService {
 
 	private store = new BehaviorSubject<Note[]>([]);
+	public notes$ = this.store.asObservable();
 
   constructor(
 		private noteService: NoteService,
@@ -29,8 +30,6 @@ export class NoteStateService {
 			this.setNotes(notes.filter(n => !n.isTrashed));
 		});
 	}
-
-	public notes$ = this.store.asObservable();
 
 	setNotes(notes: Note[]) {
 		this.store.next(notes);
