@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 
 import { GroupsDisplayComponent } from './groups-display.component';
 import { GroupService, NoteService } from 'src/app/services';
-import { testNotes, testEnvObject, groupServiceStub, noteServiceStub} from 'src/assets/test';
+import { testNotes, testEnvObject, groupServiceStubBuilder, noteServiceStubBuilder} from 'src/assets/test';
 import { DebugElement } from '@angular/core';
 import { Note } from 'src/app/model';
 
@@ -14,6 +14,9 @@ describe('GroupsDisplayComponent', () => {
 	let debugElement: DebugElement;
 	
   beforeEach(async () => {
+
+		const groupServiceStub = groupServiceStubBuilder.build();
+		const noteServiceStub = noteServiceStubBuilder.build();
 
     await TestBed.configureTestingModule({
 			imports: [HttpClientTestingModule],

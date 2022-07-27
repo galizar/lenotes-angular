@@ -33,7 +33,6 @@ export class NotesDisplayComponent implements OnInit {
 	}
 
   ngOnInit(): void {
-		//this.service.getAll().subscribe(notes => this.notes = notes);
 	}
 
 	drag(event: DragEvent, note: Note): void {

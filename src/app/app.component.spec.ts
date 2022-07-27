@@ -9,7 +9,7 @@ import { testEnvObject } from 'src/assets/test';
 import { HttpClient } from '@angular/common/http';
 
 import { GroupService, NoteService } from './services';
-import { groupServiceStub, noteServiceStub } from 'src/assets/test';
+import { groupServiceStubBuilder, noteServiceStubBuilder } from 'src/assets/test';
 
 describe('AppComponent', () => {
 	let appFixture: ComponentFixture<AppComponent>;
@@ -19,6 +19,9 @@ describe('AppComponent', () => {
 	let notesElement: DebugElement;
 
   beforeEach(async () => {
+
+		const groupServiceStub = groupServiceStubBuilder.build();
+		const noteServiceStub = noteServiceStubBuilder.build();
 
     await TestBed.configureTestingModule({
       imports: [ ],

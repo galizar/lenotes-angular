@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppStateService, NoteService } from 'src/app/services';
-import { appStateServiceStub, noteServiceStub } from 'src/assets/test';
+import { appStateServiceStubBuilder, noteServiceStubBuilder } from 'src/assets/test';
 
 import { NoteStateService } from './note-state.service';
 
@@ -9,7 +9,12 @@ describe('NoteStateService', () => {
 	let noteService: NoteService;
 	let appStateService: AppStateService;
 
+
   beforeEach(() => {
+
+		const noteServiceStub = noteServiceStubBuilder.build();
+		const appStateServiceStub = appStateServiceStubBuilder.build();
+
     TestBed.configureTestingModule({
 			providers: [
 				{provide: NoteService, useValue: noteServiceStub},
@@ -39,8 +44,45 @@ describe('NoteStateService', () => {
 		service.notes$.subscribe(notes => {
 			// the service filters trashed notes so no need to filter here
 			actualNoteIds = notes.map(n => n.id);
-		})
+		});
 
 		expect(actualNoteIds).toEqual(expectedNoteIds);
+	});
+
+	it('moves note to group', () => {
+
+		const idOfNoteToMove = 0;
+		const idOfGroupToMoveTo = 1; // or expected group id
+		let actualGroupId: number | undefined;
+		let groupIdOfNoteToMove = -1; // dummy to stop compiler's yapping
+
+		noteService.get(idOfNoteToMove).subscribe(note => {
+			groupIdOfNoteToMove = note.groupId;
+		});
+
+		// it's required to set on display the group id of the note to move
+		// so that the note to move is on state. the test fails if the note to move is
+		// not in the state
+
+		appStateService.setGroupOnDisplayId(groupIdOfNoteToMove);
+
+		service.move(idOfNoteToMove, idOfGroupToMoveTo);
+
+		service.notes$.subscribe(notes => {
+			const noteToMove = notes.find(n => n.id === idOfNoteToMove);
+			if (noteToMove === undefined) {
+				fail('note is not in state service');
+				return;
+			};
+			actualGroupId = noteToMove.groupId;
+		})
+
+		// local state verification
+		expect(actualGroupId).toEqual(idOfGroupToMoveTo);
+
+		noteService.get(idOfNoteToMove).subscribe(note => actualGroupId = note.groupId);
+			
+		// remote state (http service) verification
+		expect(actualGroupId).toEqual(idOfGroupToMoveTo);
 	});
 });

@@ -5,8 +5,8 @@ import { AppStateService, NoteService } from 'src/app/services';
 import { NotesDisplayComponent } from './notes-display.component';
 import { 
 	testEnvObject, 
-	noteServiceStub,
-	appStateServiceStub
+	noteServiceStubBuilder,
+	appStateServiceStubBuilder
 } from 'src/assets/test';
 import { DebugElement } from '@angular/core';
 
@@ -16,6 +16,10 @@ describe('NotesDisplayComponent', () => {
 	let debugElement: DebugElement;
 
   beforeEach(async () => {
+
+		const noteServiceStub = noteServiceStubBuilder.build();
+		const appStateServiceStub = appStateServiceStubBuilder.build();
+
     await TestBed.configureTestingModule({
 			imports: [ ],
       declarations: [ NotesDisplayComponent ],

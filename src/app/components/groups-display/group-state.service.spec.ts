@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { GroupService } from 'src/app/services';
 
 import { GroupStateService } from './group-state.service';
-import { groupServiceStub, testEnvObject } from 'src/assets/test';
+import { groupServiceStubBuilder, testEnvObject } from 'src/assets/test';
 import { Group } from 'src/app/model';
 
 describe('GroupStateService', () => {
@@ -10,6 +10,9 @@ describe('GroupStateService', () => {
 	let groupService: GroupService;
 
   beforeEach(() => {
+
+		const groupServiceStub = groupServiceStubBuilder.build();
+
     TestBed.configureTestingModule({
 			providers: [
 				{ provide: GroupService, useValue: groupServiceStub },

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, of } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { BehaviorSubject, of, throwError } from 'rxjs';
+import { mergeMap, map } from 'rxjs/operators';
 
 import { Note } from 'src/app/model';
 import { AppStateService, NoteService } from 'src/app/services';
@@ -10,7 +10,8 @@ import { AppStateService, NoteService } from 'src/app/services';
 })
 export class NoteStateService {
 
-	private store = new BehaviorSubject<Note[]>([]);
+	private notes: Note[] = [];
+	private store = new BehaviorSubject<Note[]>(this.notes);
 	public notes$ = this.store.asObservable();
 
   constructor(
@@ -32,6 +33,20 @@ export class NoteStateService {
 	}
 
 	setNotes(notes: Note[]) {
-		this.store.next(notes);
+		this.store.next((this.notes = notes));
+	}
+
+	move(id: number, toGroupId: number) {
+
+		this.setNotes(
+			this.notes.map(note => {
+				if (note.id === id) {
+					note.groupId = toGroupId;
+				}
+				return note;
+			})
+		);
+
+		this.noteService.move(id, toGroupId);
 	}
 }
