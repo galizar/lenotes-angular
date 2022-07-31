@@ -5,11 +5,12 @@ import { DebugElement } from '@angular/core';
 import { AppComponent } from './app.component';
 import { GroupsDisplayComponent } from './components/groups-display/groups-display.component';
 import { NotesDisplayComponent } from './components/notes-display/notes-display.component';
+import { EditorComponent } from './editor/editor.component';
 import { testEnvObject } from 'src/assets/test';
-import { HttpClient } from '@angular/common/http';
 
 import { GroupService, NoteService } from './services';
 import { groupServiceStubBuilder, noteServiceStubBuilder } from 'src/assets/test';
+import { ReactiveFormsModule } from '@angular/forms';
 
 describe('AppComponent', () => {
 	let appFixture: ComponentFixture<AppComponent>;
@@ -17,6 +18,7 @@ describe('AppComponent', () => {
 
 	let groupsElement: DebugElement;
 	let notesElement: DebugElement;
+	let editorElement: DebugElement;
 
   beforeEach(async () => {
 
@@ -24,11 +26,14 @@ describe('AppComponent', () => {
 		const noteServiceStub = noteServiceStubBuilder.build();
 
     await TestBed.configureTestingModule({
-      imports: [ ],
+      imports: [
+				ReactiveFormsModule
+			],
       declarations: [
         AppComponent,
 				GroupsDisplayComponent,
-				NotesDisplayComponent
+				NotesDisplayComponent,
+				EditorComponent
       ],
 			providers: [ 
 				{provide: GroupService, useValue: groupServiceStub},
@@ -45,6 +50,7 @@ describe('AppComponent', () => {
 
 		groupsElement = appFixture.debugElement.query(By.directive(GroupsDisplayComponent));
 		notesElement = appFixture.debugElement.query(By.directive(NotesDisplayComponent));
+		editorElement = appFixture.debugElement.query(By.directive(EditorComponent));
 	});
 
   it('should create the app', () => {
@@ -57,10 +63,18 @@ describe('AppComponent', () => {
 			expect(groupsElement).toBeTruthy();
 		});
 	});
+
 	describe('Notes display', () => {
 
 		it('creates child notes display component', () => {
 			expect(notesElement).toBeTruthy();
+		});
+	});
+
+	describe('Editor', () => {
+
+		it('creates editor component', () => {
+			expect(editorElement).toBeTruthy();
 		});
 	});
 });

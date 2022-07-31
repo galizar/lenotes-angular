@@ -49,9 +49,9 @@ export class NoteService implements INoteService {
     return this.http.patch(`${this.env.NOTES_API_ROOT}/${id}`, {groupId: toGroupId}, this.mergePatchOptions);
   }
 
-  //setContent(id: number, content: string): Observable<any> {
-  //  return this.http.patch(`${this.env.NOTES_API_ROOT}/${id}`, {content}, this.mergePatchOptions);
-  //}
+  setContent(id: number, content: string): Observable<any> {
+    return this.http.patch(`${this.env.NOTES_API_ROOT}/${id}`, {content}, this.mergePatchOptions);
+  }
 
   //trash(id: number): Observable<any> {
   //  return this.http.patch(`${this.env.NOTES_API_ROOT}/${id}`, {isTrashed: true}, this.mergePatchOptions);

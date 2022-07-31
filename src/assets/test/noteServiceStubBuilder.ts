@@ -4,12 +4,13 @@ import { of, throwError } from "rxjs";
 import { testNotes } from 'src/assets/test';
 import { Note } from 'src/app/model';
 import { NoteService } from 'src/app/services';
+import { INoteService } from 'src/app/interfaces';
 
 export const noteServiceStubBuilder = {
 	build: () => {
 		let notes: Note[] = testNotes; // state initialization
 
-		const noteServiceStub = {
+		const noteServiceStub: INoteService = {
 			get: (id: number) => {
 				const note = notes.find(n => n.id === id);
 				if (note === undefined) {
@@ -33,46 +34,23 @@ export const noteServiceStubBuilder = {
 					return note;
 				})
 				return of();
+			},
+			setContent: (id: number, content: string) => {
+				let subject = notes.find(note => note.id === id);
+				if (!subject) {
+					return throwError('note to set content to not found');
+				}
+				notes = notes.map((note) => {
+					if (note.id === id) {
+						note.content = content;
+						subject = note;
+					}
+					return note;
+				})
+				return of(subject);
 			}
-		} as NoteService;
+		};
 
-		return noteServiceStub;
+		return noteServiceStub as NoteService;
 	}
 }
-
-//export class NoteServiceStub implements INoteService {
-//
-//	private notes: Note[]; 
-//
-//	constructor() {
-//		this.notes = testNotes;
-//	}
-//
-//	get(id: number) {
-//		const note = this.notes.find(n => n.id === id);
-//		if (note === undefined) {
-//			return throwError('Not Found');
-//		}
-//		return of(note);
-//	}
-//
-//	getInGroup(groupId: number) {
-//		const notesInGroup = this.notes.filter(note => note.groupId === groupId);
-//		return of(notesInGroup);
-//	}
-//
-//	move(id: number, toGroupId: number) {
-//		let subject: Note | undefined;
-//		this.notes = this.notes.map((note) => {
-//			if (note.id === id) {
-//				note.groupId = toGroupId;
-//				subject = note;
-//			}
-//			return note;
-//		})
-//		if (!subject) {
-//			return throwError('note to move not found');
-//		} 
-//		return of(subject);
-//	}
-//}

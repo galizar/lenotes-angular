@@ -4,19 +4,22 @@ import { HttpClientModule } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { environment } from 'src/environments/environment';
+import { ReactiveFormsModule } from '@angular/forms';
 
+import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { GroupsDisplayComponent } from './components/groups-display/groups-display.component';
 import { NotesDisplayComponent } from './components/notes-display/notes-display.component';
 import { InMemoryDataService } from './in-memory-data.service';
+import { EditorComponent } from './editor/editor.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     GroupsDisplayComponent,
     NotesDisplayComponent,
+    EditorComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,6 +33,7 @@ import { InMemoryDataService } from './in-memory-data.service';
     ),
     BrowserAnimationsModule,
     DragDropModule,
+		ReactiveFormsModule
   ],
   providers: [
 		{provide: 'env', useValue: environment}

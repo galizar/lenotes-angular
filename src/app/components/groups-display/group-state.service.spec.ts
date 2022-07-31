@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { GroupService } from 'src/app/services';
 
 import { GroupStateService } from './group-state.service';
-import { groupServiceStubBuilder, testEnvObject } from 'src/assets/test';
+import { groupServiceStubBuilder } from 'src/assets/test';
 import { Group } from 'src/app/model';
 
 describe('GroupStateService', () => {

@@ -2,7 +2,10 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject } from 'rxjs';
 import { map, distinctUntilChanged } from 'rxjs/operators';
 
-import { AppState } from 'src/app/model';
+interface AppState {
+	noteOnDisplayId?: number,
+	groupOnDisplayId?: number,
+}
 
 @Injectable({
 	providedIn: 'root'

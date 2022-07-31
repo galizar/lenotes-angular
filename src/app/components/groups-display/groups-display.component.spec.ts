@@ -3,8 +3,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { By } from '@angular/platform-browser';
 
 import { GroupsDisplayComponent } from './groups-display.component';
-import { GroupService, NoteService } from 'src/app/services';
-import { testNotes, testEnvObject, groupServiceStubBuilder, noteServiceStubBuilder} from 'src/assets/test';
+import { AppStateService, GroupService, NoteService } from 'src/app/services';
+import { testNotes, groupServiceStubBuilder, noteServiceStubBuilder, appStateServiceStubBuilder} from 'src/assets/test';
 import { DebugElement } from '@angular/core';
 import { Note } from 'src/app/model';
 
@@ -15,6 +15,7 @@ describe('GroupsDisplayComponent', () => {
 	
   beforeEach(async () => {
 
+		const appStateServiceStub = appStateServiceStubBuilder.build();
 		const groupServiceStub = groupServiceStubBuilder.build();
 		const noteServiceStub = noteServiceStubBuilder.build();
 
@@ -24,7 +25,7 @@ describe('GroupsDisplayComponent', () => {
 			providers: [
 				{ provide: GroupService, useValue: groupServiceStub }, 
 			  { provide: NoteService, useValue: noteServiceStub },
-				{ provide: 'env', useValue: testEnvObject }
+				{ provide: AppStateService, useValue: appStateServiceStub }
 			]
     })
     .compileComponents();
@@ -73,18 +74,25 @@ describe('GroupsDisplayComponent', () => {
 
 	it('moves dropped note to group over which it was dropped', () => {
 
-		let firstNote = testNotes[0];
-		let secondNote = testNotes[1]
-		const toGroupId = secondNote.id;
+		let noteToMove = testNotes[0];
+		let otherNote = testNotes[1]
+		const toGroupId = otherNote.groupId;
 		const dataTransfer = new DataTransfer();
-		dataTransfer.setData('Note', JSON.stringify(firstNote));
+		dataTransfer.setData('Note', JSON.stringify(noteToMove));
 		const droppedNoteEvent = new DragEvent('drop', {dataTransfer});
 
 		component.dropOnGroup(droppedNoteEvent, toGroupId);
-		let actualNote: Note | undefined;
-		component.noteService.get(firstNote.id).subscribe(note => actualNote = note);
 
-		if (!actualNote) throw Error('cant get note from note service');
+		// if the note was moved successfully then the note should be in 
+		// the state when the group it was moved to is on display
+		component.appStateService.setGroupOnDisplayId(toGroupId);
+
+		let actualNote: Note | undefined;
+		component.noteStateService.notes$.subscribe(notes => {
+			actualNote = notes.find(n => n.id === noteToMove.id);
+		});
+
+		if (!actualNote) return fail('note is not being moved to target group');
 		expect(actualNote.groupId).toEqual(toGroupId);
 	});
 });
