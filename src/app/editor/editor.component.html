@@ -1,4 +1,4 @@
-<div *ngIf="vm$ | async as vm">
-	<textarea id="editor" [formControl]="content">
+<div *ngIf="vm$ | async as vm" id="editor">
+	<textarea [formControl]="content">
 	</textarea>
 </div>

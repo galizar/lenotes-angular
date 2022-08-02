@@ -6,8 +6,8 @@ import { EnvObject } from "./EnvObject";
 
 export const environment: EnvObject = {
   production: false,
-	GROUPS_API_ROOT: 'api/groups',
-	NOTES_API_ROOT: 'api/notes',
+	GROUPS_API_ROOT: 'http://localhost:3000/groups',
+	NOTES_API_ROOT: 'http://localhost:3000/notes',
 };
 
 /*

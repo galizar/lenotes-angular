@@ -30,6 +30,7 @@ export class GroupService {
   }
 
   getAll(): Observable<Group[]> {
+		console.log('trying to get groups...');
     return this.http.get<Group[]>(this.env.GROUPS_API_ROOT);
   }
 
