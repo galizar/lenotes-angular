@@ -10,26 +10,26 @@
           "strict": true
         }
       },
-      "root": "./packages/client",
-      "sourceRoot": "./packages/client/src",
+      "root": "./apps/client",
+      "sourceRoot": "./apps/client/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/lenotes-ng",
-            "index": "./packages/client/src/index.html",
-            "main": "./packages/client/src/main.ts",
-            "polyfills": "./packages/client/src/polyfills.ts",
-            "tsConfig": "./packages/client/tsconfig.app.json",
+            "index": "./apps/client/src/index.html",
+            "main": "./apps/client/src/main.ts",
+            "polyfills": "./apps/client/src/polyfills.ts",
+            "tsConfig": "./apps/client/tsconfig.app.json",
             "aot": true,
             "assets": [
-              "./packages/client/src/favicon.ico",
-              "./packages/client/src/assets"
+              "./apps/client/src/favicon.ico",
+              "./apps/client/src/assets"
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
-              "./packages/client/src/styles.css"
+              "./apps/client/src/styles.css"
             ],
             "scripts": []
           },
@@ -37,8 +37,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "./packages/client/src/environments/environment.ts",
-                  "with": "./packages/client/src/environments/environment.prod.ts"
+                  "replace": "./apps/client/src/environments/environment.ts",
+                  "with": "./apps/client/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -83,17 +83,17 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "./packages/client/src/test.ts",
-            "polyfills": "./packages/client/src/polyfills.ts",
-            "tsConfig": "./packages/client/tsconfig.spec.json",
-            "karmaConfig": "./packages/client/karma.conf.js",
+            "main": "./apps/client/src/test.ts",
+            "polyfills": "./apps/client/src/polyfills.ts",
+            "tsConfig": "./apps/client/tsconfig.spec.json",
+            "karmaConfig": "./apps/client/karma.conf.js",
             "assets": [
-              "./packages/client/src/favicon.ico",
-              "./packages/client/src/assets"
+              "./apps/client/src/favicon.ico",
+              "./apps/client/src/assets"
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
-              "./packages/client/src/styles.css"
+              "./apps/client/src/styles.css"
             ],
             "scripts": []
           }
@@ -102,9 +102,9 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "./packages/client/tsconfig.app.json",
-              "./packages/client/tsconfig.spec.json",
-              "./packages/client/e2e/tsconfig.json"
+              "./apps/client/tsconfig.app.json",
+              "./apps/client/tsconfig.spec.json",
+              "./apps/client/e2e/tsconfig.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -114,7 +114,7 @@
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
-            "protractorConfig": "./packages/client/e2e/protractor.conf.js",
+            "protractorConfig": "./apps/client/e2e/protractor.conf.js",
             "devServerTarget": "lenotes-ng:serve"
           },
           "configurations": {
@@ -125,8 +125,6 @@
         }
       }
     },
-    "letestpkg": {
-      "root": "packages/letestpkg"
-    }
+		"api": "apps/api"
   }
 }

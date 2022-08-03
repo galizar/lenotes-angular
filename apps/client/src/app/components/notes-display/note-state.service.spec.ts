@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AppStateService, NoteService } from '../../../app/services';
+import { AppStateService, NoteService } from '../../services';
 import { appStateServiceStubBuilder, noteServiceStubBuilder } from '../../../assets/test';
 
 import { NoteStateService } from './note-state.service';
-import { Note } from '../../../app/model';
+import { Note } from '../../model';
 
 describe('NoteStateService', () => {
   let service: NoteStateService;

@@ -3,10 +3,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { By } from '@angular/platform-browser';
 
 import { GroupsDisplayComponent } from './groups-display.component';
-import { AppStateService, GroupService, NoteService } from '../../../app/services';
+import { AppStateService, GroupService, NoteService } from '../../services';
 import { testNotes, groupServiceStubBuilder, noteServiceStubBuilder, appStateServiceStubBuilder} from '../../../assets/test';
 import { DebugElement } from '@angular/core';
-import { Note } from '../../../app/model';
+import { Note } from '../../model';
 
 describe('GroupsDisplayComponent', () => {
   let component: GroupsDisplayComponent;

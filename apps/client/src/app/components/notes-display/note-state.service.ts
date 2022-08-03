@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject, of, throwError } from 'rxjs';
 import { mergeMap, switchMap, map, distinctUntilChanged } from 'rxjs/operators';
 
-import { Note } from '../../../app/model';
-import { AppStateService, NoteService } from '../../../app/services';
+import { Note } from '../../model';
+import { AppStateService, NoteService } from '../../services';
 
 interface NoteState {
 	notes: Note[],

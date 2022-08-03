@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { AppStateService, NoteService } from '../../../app/services';
+import { AppStateService, NoteService } from '../../services';
 import { NotesDisplayComponent } from './notes-display.component';
 import { 
 	testEnvObject, 

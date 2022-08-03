@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { NoteService, AppStateService } from '../../../app/services';
+import { NoteService, AppStateService } from '../../services';
 
 import { Note } from '../../model';
 import { NoteStateService } from './note-state.service';

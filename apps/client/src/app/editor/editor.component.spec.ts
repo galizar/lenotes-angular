@@ -8,7 +8,7 @@ import {
 	noteServiceStubBuilder,
 } from '../../assets/test';
 import { AppStateService, NoteService } from '../services';
-import { Note } from '../../app/model';
+import { Note } from '../model';
 import { NoteStateService } from '../components/notes-display/note-state.service';
 
 describe('EditorComponent', () => {

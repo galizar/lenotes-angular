@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-import { Group } from '../../../app/model';
-import { GroupService } from '../../../app/services';
+import { Group } from '../../model';
+import { GroupService } from '../../services';
 
 @Injectable({
   providedIn: 'root'

@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-import { GroupService } from '../../../app/services';
+import { GroupService } from '../../services';
 
 import { GroupStateService } from './group-state.service';
 import { groupServiceStubBuilder } from '../../../assets/test';
-import { Group } from '../../../app/model';
+import { Group } from '../../model';
 
 describe('GroupStateService', () => {
   let service: GroupStateService;

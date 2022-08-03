@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { combineLatest, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-import { Note } from '../../../app/model';
-import { AppStateService } from '../../../app/services/';
+import { Note } from '../../model';
+import { AppStateService } from '../../services';
 import { GroupStateService } from './group-state.service';
 import { NoteStateService } from '../notes-display/note-state.service';
 
