@@ -2,9 +2,6 @@
   "name": "lenotes-ng",
   "version": "0.0.0",
   "scripts": {},
-  "workspaces": [
-    "apps/**"
-  ],
   "private": true,
   "dependencies": {
     "@angular/animations": "^14.1.0",
