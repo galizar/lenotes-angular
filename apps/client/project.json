@@ -8,11 +8,13 @@
     }
   },
   "projectType": "application",
+  "root": "apps/client",
   "sourceRoot": "apps/client/src",
   "prefix": "client",
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/client",
         "index": "apps/client/src/index.html",
