@@ -1,0 +1,31 @@
+{
+  "npmScope": "lenotes-ng",
+  "extends": "nx/presets/npm.json",
+  "workspaceLayout": {
+    "appsDir": "apps"
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx/tasks-runners/default",
+      "options": {
+        "cacheableOperations": [
+          "test",
+          "ng",
+          "build",
+          "lint",
+          "e2e"
+        ]
+      }
+    }
+  },
+  "targetDefaults": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ]
+    }
+  },
+  "affected": {
+    "defaultBase": "main"
+  }
+}

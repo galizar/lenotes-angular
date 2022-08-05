@@ -1,0 +1,124 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "@lenotes-ng/client",
+  "version": "1.0.0",
+  "schematics": {
+    "@schematics/angular:application": {
+      "strict": true
+    }
+  },
+  "projectType": "application",
+  "sourceRoot": "apps/client/src",
+  "prefix": "client",
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "options": {
+        "outputPath": "dist/apps/client",
+        "index": "apps/client/src/index.html",
+        "main": "apps/client/src/main.ts",
+        "polyfills": "apps/client/src/polyfills.ts",
+        "tsConfig": "apps/client/tsconfig.app.json",
+        "aot": true,
+        "assets": [
+          "apps/client/src/favicon.ico",
+          "apps/client/src/assets"
+        ],
+        "styles": [
+          "node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
+          "apps/client/src/styles.css"
+        ],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/client/src/environments/environment.ts",
+              "with": "apps/client/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "buildOptimizer": true,
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "options": {
+        "browserTarget": "client:build"
+      },
+      "configurations": {
+        "production": {
+          "browserTarget": "client:build:production"
+        }
+      }
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "client:build"
+      }
+    },
+    "test": {
+      "executor": "@angular-devkit/build-angular:karma",
+      "options": {
+        "main": "apps/client/src/test.ts",
+        "polyfills": "apps/client/src/polyfills.ts",
+        "tsConfig": "apps/client/tsconfig.spec.json",
+        "karmaConfig": "apps/client/karma.conf.js",
+        "assets": [
+          "apps/client/src/favicon.ico",
+          "apps/client/src/assets"
+        ],
+        "styles": [
+          "node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
+          "apps/client/src/styles.css"
+        ],
+        "scripts": []
+      }
+    },
+    "lint": {
+      "executor": "@angular-devkit/build-angular:tslint",
+      "options": {
+        "tsConfig": [
+          "apps/client/tsconfig.app.json",
+          "apps/client/tsconfig.spec.json",
+          "apps/client/e2e/tsconfig.json"
+        ],
+        "exclude": [
+          "**/node_modules/**"
+        ]
+      }
+    },
+    "e2e": {
+      "executor": "@angular-devkit/build-angular:protractor",
+      "options": {
+        "protractorConfig": "apps/client/e2e/protractor.conf.js",
+        "devServerTarget": "lenotes-ng:serve"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "lenotes-ng:serve:production"
+        }
+      }
+    }
+  }
+}
