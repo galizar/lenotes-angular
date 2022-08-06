@@ -1,20 +1,13 @@
 {
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "@lenotes-ng/api",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/galizar/lenotes-angular.git"
-  },
-  "author": "",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/galizar/lenotes-angular/issues"
-  },
-  "homepage": "https://github.com/galizar/lenotes-angular#readme"
+  "targets": {
+    "start": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "echo start api!"
+      }
+    }
+  }
 }
+

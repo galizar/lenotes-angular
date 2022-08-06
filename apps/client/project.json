@@ -1,7 +1,6 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "@lenotes-ng/client",
-  "version": "1.0.0",
   "schematics": {
     "@schematics/angular:application": {
       "strict": true
