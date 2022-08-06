@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/apps/api/out-tsc",
+    "types": ["node"],
+    "module": "commonjs"
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["dist", "test", "**/*spec.ts"]
+}
