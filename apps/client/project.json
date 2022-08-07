@@ -1,25 +1,25 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "@lenotes-ng/client",
-  "version": "1.0.0",
   "schematics": {
     "@schematics/angular:application": {
       "strict": true
     }
   },
   "projectType": "application",
+  "root": "apps/client",
   "sourceRoot": "apps/client/src",
   "prefix": "client",
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/client",
         "index": "apps/client/src/index.html",
         "main": "apps/client/src/main.ts",
         "polyfills": "apps/client/src/polyfills.ts",
         "tsConfig": "apps/client/tsconfig.app.json",
-        "aot": true,
         "assets": [
           "apps/client/src/favicon.ico",
           "apps/client/src/assets"
@@ -31,6 +31,17 @@
         "scripts": []
       },
       "configurations": {
+        "development": {
+          "optimization": false,
+          "aot": false,
+          "outputHashing": "all",
+          "sourceMap": true,
+          "namedChunks": true,
+          "extractLicenses": false,
+          "vendorChunk": true,
+          "buildOptimizer": false,
+          "budgets": []
+        },
         "production": {
           "fileReplacements": [
             {
@@ -39,6 +50,7 @@
             }
           ],
           "optimization": true,
+          "aot": true,
           "outputHashing": "all",
           "sourceMap": false,
           "namedChunks": false,
@@ -63,7 +75,7 @@
     "serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
       "options": {
-        "browserTarget": "client:build"
+        "browserTarget": "client:build:development"
       },
       "configurations": {
         "production": {
