@@ -5,7 +5,13 @@
     "start": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "echo start api!"
+        "command": "nest start"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "jest --rootDir=apps/api/"
       }
     }
   }
