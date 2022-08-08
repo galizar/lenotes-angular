@@ -9,7 +9,7 @@
     "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,
-		"emitDecoratorMetadata": true,
+    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
@@ -18,7 +18,14 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@lenotes-ng/shared-model": [
+        "libs/shared/model/src/index.ts"
+      ]
+    }
   },
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

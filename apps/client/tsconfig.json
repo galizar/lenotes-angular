@@ -1,5 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
+	"files": [],
+	"include": [],
   "references": [
     {
       "path": "./tsconfig.app.json"
@@ -8,9 +10,6 @@
       "path": "./tsconfig.spec.json"
     }
   ],
-  "compileOptions": {
-    "types": ["jasmine"]
-  },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,

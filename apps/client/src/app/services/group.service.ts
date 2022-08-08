@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { Group } from '../model/Group';
+import { Group } from '@lenotes-ng/shared-model';
 import { EnvObject } from '../../environments';
 
 @Injectable({

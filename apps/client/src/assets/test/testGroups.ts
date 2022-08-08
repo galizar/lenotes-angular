@@ -1,4 +1,4 @@
-import { Group } from "../../app/model";
+import { Group } from "@lenotes-ng/shared-model";
 
 export const testGroups: Group[] = [
 		{

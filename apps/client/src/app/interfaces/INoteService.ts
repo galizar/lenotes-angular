@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 
-import { Note } from '../model';
+import { Note } from '@lenotes-ng/shared-model';
 
 export interface INoteService {
 	get(id: number): Observable<Note>;

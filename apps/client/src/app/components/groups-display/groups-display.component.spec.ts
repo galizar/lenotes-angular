@@ -6,7 +6,7 @@ import { GroupsDisplayComponent } from './groups-display.component';
 import { AppStateService, GroupService, NoteService } from '../../services';
 import { testNotes, groupServiceStubBuilder, noteServiceStubBuilder, appStateServiceStubBuilder} from '../../../assets/test';
 import { DebugElement } from '@angular/core';
-import { Note } from '../../model';
+import { Note } from '@lenotes-ng/shared-model';
 
 describe('GroupsDisplayComponent', () => {
   let component: GroupsDisplayComponent;

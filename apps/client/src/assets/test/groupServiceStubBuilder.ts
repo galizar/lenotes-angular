@@ -2,7 +2,7 @@ import { of } from "rxjs";
 import { GroupService } from "../../app/services";
 
 import { testGroups } from '.';
-import { Group } from '../../app/model';
+import { Group } from '@lenotes-ng/shared-model';
 
 export const groupServiceStubBuilder = {
 	build: () => {

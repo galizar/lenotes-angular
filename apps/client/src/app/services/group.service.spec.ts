@@ -1,10 +1,9 @@
 import { HttpErrorResponse, HttpClient } from '@angular/common/http';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
 
 import { GroupService } from './group.service';
-import { Group } from '../model/Group';
+import { Group } from '@lenotes-ng/shared-model';
 import { EnvObject } from '../../environments';
 import { testGroups } from '../../assets/test';
 

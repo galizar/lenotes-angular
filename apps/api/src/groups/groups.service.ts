@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
 
-import { Group } from './entities/group.entity';
+import { Group } from '@lenotes-ng/shared-model';
 
 const testGroups: Group[] = [
 		{

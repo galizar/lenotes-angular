@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject, of, throwError } from 'rxjs';
 import { mergeMap, switchMap, map, distinctUntilChanged } from 'rxjs/operators';
 
-import { Note } from '../../model';
+import { Note } from '@lenotes-ng/shared-model';
 import { AppStateService, NoteService } from '../../services';
 
 interface NoteState {
