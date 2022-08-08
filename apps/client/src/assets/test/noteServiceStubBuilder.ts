@@ -1,7 +1,7 @@
 import { of, throwError } from "rxjs";
 
-import { testNotes } from "./testNotes";
-import { Note } from "@lenotes-ng/shared-model";
+import { testNotes } from "@lenotes-ng/shared/assets";
+import { Note } from "@lenotes-ng/shared/model";
 import { NoteService } from "../../app/services"; 
 import { INoteService } from "../../app/interfaces";
 

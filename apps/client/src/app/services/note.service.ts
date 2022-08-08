@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { Note } from '@lenotes-ng/shared-model';
+import { Note } from '@lenotes-ng/shared/model';
 import { INoteService } from '../interfaces';
 import { EnvObject } from '../../environments';
 

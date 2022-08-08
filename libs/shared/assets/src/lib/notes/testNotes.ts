@@ -1,4 +1,4 @@
-import { Note } from "@lenotes-ng/shared-model";
+import { Note } from "@lenotes-ng/shared/model";
 
 export const testNotes: Note[] = [
 	{id: 0, name: 'note 1', content: 'content 1', groupId: 0, isTrashed: false},

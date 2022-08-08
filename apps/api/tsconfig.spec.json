@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist/apps/api/out-tsc",
+    "outDir": "../../dist/apps/api/spec/out-tsc",
     "types": ["node", "jest"] 
   },
   "include": ["jest.config.ts", "**/*.test.ts", "**/*.spec.ts", "**/*.d.ts"]

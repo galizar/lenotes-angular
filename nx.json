@@ -2,7 +2,8 @@
   "npmScope": "lenotes-ng",
   "extends": "nx/presets/npm.json",
   "workspaceLayout": {
-    "appsDir": "apps"
+    "appsDir": "apps",
+    "libsDir": "libs"
   },
   "tasksRunnerOptions": {
     "default": {

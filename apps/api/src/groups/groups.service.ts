@@ -2,25 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
 
-import { Group } from '@lenotes-ng/shared-model';
-
-const testGroups: Group[] = [
-		{
-			id: 0,
-			name: 'group A',
-			isTrashed: false
-		},
-		{
-			id: 1,
-			name: 'group B',
-			isTrashed: false 
-		},
-		{
-			id: 2,
-			name: 'group C',
-			isTrashed: true 
-		}
-]
+import { testGroups } from '@lenotes-ng/shared/assets';
 
 @Injectable()
 export class GroupsService {

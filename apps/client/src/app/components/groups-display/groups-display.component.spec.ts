@@ -4,9 +4,14 @@ import { By } from '@angular/platform-browser';
 
 import { GroupsDisplayComponent } from './groups-display.component';
 import { AppStateService, GroupService, NoteService } from '../../services';
-import { testNotes, groupServiceStubBuilder, noteServiceStubBuilder, appStateServiceStubBuilder} from '../../../assets/test';
+import { 
+	groupServiceStubBuilder, 
+	noteServiceStubBuilder, 
+	appStateServiceStubBuilder
+} from '../../../assets/test';
 import { DebugElement } from '@angular/core';
-import { Note } from '@lenotes-ng/shared-model';
+import { Note } from '@lenotes-ng/shared/model';
+import { testNotes } from '@lenotes-ng/shared/assets';
 
 describe('GroupsDisplayComponent', () => {
   let component: GroupsDisplayComponent;

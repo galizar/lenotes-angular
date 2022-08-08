@@ -1,3 +1,3 @@
 export class GetNoteDto {
-	id: number
+	id!: number
 }

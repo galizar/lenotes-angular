@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 
 import { NoteService, AppStateService } from '../../services';
 
-import { Note } from '@lenotes-ng/shared-model';
+import { Note } from '@lenotes-ng/shared/model';
 import { NoteStateService } from './note-state.service';
 
 @Component({

@@ -1,11 +1,12 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "@lenotes-ng/api",
+	"projectType": "application",
   "targets": {
     "start": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "nest start"
+        "command": "nest start api"
       }
     },
     "test": {

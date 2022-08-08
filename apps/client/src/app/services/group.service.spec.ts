@@ -3,9 +3,9 @@ import { HttpTestingController, HttpClientTestingModule } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 
 import { GroupService } from './group.service';
-import { Group } from '@lenotes-ng/shared-model';
+import { Group } from '@lenotes-ng/shared/model';
 import { EnvObject } from '../../environments';
-import { testGroups } from '../../assets/test';
+import { testGroups } from '@lenotes-ng/shared/assets';
 
 describe('GroupService', () => {
   let service: GroupService;
