@@ -18,8 +18,9 @@
     },
     "test": {
       "executor": "nx:run-commands",
+			"outputs": ["coverage/apps/api"],
       "options": {
-        "command": "jest --rootDir=apps/api/"
+				"command": "jest --config=apps/api/jest.config.ts --watch"
       }
     }
   }

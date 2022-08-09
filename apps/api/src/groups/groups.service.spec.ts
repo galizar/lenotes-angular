@@ -17,18 +17,18 @@ describe('GroupsService', () => {
   });
 
 	it('creates group', () => {
-		fail('not impl');
+		throw Error('not impl');
 	});
 
 	it('updates group name', () => {
-		fail('not impl');
+		throw Error('not impl');
 	});
 
 	it('updates group isTrashed property', () => {
-		fail('not impl');
+		throw Error('not impl');
 	});
 
 	it('removes group', () => {
-		fail('not impl');
+		throw Error('not impl');
 	});
 });

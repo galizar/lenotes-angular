@@ -17,7 +17,7 @@ describe('NotesService', () => {
   });
 
 	it('gets note', () => {
-
+		throw Error('not impl');
 	});
 
 	it('creates note', () => {
@@ -42,26 +42,26 @@ describe('NotesService', () => {
 	});
 
 	it('updates note name', () => {
-		fail('not impl');
+		throw Error('not impl');
 	});
 
 	it('updates note groupId', () => {
-		fail('not impl');
+		throw Error('not impl');
 	});
 
 	it('updates note content', () => {
-		fail('not impl');
+		throw Error('not impl');
 	});
 
 	it('updates note isTrashed property', () => {
-		fail('not impl');
+		throw Error('not impl');
 	});
 
 	it('throws error when updating a non-valid property of Note', () => {
-		fail('not impl');
+		throw Error('not impl');
 	});
 
 	it('removes note', () => {
-		fail('not impl')
+		throw Error('not impl')
 	});
 });
