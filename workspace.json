@@ -3,8 +3,6 @@
   "version": 2,
   "projects": {
     "api": "apps/api",
-    "api-interfaces": "libs/api-interfaces",
-    "basic-database": "libs/basic-database",
     "client": "apps/client",
     "shared-assets": "libs/shared/assets",
     "shared-model": "libs/shared/model"
