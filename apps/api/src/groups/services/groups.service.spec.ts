@@ -1,16 +1,20 @@
 import { Test, TestingModule } from '@nestjs/testing';
+
 import { CreateGroupDto } from '../dto/create-group.dto';
 import { UpdateGroupDto } from '../dto/update-group.dto';
 import { GroupsService } from './groups.service';
-
 import { testGroups } from '@lenotes-ng/shared/assets';
+import { DomainObjectStorage, NaiveGroupsStorage } from '@lenotes-ng/data-storage';
 
 describe('GroupsService', () => {
   let service: GroupsService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [GroupsService],
+      providers: [
+				GroupsService,
+				NaiveGroupsStorage,
+			],
     }).compile();
 
     service = module.get<GroupsService>(GroupsService);
@@ -27,13 +31,16 @@ describe('GroupsService', () => {
 			isTrashed: false
 		};
 
-		const createdGroup = service.create(newGroup);
+		const createdGroupId = service.create(newGroup);
 
-		const actualGroup = service.get(createdGroup.id)
+		const actualGroup = service.get(createdGroupId);
+
+		for (const prop of Object.keys(newGroup)) {
+			const key = prop as keyof typeof newGroup;
+			expect(actualGroup[key]).toEqual(newGroup[key]);
+		}
 		
-		expect(actualGroup.id).toEqual(createdGroup.id);
-		expect(actualGroup.name).toEqual(newGroup.name);
-		expect(actualGroup.isTrashed).toEqual(newGroup.isTrashed);
+		expect(actualGroup.id).toEqual(createdGroupId);
 	});
 
 	it('gets group', () => {
@@ -66,10 +73,6 @@ describe('GroupsService', () => {
 			updateTestFunction({isTrashed: true});
 		});
 	})
-
-	it('throws error when updating a non-valid property of Group', () => {
-		throw Error('not implemented');
-	});
 
 	it('removes group', () => {
 

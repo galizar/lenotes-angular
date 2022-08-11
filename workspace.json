@@ -4,6 +4,7 @@
   "projects": {
     "api": "apps/api",
     "client": "apps/client",
+    "data-storage": "libs/data-storage",
     "shared-assets": "libs/shared/assets",
     "shared-model": "libs/shared/model"
   }

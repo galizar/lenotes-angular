@@ -2,71 +2,41 @@ import { Injectable } from '@nestjs/common';
 import { CreateGroupDto } from '../dto/create-group.dto';
 import { UpdateGroupDto } from '../dto/update-group.dto';
 
-import { testGroups } from '@lenotes-ng/shared/assets';
+import { NaiveGroupsStorage } from '@lenotes-ng/data-storage';
 import { Group } from '@lenotes-ng/shared/model';
 
 @Injectable()
-export class GroupsService { // this service is in stub state at the moment
+export class GroupsService {
 
-	// use a closure here to "pass by value"
-	private groups: Group[] = (() => {
-		return testGroups;
-	})();
+	constructor(
+		private storage: NaiveGroupsStorage
+	) {}
 
-	// initialize id Pk
-	private idPk = testGroups.reduce((prev, curr) => {
-		if (prev.id > curr.id)
-			return prev;
-		else
-			return curr;
-	}).id;
-
-  create(createGroupDto: CreateGroupDto): Group {
-
-		this.idPk++;
+  create(createGroupDto: CreateGroupDto) {
 
 		const newGroup = {
 			...createGroupDto,
-			id: (() => this.idPk)()
+			id: -1 // id will be set by storage service
 		};
-
-		this.groups.push(newGroup);
-    return newGroup;
+		return this.storage.create(newGroup);
   }
 
   getAll() {
-    return this.groups; 
+		return this.storage.getAll();
   }
 
   get(id: number): Group {
-		const group = this.groups.find(g => g.id === id);
-		// the controller will have to handle errors thrown by this serviec
-		if (group === undefined) {
-			throw Error('group not found');
-		}
-		return group;
+		return this.storage.get(id);
   }
 
   update(id: number, dto: UpdateGroupDto) {
+
 		const groupToUpdate = this.get(id);
 		const updatedGroup = {...groupToUpdate, ...dto};
-
-		this.groups = this.groups.map(group => {
-			if (group.id === id) {
-				return updatedGroup;
-			} else {
-				return group;
-			}
-		});
+		this.storage.update(updatedGroup);
   }
 
   remove(id: number) {
-
-		// I reckon a database throws an error if you try to get something
-		// that doesn't exist in there, so throwing an error here too if the group
-		// doesn't exist
-		this.get(id);
-
-		this.groups = this.groups.filter(group => group.id !== id);
+		this.storage.delete(id);
   }
 }

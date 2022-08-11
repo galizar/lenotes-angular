@@ -18,7 +18,7 @@ export class NotesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  get(@Param('id') id: string) {
     return this.notesService.get(+id);
   }
 

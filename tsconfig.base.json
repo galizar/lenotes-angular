@@ -21,6 +21,9 @@
       "dom"
     ],
     "paths": {
+      "@lenotes-ng/data-storage": [
+        "libs/data-storage/src/index.ts"
+      ],
       "@lenotes-ng/shared/assets": [
         "libs/shared/assets/src/index.ts"
       ],

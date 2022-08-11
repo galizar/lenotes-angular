@@ -4,42 +4,31 @@ import { CreateNoteDto } from '../dto/create-note.dto';
 import { UpdateNoteDto } from '../dto/update-note.dto';
 import { Note } from '@lenotes-ng/shared/model';
 import { testNotes } from '@lenotes-ng/shared/assets';
+import { DomainObjectStorage, NaiveNotesStorage } from '@lenotes-ng/data-storage';
 
 @Injectable()
 export class NotesService {
 
-	private notes: Note[] = (() => {
-		return testNotes;
-	})();
+	constructor(
+		private storage: NaiveNotesStorage
+	) {}
 
-	private idPk = testNotes.reduce((prev, curr) => {
-		if (prev.id > curr.id)
-			return prev;
-		else
-			return curr;
-	}).id;
-
-  create(createNoteDto: CreateNoteDto): Note {
-
-		this.idPk++;
+  create(createNoteDto: CreateNoteDto) {
 
 		const newNote = {
 			...createNoteDto,
-			id: (() => this.idPk)()
+			id: -1
 		};
 
-		this.notes.push(newNote);
-    return newNote;
+		return this.storage.create(newNote);
   }
 
   getAll(): Note[] {
-		return this.notes;
+		return this.storage.getAll();
   }
 
   get(id: number): Note {
-		const note = this.notes.find(note => note.id === id);
-		if (note === undefined) throw Error('Note not found');
-		return note;
+		return this.storage.get(id);
   }
 
 	getInGroup(groupId: number): Note[] {
@@ -51,18 +40,11 @@ export class NotesService {
 		const noteToUpdate = this.get(id);
 		const updatedNote = {...noteToUpdate, ...dto};
 
-		this.notes = this.notes.map(note => {
-			if (note.id === id) {
-				return updatedNote;
-			}
-			return note;
-		}) 
+		this.storage.update(updatedNote);
 	}
 
 	remove(id: number): void {
 
-		this.get(id); // throw error if note doesn't exist
-
-		this.notes = this.notes.filter(n => n.id !== id);
+		this.storage.delete(id);
 	}
 }

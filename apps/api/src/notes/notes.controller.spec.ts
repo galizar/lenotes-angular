@@ -17,4 +17,24 @@ describe('NotesController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
+
+	describe('create handler', () => {
+		throw Error('not implemented');
+	});
+
+	describe('getAll handler', () => {
+		throw Error('not implemented');
+	});
+
+	describe('get handler', () => {
+		throw Error('not implemented');
+	});
+
+	describe('getInGroup handler', () => {
+		throw Error('not implemented');
+	});
+
+	describe('remove handler', () => {
+		throw Error('not implemented');
+	});
 });

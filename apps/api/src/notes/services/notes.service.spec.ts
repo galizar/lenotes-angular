@@ -1,15 +1,19 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotesService } from './notes.service';
 
-import { testNotes } from '@lenotes-ng/shared/assets';
 import { UpdateNoteDto } from '../dto/update-note.dto';
+import { testNotes } from '@lenotes-ng/shared/assets';
+import { DomainObjectStorage, NaiveNotesStorage } from '@lenotes-ng/data-storage';
 
 describe('NotesService', () => {
   let service: NotesService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [NotesService],
+      providers: [
+				NotesService,
+				NaiveNotesStorage
+			],
     }).compile();
 
     service = module.get<NotesService>(NotesService);
@@ -28,6 +32,10 @@ describe('NotesService', () => {
 		expect(actualNote).toEqual(noteToGet);
 	});
 
+	it('gets notes in group', () => {
+		throw Error('not implemented');
+	});
+
 	it('creates note', () => {
 
 		let expectedNote = {
@@ -38,15 +46,14 @@ describe('NotesService', () => {
 			isTrashed: false
 		} 
 
-		const returnedNote = service.create(expectedNote);
-		const actualNote = service.get(returnedNote.id);
+		const createdNoteId = service.create(expectedNote);
+		const actualNote = service.get(createdNoteId);
 
-		for (const property of Object.keys(expectedNote) as Array<keyof typeof expectedNote>) {
-			expect(returnedNote[property]).toEqual(expectedNote[property]);
-			expect(actualNote[property]).toEqual(expectedNote[property]);
+		for (const prop of Object.keys(expectedNote)) {
+			const key = prop as keyof typeof expectedNote;
+			expect(actualNote[key]).toEqual(expectedNote[key]);
 		}
-
-		expect(returnedNote.id).toBe(actualNote.id);
+		expect(createdNoteId).toBe(actualNote.id);
 	});
 
 	describe('note update operations', () => {
@@ -78,11 +85,6 @@ describe('NotesService', () => {
 		it('updates isTrashed', () => {
 			updateTestFunction({isTrashed: true});
 		});
-	});
-
-	// how to fool TS to actually test this? this is a obviously possible run-time error
-	it('throws error when updating a non-valid property of Note', () => {
-		throw Error('not impl');
 	});
 
 	it('removes note', () => {
