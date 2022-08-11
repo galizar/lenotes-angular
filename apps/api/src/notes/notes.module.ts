@@ -10,7 +10,7 @@ import { DomainObjectStorage, NaiveNotesStorage } from '@lenotes-ng/data-storage
 		NotesService, 
 		{
 			provide: DomainObjectStorage,
-			useValue: NaiveNotesStorage
+			useValue: new NaiveNotesStorage()
 		}
 	]
 })

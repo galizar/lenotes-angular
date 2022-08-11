@@ -12,7 +12,6 @@ import { DomainObjectStorage, NaiveGroupsStorage } from '@lenotes-ng/data-storag
 			provide: DomainObjectStorage,
 			useValue: new NaiveGroupsStorage()
 		}
-		//NaiveGroupsStorage,
 	]
 })
 export class GroupsModule {}

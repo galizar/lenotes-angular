@@ -10,7 +10,8 @@ const apiOutputRoot = 'dist/out-tsc';
 // must be added to this paths object too
 let paths = {
 	'@lenotes-ng/shared/model': [`${apiOutputRoot}/libs/shared/model/index.js`],
-	'@lenotes-ng/shared/assets': [`${apiOutputRoot}/libs/shared/assets/src/index.js`]
+	'@lenotes-ng/shared/assets': [`${apiOutputRoot}/libs/shared/assets/src/index.js`],
+	'@lenotes-ng/data-storage': [`${apiOutputRoot}/libs/data-storage/src/index.js`]
 };
 
 tsConfigPaths.register({
