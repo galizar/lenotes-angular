@@ -1,9 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { CreateGroupDto } from './dto/create-group.dto';
 import { GroupsController } from './groups.controller';
 import { GroupsService } from './services/groups.service';
 
 describe('GroupsController', () => {
   let controller: GroupsController;
+	let groupsService: GroupsService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -12,6 +14,7 @@ describe('GroupsController', () => {
     }).compile();
 
     controller = module.get<GroupsController>(GroupsController);
+		groupsService = module.get<GroupsService>(GroupsService);
   });
 
   it('should be defined', () => {
@@ -20,8 +23,17 @@ describe('GroupsController', () => {
 
 	describe('create handler', () => {
 
-		it('returns created group', () => {
-			throw Error('not implemented');
+		it('returns id of created group', async () => {
+
+			const resultId = 3;
+			const createGroupDto: CreateGroupDto = {
+				name: 'a name created at ' + Date.now(),
+				isTrashed: false
+			};
+
+			jest.spyOn(groupsService, 'create').mockImplementation(() => resultId);
+
+			expect(await controller.create(createGroupDto)).toBe(resultId);
 		});
 
 		it('handles error on request with invalid dto', () => {

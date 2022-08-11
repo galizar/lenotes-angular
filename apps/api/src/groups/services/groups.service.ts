@@ -2,14 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { CreateGroupDto } from '../dto/create-group.dto';
 import { UpdateGroupDto } from '../dto/update-group.dto';
 
-import { NaiveGroupsStorage } from '@lenotes-ng/data-storage';
+import { DomainObjectStorage } from '@lenotes-ng/data-storage';
 import { Group } from '@lenotes-ng/shared/model';
 
 @Injectable()
 export class GroupsService {
 
 	constructor(
-		private storage: NaiveGroupsStorage
+		private storage: DomainObjectStorage<Group>
 	) {}
 
   create(createGroupDto: CreateGroupDto) {

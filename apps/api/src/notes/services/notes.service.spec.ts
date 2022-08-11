@@ -12,7 +12,10 @@ describe('NotesService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
 				NotesService,
-				NaiveNotesStorage
+				{
+					provide: DomainObjectStorage,
+					useValue: new NaiveNotesStorage()
+				}
 			],
     }).compile();
 

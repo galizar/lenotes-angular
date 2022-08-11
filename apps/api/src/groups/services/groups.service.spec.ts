@@ -13,7 +13,11 @@ describe('GroupsService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
 				GroupsService,
-				NaiveGroupsStorage,
+				{
+					provide: DomainObjectStorage,
+					useValue: new NaiveGroupsStorage()
+				}
+				//NaiveGroupsStorage,
 			],
     }).compile();
 

@@ -2,13 +2,17 @@ import { Module } from '@nestjs/common';
 
 import { GroupsService } from './services/groups.service';
 import { GroupsController } from './groups.controller';
-import { NaiveGroupsStorage } from '@lenotes-ng/data-storage';
+import { DomainObjectStorage, NaiveGroupsStorage } from '@lenotes-ng/data-storage';
 
 @Module({
   controllers: [GroupsController],
   providers: [
 		GroupsService,
-		NaiveGroupsStorage,
+		{
+			provide: DomainObjectStorage,
+			useValue: new NaiveGroupsStorage()
+		}
+		//NaiveGroupsStorage,
 	]
 })
 export class GroupsModule {}

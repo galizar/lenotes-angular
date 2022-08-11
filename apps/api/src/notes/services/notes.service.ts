@@ -3,13 +3,13 @@ import { Injectable } from '@nestjs/common';
 import { CreateNoteDto } from '../dto/create-note.dto';
 import { UpdateNoteDto } from '../dto/update-note.dto';
 import { Note } from '@lenotes-ng/shared/model';
-import { DomainObjectStorage, NaiveNotesStorage } from '@lenotes-ng/data-storage';
+import { DomainObjectStorage } from '@lenotes-ng/data-storage';
 
 @Injectable()
 export class NotesService {
 
 	constructor(
-		private storage: NaiveNotesStorage
+		private storage: DomainObjectStorage<Note>
 	) {}
 
   create(createNoteDto: CreateNoteDto) {
