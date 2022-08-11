@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common';
 import { CreateNoteDto } from '../dto/create-note.dto';
 import { UpdateNoteDto } from '../dto/update-note.dto';
 import { Note } from '@lenotes-ng/shared/model';
-import { testNotes } from '@lenotes-ng/shared/assets';
 import { DomainObjectStorage, NaiveNotesStorage } from '@lenotes-ng/data-storage';
 
 @Injectable()
@@ -32,7 +31,7 @@ export class NotesService {
   }
 
 	getInGroup(groupId: number): Note[] {
-		return testNotes.filter(note => note.groupId === groupId);
+		return this.storage.getAll().filter(note => note.groupId === groupId);
 	}
 
 	update(id: number, dto: UpdateNoteDto) {

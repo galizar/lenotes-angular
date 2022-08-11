@@ -33,7 +33,13 @@ describe('NotesService', () => {
 	});
 
 	it('gets notes in group', () => {
-		throw Error('not implemented');
+
+		const groupId = 1;
+		const expectedNotes = testNotes.filter(n => n.groupId === groupId).sort((a, b) => a.id - b.id);
+
+		const actualNotes = service.getInGroup(groupId).sort((a, b) => a.id - b.id);
+
+		expect(actualNotes).toEqual(expectedNotes);
 	});
 
 	it('creates note', () => {
