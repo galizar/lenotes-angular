@@ -1,9 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe } from '@nestjs/common';
 import { NotesService } from './services/notes.service';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
 
 @Controller('notes')
+@UsePipes(
+	new ValidationPipe({
+		whitelist: true,
+		forbidNonWhitelisted: true
+	})
+)
 export class NotesController {
   constructor(private readonly notesService: NotesService) {}
 

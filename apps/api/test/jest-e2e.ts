@@ -1,4 +1,5 @@
-{
+export default {
+	"preset": "../../../jest.preset.js",
   "moduleFileExtensions": ["js", "json", "ts"],
   "rootDir": ".",
   "testEnvironment": "node",

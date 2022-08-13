@@ -1,7 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
+
 import { CreateGroupDto } from './dto/create-group.dto';
 import { GroupsController } from './groups.controller';
 import { GroupsService } from './services/groups.service';
+import { testGroups } from '@lenotes-ng/shared/assets';
+import { UpdateGroupDto } from './dto/update-group.dto';
+import { DomainObjectStorage, NaiveGroupsStorage } from '@lenotes-ng/data-storage';
 
 describe('GroupsController', () => {
   let controller: GroupsController;
@@ -10,11 +14,19 @@ describe('GroupsController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [GroupsController],
-      providers: [GroupsService],
+      providers: [
+				GroupsService,
+				{
+					provide: DomainObjectStorage,
+					useValue: new NaiveGroupsStorage()
+				}
+			],
     }).compile();
 
     controller = module.get<GroupsController>(GroupsController);
 		groupsService = module.get<GroupsService>(GroupsService);
+
+		jest.clearAllMocks();
   });
 
   it('should be defined', () => {
@@ -35,59 +47,56 @@ describe('GroupsController', () => {
 
 			expect(await controller.create(createGroupDto)).toBe(resultId);
 		});
-
-		it('handles error on request with invalid dto', () => {
-			throw Error('not implemented');
-		});
-
-		// how this operation could fail? failure to connect with a database or
-		// other database error? the current naive implementation of group service
-		// cannot fail in creating a group it seems to me
-		it('handles error on group creation', () => {
-			throw Error('not implemented');
-		});
 	});
 
 	describe('getAll handler', () => {
 		it('returns groups', () => {
-			throw Error('not implemented');
+
+			const expectedGroups = testGroups;
+			jest.spyOn(groupsService, 'getAll').mockImplementation(() => expectedGroups);
+
+			const actualGroups = controller.getAll();
+
+			expect(actualGroups).toEqual(expectedGroups);
 		});
 	});
 
 	describe('get handler', () => {
 		it('returns group', () => {
-			throw Error('not implemented');
-		});
 
-		it('handles group not found error', () => {
-			throw Error('not implemented');
+			const expectedGroup = testGroups[0];
+			jest.spyOn(groupsService, 'get').mockImplementation(() => expectedGroup);
+
+			const actualGroup = controller.get(String(expectedGroup.id));
+
+			expect(actualGroup).toEqual(expectedGroup);
 		});
 	});
 
 	describe('update handler', () => {
 
-		it('handles error on request with invalid dto', () => {
-			throw Error('not implemented');
-		});
-
 		it('delegates group update to group service', () => {
-			throw Error('not implemented');
-		});
 
-		it('handles group not found error', () => {
-			throw Error('not implemented');
+			const groupToUpdateId = '0';
+			const newNameObject: UpdateGroupDto = {name: 'dummy'}
+			jest.spyOn(groupsService, 'update');
+
+			controller.update(groupToUpdateId, newNameObject);
+
+			expect(groupsService.update).toHaveBeenCalledWith(Number(groupToUpdateId), newNameObject);
 		});
 	});
 
 	describe('remove handler', () => {
 
-		it('handles group not found error', () => {
-			throw Error('not implemented');
-		});
-
 		it('delegates group removal to group service', () => {
-			throw Error('not implemented');
+
+			const groupToRemoveId = '0';
+			jest.spyOn(groupsService, 'remove');
+
+			controller.remove(groupToRemoveId);
+
+			expect(groupsService.remove).toHaveBeenCalledWith(Number(groupToRemoveId))
 		});
-		throw Error('not implemented');
 	});
 });

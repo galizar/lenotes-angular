@@ -17,7 +17,6 @@ describe('GroupsService', () => {
 					provide: DomainObjectStorage,
 					useValue: new NaiveGroupsStorage()
 				}
-				//NaiveGroupsStorage,
 			],
     }).compile();
 
@@ -31,7 +30,7 @@ describe('GroupsService', () => {
 	it('creates group', () => {
 
 		const newGroup: CreateGroupDto = {
-			name: 'a new group created at' + Date.now(),
+			name: 'a new group created at ' + Date.now(),
 			isTrashed: false
 		};
 
