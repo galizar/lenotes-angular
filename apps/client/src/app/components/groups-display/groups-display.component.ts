@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { combineLatest, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-import { Note } from '@lenotes-ng/shared/model';
+import { Note } from '@lenotes-ng/model';
 import { AppStateService } from '../../services';
 import { GroupStateService } from './group-state.service';
 import { NoteStateService } from '../notes-display/note-state.service';

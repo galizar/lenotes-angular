@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { CreateGroupDto } from './dto/create-group.dto';
+import { CreateGroupDto } from '@lenotes-ng/api-interfaces';
 import { GroupsController } from './groups.controller';
 import { GroupsService } from './services/groups.service';
-import { testGroups } from '@lenotes-ng/shared/assets';
-import { UpdateGroupDto } from './dto/update-group.dto';
+import { testGroups } from '@lenotes-ng/model';
+import { UpdateGroupDto } from '@lenotes-ng/api-interfaces';
 import { DomainObjectStorage, NaiveGroupsStorage } from '@lenotes-ng/data-storage';
 
 describe('GroupsController', () => {

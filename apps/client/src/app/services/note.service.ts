@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { Note } from '@lenotes-ng/shared/model';
+import { Note } from '@lenotes-ng/model';
 import { INoteService } from '../interfaces';
 import { EnvObject } from '../../environments';
 import { CreateNoteDto, UpdateDto } from '../dto';
@@ -30,9 +30,9 @@ export class NoteService implements INoteService {
     return this.http.post<number>(this.env.NOTES_API_ROOT, dto);
   }
 
-  //getAll(): Observable<Note[]> {
-  //  return this.http.get<Note[]>(this.env.NOTES_API_ROOT);
-  //}
+  getAll(): Observable<Note[]> {
+    return this.http.get<Note[]>(this.env.NOTES_API_ROOT);
+  }
 
   get(id: number): Observable<Note> {
     return this.http.get<Note>(`${this.env.NOTES_API_ROOT}/${id}`);
@@ -58,9 +58,9 @@ export class NoteService implements INoteService {
   //  return this.http.post(`${this.env.NOTES_API_ROOT}/restoreInGroupOperation`, {groupId});
   //}
 
-  //delete(id: number): Observable<any> {
-  //  return this.http.delete(`${this.env.NOTES_API_ROOT}/${id}`);
-  //}
+  delete(id: number): Observable<object> {
+    return this.http.delete(`${this.env.NOTES_API_ROOT}/${id}`);
+  }
 
   //batchDelete(ids: number[]): Observable<any> {
   //  return this.http.post(`${this.env.NOTES_API_ROOT}/batchDeleteOperation`, {ids})

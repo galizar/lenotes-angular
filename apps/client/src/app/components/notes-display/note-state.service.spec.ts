@@ -3,7 +3,7 @@ import { AppStateService, NoteService } from '../../services';
 import { appStateServiceStubBuilder, noteServiceStubBuilder } from '../../../assets/test';
 
 import { NoteStateService } from './note-state.service';
-import { Note } from '@lenotes-ng/shared/model';
+import { Note } from '@lenotes-ng/model';
 
 describe('NoteStateService', () => {
   let service: NoteStateService;

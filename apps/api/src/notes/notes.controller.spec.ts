@@ -2,9 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 
 import { NotesController } from './notes.controller';
 import { NotesService } from './services/notes.service';
-import { UpdateNoteDto } from './dto/update-note.dto';
+import { UpdateNoteDto } from '@lenotes-ng/api-interfaces';
 import { DomainObjectStorage, NaiveNotesStorage } from '@lenotes-ng/data-storage';
-import { testNotes } from '@lenotes-ng/shared/assets';
+import { testNotes } from '@lenotes-ng/model';
 
 describe('NotesController', () => {
   let controller: NotesController;

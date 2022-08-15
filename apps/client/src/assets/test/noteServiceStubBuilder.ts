@@ -1,6 +1,6 @@
 import { of, throwError } from "rxjs";
 
-import { Note } from "@lenotes-ng/shared/model";
+import { Note } from "@lenotes-ng/model";
 import { NoteService } from "../../app/services"; 
 import { INoteService } from "../../app/interfaces";
 import { CreateNoteDto, UpdateDto } from "../../app/dto";
@@ -29,6 +29,9 @@ export const noteServiceStubBuilder = {
 					return throwError(() => {new Error('Error while getting note')});
 				}
 			},
+			getAll: () => {
+				return of(storage.getAll());
+			},
 			getInGroup: (groupId: number) => {
 				const notesInGroup = storage.getAll().filter(note => note.groupId === groupId);
 				return of(notesInGroup);
@@ -43,6 +46,10 @@ export const noteServiceStubBuilder = {
 					return throwError(() => { new Error('Error while updating note') });
 				}
 			},
+			delete: (id: number) => {
+				storage.delete(id);
+				return of({});
+			}
 		};
 		return noteServiceStub as NoteService;
 	}

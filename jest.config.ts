@@ -1,5 +1,6 @@
 import apiConfig from './apps/api/jest.config';
+import apiE2EConfig from './apps/api/test/jest-e2e';
 
 export default {
-  projects: [apiConfig,"<rootDir>/$\"14.4.0-beta.5\"root}"]
+  projects: [apiConfig, apiE2EConfig]
 }

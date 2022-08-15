@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotesService } from './notes.service';
 
-import { UpdateNoteDto } from '../dto/update-note.dto';
-import { testNotes } from '@lenotes-ng/shared/assets';
+import { UpdateNoteDto } from '@lenotes-ng/api-interfaces';
+import { testNotes } from '@lenotes-ng/model';
 import { DomainObjectStorage, NaiveNotesStorage } from '@lenotes-ng/data-storage';
 
 describe('NotesService', () => {

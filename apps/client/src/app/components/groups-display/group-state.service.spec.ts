@@ -3,7 +3,7 @@ import { GroupService } from '../../services';
 
 import { GroupStateService } from './group-state.service';
 import { groupServiceStubBuilder } from '../../../assets/test';
-import { Group } from '@lenotes-ng/shared/model';
+import { Group } from '@lenotes-ng/model';
 
 describe('GroupStateService', () => {
   let service: GroupStateService;

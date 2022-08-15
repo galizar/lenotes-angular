@@ -1,7 +1,7 @@
 import { DomainObjectStorage } from "../index";
 
-import { Note } from '@lenotes-ng/shared/model';
-import { testNotes } from "@lenotes-ng/shared/assets";
+import { Note } from '@lenotes-ng/model';
+import { testNotes } from "@lenotes-ng/model";
 
 export class NaiveNotesStorage extends DomainObjectStorage<Note> {
 

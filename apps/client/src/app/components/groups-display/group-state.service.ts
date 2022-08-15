@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-import { Group } from '@lenotes-ng/shared/model';
+import { Group } from '@lenotes-ng/model';
 import { GroupService } from '../../services';
 
 @Injectable({

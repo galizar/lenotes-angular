@@ -1,6 +1,6 @@
-import { Group, Note } from "@lenotes-ng/shared/model";
-import { testGroups, testNotes } from "@lenotes-ng/shared/assets";
-import { DomainObjectStorage, DomainObject } from "../index";
+import { Group, Note, DomainObject } from "@lenotes-ng/model";
+import { testGroups, testNotes } from "@lenotes-ng/model";
+import { DomainObjectStorage } from "../index";
 
 /** A class that uses plain objects for storage. Generalized to work with all
  * DomainObjects. It would probably need to use the Repository Pattern or

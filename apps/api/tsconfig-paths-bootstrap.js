@@ -9,9 +9,9 @@ const apiOutputRoot = 'dist/out-tsc';
 // each new path added to the root tsconfig (that this project depends on) 
 // must be added to this paths object too
 let paths = {
-	'@lenotes-ng/shared/model': [`${apiOutputRoot}/libs/shared/model/index.js`],
-	'@lenotes-ng/shared/assets': [`${apiOutputRoot}/libs/shared/assets/src/index.js`],
-	'@lenotes-ng/data-storage': [`${apiOutputRoot}/libs/data-storage/src/index.js`]
+	'@lenotes-ng/model': [`${apiOutputRoot}/libs/model/src/index.js`],
+	'@lenotes-ng/data-storage': [`${apiOutputRoot}/libs/data-storage/src/index.js`],
+	'@lenotes-ng/api-interfaces': [`${apiOutputRoot}/libs/api-interfaces/src/index.js`]
 };
 
 tsConfigPaths.register({

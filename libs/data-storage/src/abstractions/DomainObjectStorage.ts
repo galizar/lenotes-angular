@@ -1,4 +1,4 @@
-import { DomainObject } from '@lenotes-ng/shared/model';
+import { DomainObject } from '@lenotes-ng/model';
 
 export abstract class DomainObjectStorage<T extends DomainObject> {
 	/** Returns ID of newly created object */

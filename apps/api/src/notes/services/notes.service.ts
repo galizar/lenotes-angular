@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
-import { CreateNoteDto } from '../dto/create-note.dto';
-import { UpdateNoteDto } from '../dto/update-note.dto';
-import { Note } from '@lenotes-ng/shared/model';
+import { CreateNoteDto, UpdateNoteDto } from '@lenotes-ng/api-interfaces';
+import { Note } from '@lenotes-ng/model';
 import { DomainObjectStorage } from '@lenotes-ng/data-storage';
 
 @Injectable()

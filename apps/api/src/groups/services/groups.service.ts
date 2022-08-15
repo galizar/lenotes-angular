@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateGroupDto } from '../dto/create-group.dto';
-import { UpdateGroupDto } from '../dto/update-group.dto';
+import { CreateGroupDto } from '@lenotes-ng/api-interfaces';
+import { UpdateGroupDto } from '@lenotes-ng/api-interfaces';
 
 import { DomainObjectStorage } from '@lenotes-ng/data-storage';
-import { Group } from '@lenotes-ng/shared/model';
+import { Group } from '@lenotes-ng/model';
 
 @Injectable()
 export class GroupsService {

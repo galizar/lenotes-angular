@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 
-import { Note } from '@lenotes-ng/shared/model';
+import { Note } from '@lenotes-ng/model';
 import { CreateNoteDto, UpdateDto } from '../dto';
 
 export interface INoteService {
@@ -8,5 +8,7 @@ export interface INoteService {
 	/** Returns id of created note */
 	create(dto: CreateNoteDto): Observable<number>;
 	getInGroup(groupId: number): Observable<Note[]>;
+	getAll(): Observable<Note[]>;
 	update(id: number, dto: UpdateDto<Note>): Observable<object>;
+	delete(id: number): Observable<object>;
 }

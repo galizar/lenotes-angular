@@ -1,20 +1,42 @@
 import { of } from "rxjs";
 import { GroupService } from "../../app/services";
 
-import { testGroups } from '@lenotes-ng/shared/assets';
-import { Group } from '@lenotes-ng/shared/model';
+import { Group } from '@lenotes-ng/model';
+import { IGroupService } from "../../app/interfaces";
+import { DomainObjectStorage, NaiveGroupsStorage } from "@lenotes-ng/data-storage";
+import { CreateGroupDto, UpdateGroupDto } from "@lenotes-ng/api-interfaces";
 
 export const groupServiceStubBuilder = {
 	build: () => {
 
-		let groups: Group[] = testGroups;
+		const storage: DomainObjectStorage<Group> = new NaiveGroupsStorage();
 
-		const groupServiceStub = {
+		const groupServiceStub: IGroupService = {
+			create: (dto: CreateGroupDto) => {
+				const newGroup = {
+					...dto,
+					id: -1 // id will be set by storage service
+				};
+				return of(storage.create(newGroup));
+			},
 			getAll: () => {
-				return of(groups);
+				return of(storage.getAll());
+			},
+			get: (id: number) => {
+				return of(storage.get(id));
+			},
+			update: (id: number, dto: UpdateGroupDto) => {
+				const groupToUpdate = storage.get(id);
+				const updatedGroup = { ...groupToUpdate, ...dto };
+				storage.update(updatedGroup);
+				return of({});
+			},
+			delete: (id: number) => {
+				storage.delete(id);
+				return of({});
 			}
-		} as GroupService;
+		};
 
-		return groupServiceStub;
+		return groupServiceStub as GroupService;
 	}
 };

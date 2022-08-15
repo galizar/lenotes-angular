@@ -14,7 +14,7 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-		"esModuleInterop": true,
+    "esModuleInterop": true,
     "target": "es2020",
     "module": "es2020",
     "lib": [
@@ -22,14 +22,14 @@
       "dom"
     ],
     "paths": {
+      "@lenotes-ng/api-interfaces": [
+        "libs/api-interfaces/src/index.ts"
+      ],
       "@lenotes-ng/data-storage": [
         "libs/data-storage/src/index.ts"
       ],
-      "@lenotes-ng/shared/assets": [
-        "libs/shared/assets/src/index.ts"
-      ],
-      "@lenotes-ng/shared/model": [
-        "libs/shared/model/src/index.ts"
+      "@lenotes-ng/model": [
+        "libs/model/src/index.ts"
       ]
     }
   },
