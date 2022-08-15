@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { Note } from '@lenotes-ng/model';
 import { INoteService } from '../interfaces';
 import { EnvObject } from '../../environments';
-import { CreateNoteDto, UpdateNoteDto } from '@lenotes-ng/api-interfaces';
+import { CreateNoteDto, UpdateNoteDto } from '@lenotes-ng/api-behavior';
 
 @Injectable({
   providedIn: 'root'

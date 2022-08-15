@@ -3,7 +3,7 @@ import { of, throwError } from "rxjs";
 import { Note } from "@lenotes-ng/model";
 import { NoteService } from "../../app/services"; 
 import { INoteService } from "../../app/interfaces";
-import { CreateNoteDto, UpdateNoteDto } from "@lenotes-ng/api-interfaces";
+import { CreateNoteDto, UpdateNoteDto } from "@lenotes-ng/api-behavior";
 import { DomainObjectStorage, NaiveNotesStorage } from '@lenotes-ng/data-storage';
 
 export const noteServiceStubBuilder = {

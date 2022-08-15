@@ -1,11 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { IApiNotesService } from "../../index";
+import { CreateNoteDto, UpdateNoteDto } from '../../index';
+import { DomainObjectStorage } from "@lenotes-ng/data-storage";
+import { Note } from "@lenotes-ng/model";
 
-import { CreateNoteDto, UpdateNoteDto } from '@lenotes-ng/api-behavior';
-import { Note } from '@lenotes-ng/model';
-import { DomainObjectStorage } from '@lenotes-ng/data-storage';
-
-@Injectable()
-export class NotesService {
+export class ApiNotesService implements IApiNotesService {
 
 	constructor(
 		private storage: DomainObjectStorage<Note>
@@ -41,8 +39,7 @@ export class NotesService {
 		this.storage.update(updatedNote);
 	}
 
-	remove(id: number): void {
-
+	delete(id: number): void {
 		this.storage.delete(id);
 	}
 }

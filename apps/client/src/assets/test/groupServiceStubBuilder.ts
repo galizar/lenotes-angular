@@ -4,7 +4,7 @@ import { GroupService } from "../../app/services";
 import { Group } from '@lenotes-ng/model';
 import { IGroupService } from "../../app/interfaces";
 import { DomainObjectStorage, NaiveGroupsStorage } from "@lenotes-ng/data-storage";
-import { CreateGroupDto, UpdateGroupDto } from "@lenotes-ng/api-interfaces";
+import { CreateGroupDto, UpdateGroupDto } from "@lenotes-ng/api-behavior";
 
 export const groupServiceStubBuilder = {
 	build: () => {

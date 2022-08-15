@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe } from '@nestjs/common';
 import { GroupsService } from './services/groups.service';
-import { CreateGroupDto } from '@lenotes-ng/api-interfaces';
-import { UpdateGroupDto } from '@lenotes-ng/api-interfaces';
+import { CreateGroupDto } from '@lenotes-ng/api-behavior';
+import { UpdateGroupDto } from '@lenotes-ng/api-behavior';
 
 @Controller('groups')
 @UsePipes(

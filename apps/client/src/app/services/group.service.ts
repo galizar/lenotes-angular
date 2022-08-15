@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { Group } from '@lenotes-ng/model';
 import { EnvObject } from '../../environments';
-import { CreateGroupDto, UpdateGroupDto } from '@lenotes-ng/api-interfaces';
+import { CreateGroupDto, UpdateGroupDto } from '@lenotes-ng/api-behavior';
 import { IGroupService } from '../interfaces';
 
 @Injectable({

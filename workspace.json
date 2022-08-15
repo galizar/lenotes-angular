@@ -3,7 +3,7 @@
   "version": 2,
   "projects": {
     "api": "apps/api",
-    "api-interfaces": "libs/api-interfaces",
+    "api-behavior": "libs/api-behavior",
     "client": "apps/client",
     "data-storage": "libs/data-storage",
     "model": "libs/model"

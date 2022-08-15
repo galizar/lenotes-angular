@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 
 import { Note } from '@lenotes-ng/model';
-import { CreateNoteDto, UpdateNoteDto } from '@lenotes-ng/api-interfaces';
+import { CreateNoteDto, UpdateNoteDto } from '@lenotes-ng/api-behavior';
 
 export interface INoteService {
 	get(id: number): Observable<Note>;
