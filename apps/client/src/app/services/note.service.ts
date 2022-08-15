@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { Note } from '@lenotes-ng/model';
 import { INoteService } from '../interfaces';
 import { EnvObject } from '../../environments';
-import { CreateNoteDto, UpdateDto } from '../dto';
+import { CreateNoteDto, UpdateNoteDto } from '@lenotes-ng/api-interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -42,7 +42,7 @@ export class NoteService implements INoteService {
 		return this.http.get<Note[]>(`${this.env.NOTES_API_ROOT}/getInGroup/${groupId}`);
 	}
 
-	update(id: number, dto: UpdateDto<Note>) {
+	update(id: number, dto: UpdateNoteDto) {
 		return this.http.patch(`${this.env.NOTES_API_ROOT}/${id}`, dto, this.mergePatchOptions)
 	}
 

@@ -3,7 +3,7 @@ import { of, throwError } from "rxjs";
 import { Note } from "@lenotes-ng/model";
 import { NoteService } from "../../app/services"; 
 import { INoteService } from "../../app/interfaces";
-import { CreateNoteDto, UpdateDto } from "../../app/dto";
+import { CreateNoteDto, UpdateNoteDto } from "@lenotes-ng/api-interfaces";
 import { DomainObjectStorage, NaiveNotesStorage } from '@lenotes-ng/data-storage';
 
 export const noteServiceStubBuilder = {
@@ -36,7 +36,7 @@ export const noteServiceStubBuilder = {
 				const notesInGroup = storage.getAll().filter(note => note.groupId === groupId);
 				return of(notesInGroup);
 			},
-			update: (id: number, dto: UpdateDto<Note>) => {
+			update: (id: number, dto: UpdateNoteDto) => {
 				try {
 					let noteToUpdate = storage.get(id);
 					const updatedNote = { ...noteToUpdate, ...dto};

@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 
 import { Note } from '@lenotes-ng/model';
-import { CreateNoteDto, UpdateDto } from '../dto';
+import { CreateNoteDto, UpdateNoteDto } from '@lenotes-ng/api-interfaces';
 
 export interface INoteService {
 	get(id: number): Observable<Note>;
@@ -9,6 +9,6 @@ export interface INoteService {
 	create(dto: CreateNoteDto): Observable<number>;
 	getInGroup(groupId: number): Observable<Note[]>;
 	getAll(): Observable<Note[]>;
-	update(id: number, dto: UpdateDto<Note>): Observable<object>;
+	update(id: number, dto: UpdateNoteDto): Observable<object>;
 	delete(id: number): Observable<object>;
 }
