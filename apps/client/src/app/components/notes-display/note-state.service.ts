@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject, of, throwError } from 'rxjs';
-import { mergeMap, switchMap, map, distinctUntilChanged } from 'rxjs/operators';
+import { BehaviorSubject, of } from 'rxjs';
+import { switchMap, map, distinctUntilChanged } from 'rxjs/operators';
 
 import { Note } from '@lenotes-ng/shared/model';
 import { AppStateService, NoteService } from '../../services';
@@ -62,7 +62,7 @@ export class NoteStateService {
 			})
 		);
 
-		this.noteService.setContent(id, content);
+		this.noteService.update(id, {content});
 	}
 
 	setNotes(notes: Note[]) {
@@ -80,7 +80,7 @@ export class NoteStateService {
 			})
 		);
 
-		this.noteService.move(id, toGroupId);
+		this.noteService.update(id, {groupId: toGroupId});
 	}
 
 	private updateState(state: NoteState) {

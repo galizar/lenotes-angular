@@ -1,6 +1,4 @@
-import { Group, Note} from '@lenotes-ng/shared/model';
-
-export type DomainObject = Group | Note;
+import { DomainObject } from '@lenotes-ng/shared/model';
 
 export abstract class DomainObjectStorage<T extends DomainObject> {
 	/** Returns ID of newly created object */

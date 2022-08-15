@@ -1,4 +1,4 @@
-import { DomainObject, DomainObjectStorage } from "../index";
+import { DomainObjectStorage } from "../index";
 
 import { Note } from '@lenotes-ng/shared/model';
 import { testNotes } from "@lenotes-ng/shared/assets";

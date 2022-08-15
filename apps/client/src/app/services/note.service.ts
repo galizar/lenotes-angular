@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { Note } from '@lenotes-ng/shared/model';
 import { INoteService } from '../interfaces';
 import { EnvObject } from '../../environments';
+import { CreateNoteDto, UpdateDto } from '../dto';
 
 @Injectable({
   providedIn: 'root'
@@ -25,9 +26,9 @@ export class NoteService implements INoteService {
 			this.env = env;
 		}
 
-  //create(name: string, groupId: number): Observable<Note> {
-  //  return this.http.post<Note>(this.env.NOTES_API_ROOT, {name, groupId});
-  //}
+  create(dto: CreateNoteDto): Observable<number> {
+    return this.http.post<number>(this.env.NOTES_API_ROOT, dto);
+  }
 
   //getAll(): Observable<Note[]> {
   //  return this.http.get<Note[]>(this.env.NOTES_API_ROOT);
@@ -41,21 +42,9 @@ export class NoteService implements INoteService {
 		return this.http.get<Note[]>(`${this.env.NOTES_API_ROOT}/getInGroup/${groupId}`);
 	}
 
-  //rename(id: number, newName: string): Observable<any> {
-  //  return this.http.patch(`${this.env.NOTES_API_ROOT}/${id}`, {name: newName}, this.mergePatchOptions);
-  //}
-
-  move(id: number, toGroupId: number): Observable<any> {
-    return this.http.patch(`${this.env.NOTES_API_ROOT}/${id}`, {groupId: toGroupId}, this.mergePatchOptions);
-  }
-
-  setContent(id: number, content: string): Observable<any> {
-    return this.http.patch(`${this.env.NOTES_API_ROOT}/${id}`, {content}, this.mergePatchOptions);
-  }
-
-  //trash(id: number): Observable<any> {
-  //  return this.http.patch(`${this.env.NOTES_API_ROOT}/${id}`, {isTrashed: true}, this.mergePatchOptions);
-  //}
+	update(id: number, dto: UpdateDto<Note>) {
+		return this.http.patch(`${this.env.NOTES_API_ROOT}/${id}`, dto, this.mergePatchOptions)
+	}
 
   //batchTrash(ids: number[]): Observable<any> {
   //  return this.http.post(`${this.env.NOTES_API_ROOT}/batchTrashOperation`, {ids});
@@ -63,10 +52,6 @@ export class NoteService implements INoteService {
   
   //trashInGroup(groupId: number): Observable<any> {
   //  return this.http.post(`${this.env.NOTES_API_ROOT}/trashInGroupOperation/`, {groupId});
-  //}
-
-  //restore(id: number): Observable<any> {
-  //  return this.http.patch(`${this.env.NOTES_API_ROOT}/${id}`, {isTrashed: false}, this.mergePatchOptions);
   //}
 
   //restoreInGroup(groupId: number): Observable<any> {

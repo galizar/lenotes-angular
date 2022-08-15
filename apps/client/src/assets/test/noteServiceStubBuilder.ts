@@ -1,55 +1,49 @@
 import { of, throwError } from "rxjs";
 
-import { testNotes } from "@lenotes-ng/shared/assets";
 import { Note } from "@lenotes-ng/shared/model";
 import { NoteService } from "../../app/services"; 
 import { INoteService } from "../../app/interfaces";
+import { CreateNoteDto, UpdateDto } from "../../app/dto";
+import { DomainObjectStorage, NaiveNotesStorage } from '@lenotes-ng/data-storage';
 
 export const noteServiceStubBuilder = {
 	build: () => {
-		let notes: Note[] = testNotes; // state initialization
+
+		const storage: DomainObjectStorage<Note> = new NaiveNotesStorage();
 
 		const noteServiceStub: INoteService = {
+			create: (dto: CreateNoteDto) => {
+
+				const newNote = {
+					...dto,
+					id: -1 // dummy id, id will be set by data storage system
+				};
+
+				return of(storage.create(newNote));
+			},
 			get: (id: number) => {
-				const note = notes.find(n => n.id === id);
-				if (note === undefined) {
-					return throwError('Not Found');
+				try {
+					const note = storage.get(id);
+					return of(note);
+				} catch (e) {
+					return throwError(() => {new Error('Error while getting note')});
 				}
-				return of(note);
 			},
 			getInGroup: (groupId: number) => {
-				const notesInGroup = notes.filter(note => note.groupId === groupId);
+				const notesInGroup = storage.getAll().filter(note => note.groupId === groupId);
 				return of(notesInGroup);
 			},
-			move: (id: number, toGroupId: number) => {
-				let subject = notes.find(note => note.id === id);
-				if (!subject) {
-					return throwError('note to move not found');
+			update: (id: number, dto: UpdateDto<Note>) => {
+				try {
+					let noteToUpdate = storage.get(id);
+					const updatedNote = { ...noteToUpdate, ...dto};
+					storage.update(updatedNote);
+					return of({}); // stub object. in practice, this object will be an http response
+				} catch (e) {
+					return throwError(() => { new Error('Error while updating note') });
 				}
-				notes = notes.map((note) => {
-					if (note.id === id) {
-						note.groupId = toGroupId;
-					}
-					return note;
-				})
-				return of();
 			},
-			setContent: (id: number, content: string) => {
-				let subject = notes.find(note => note.id === id);
-				if (!subject) {
-					return throwError('note to set content to not found');
-				}
-				notes = notes.map((note) => {
-					if (note.id === id) {
-						note.content = content;
-						subject = note;
-					}
-					return note;
-				})
-				return of(subject);
-			}
 		};
-
 		return noteServiceStub as NoteService;
 	}
 }

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { Group } from '@lenotes-ng/shared/model';
 import { EnvObject } from '../../environments';
+import { UpdateDto } from '../dto';
 
 @Injectable({
   providedIn: 'root'
@@ -37,19 +38,11 @@ export class GroupService {
     return this.http.get<Group>(`${this.env.GROUPS_API_ROOT}/${id}`);
   }
 
-  rename(id: number, newName: string): Observable<any> {
-    return this.http.patch(`${this.env.GROUPS_API_ROOT}/${id}`, {name: newName}, this.mergePatchOptions);
-  }
-
-  trash(id: number): Observable<any> {
-    return this.http.patch(`${this.env.GROUPS_API_ROOT}/${id}`, {isTrashed: true}, this.mergePatchOptions);
+  update(id: number, dto: UpdateDto<Group>): Observable<any> {
+    return this.http.patch(`${this.env.GROUPS_API_ROOT}/${id}`, dto, this.mergePatchOptions);
   }
 
   delete(id: number): Observable<any> {
     return this.http.delete(`${this.env.GROUPS_API_ROOT}/${id}`);
-  }
-
-  batchDelete(ids: number[]): Observable<any> {
-    return this.http.post(`${this.env.GROUPS_API_ROOT}/batchDeleteOperation`, {ids});
   }
 }
