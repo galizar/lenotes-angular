@@ -1,6 +1,6 @@
 import { of, throwError } from "rxjs";
 
-import { NoteService } from "../../app/services"; 
+import { NoteService } from "../../app/notes/services/note.service"; 
 import { INoteService } from "../../app/interfaces";
 import { Note } from "@lenotes-ng/model";
 import { CreateNoteDto, UpdateNoteDto, ApiNotesService } from "@lenotes-ng/api-behavior";

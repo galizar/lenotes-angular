@@ -3,8 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { Note } from '@lenotes-ng/model';
-import { INoteService } from '../interfaces';
-import { EnvObject } from '../../environments';
+import { INoteService } from '../../interfaces';
+import { EnvObject } from '../../../environments';
 import { CreateNoteDto, UpdateNoteDto } from '@lenotes-ng/api-behavior';
 
 @Injectable({

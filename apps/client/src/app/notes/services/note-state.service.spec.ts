@@ -1,5 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AppStateService, NoteService } from '../../services';
+import { TestBed } from '@angular/core/testing';
+import { AppStateService } from '../../services';
+import { NoteService } from './note.service';
 import { appStateServiceStubBuilder, noteServiceStubBuilder } from '../../../assets/test';
 
 import { NoteStateService } from './note-state.service';

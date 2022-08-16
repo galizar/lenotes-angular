@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { appStateServiceStubBuilder, noteServiceStubBuilder } from '../../assets/test';
-import { AppStateService, NoteService } from '../services';
+import { appStateServiceStubBuilder, noteServiceStubBuilder } from '../../../assets/test';
+import { AppStateService } from '../../services';
+import { NoteService } from '../../notes/services/note.service';
 
 import { EditorStateService } from './editor-state.service';
 

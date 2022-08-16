@@ -3,7 +3,8 @@ import { BehaviorSubject, of } from 'rxjs';
 import { switchMap, map, distinctUntilChanged } from 'rxjs/operators';
 
 import { Note } from '@lenotes-ng/model';
-import { AppStateService, NoteService } from '../../services';
+import { AppStateService } from '../../services';
+import { NoteService } from './note.service';
 
 interface NoteState {
 	notes: Note[],

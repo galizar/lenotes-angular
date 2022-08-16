@@ -4,8 +4,8 @@ import { catchError, map } from 'rxjs/operators';
 
 import { Note } from '@lenotes-ng/model';
 import { AppStateService } from '../../services';
-import { GroupStateService } from './group-state.service';
-import { NoteStateService } from '../notes-display/note-state.service';
+import { GroupStateService } from '../services/group-state.service';
+import { NoteStateService } from '../../notes/services/note-state.service';
 
 @Component({
   selector: 'app-groups-display',

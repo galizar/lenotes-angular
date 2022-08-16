@@ -2,10 +2,10 @@ import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { NoteService, AppStateService } from '../../services';
+import { AppStateService } from '../../services';
 
 import { Note } from '@lenotes-ng/model';
-import { NoteStateService } from './note-state.service';
+import { NoteStateService } from '../services/note-state.service';
 
 @Component({
   selector: 'app-notes-display',

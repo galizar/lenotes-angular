@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { GroupService } from '../../services';
+import { GroupService } from '../services/group.service';
 
 import { GroupStateService } from './group-state.service';
 import { groupServiceStubBuilder } from '../../../assets/test';

@@ -8,8 +8,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { environment } from '../environments/environment'; 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { GroupsDisplayComponent } from './components/groups-display/groups-display.component';
-import { NotesDisplayComponent } from './components/notes-display/notes-display.component';
+import { GroupsDisplayComponent } from './groups/display/groups-display.component';
+import { NotesDisplayComponent } from './notes/display/notes-display.component';
 import { EditorComponent } from './editor/editor.component';
 
 @NgModule({

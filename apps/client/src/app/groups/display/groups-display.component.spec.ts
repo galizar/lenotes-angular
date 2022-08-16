@@ -3,7 +3,9 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { By } from '@angular/platform-browser';
 
 import { GroupsDisplayComponent } from './groups-display.component';
-import { AppStateService, GroupService, NoteService } from '../../services';
+import { AppStateService } from '../../services';
+import { GroupService } from '../services/group.service';
+import { NoteService } from '../../notes/services/note.service';
 import { 
 	groupServiceStubBuilder, 
 	noteServiceStubBuilder, 

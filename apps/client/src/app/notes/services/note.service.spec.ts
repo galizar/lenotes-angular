@@ -2,7 +2,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 
 import { NoteService } from './note.service';
-import { testEnvObject } from '../../assets/test';
+import { testEnvObject } from '../../../assets/test';
 import { HttpClient } from '@angular/common/http';
 
 describe('NoteService', () => {

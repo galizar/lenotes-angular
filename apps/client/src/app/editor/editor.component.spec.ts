@@ -7,9 +7,10 @@ import {
 	appStateServiceStubBuilder,
 	noteServiceStubBuilder,
 } from '../../assets/test';
-import { AppStateService, NoteService } from '../services';
+import { AppStateService } from '../services';
 import { Note } from '@lenotes-ng/model';
-import { NoteStateService } from '../components/notes-display/note-state.service';
+import { NoteStateService } from '../notes/services/note-state.service';
+import { NoteService } from '../notes/services/note.service';
 
 describe('EditorComponent', () => {
   let component: EditorComponent;

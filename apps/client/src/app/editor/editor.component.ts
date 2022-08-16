@@ -4,8 +4,8 @@ import { combineLatest } from 'rxjs';
 import { map, debounceTime, sample } from 'rxjs/operators';
 
 import { AppStateService } from '../services';
-import { NoteStateService } from '../components/notes-display/note-state.service';
-import { EditorStateService } from './editor-state.service';
+import { NoteStateService } from '../notes/services/note-state.service';
+import { EditorStateService } from './services/editor-state.service';
 
 @Component({
   selector: 'app-editor',

@@ -1,5 +1,5 @@
 import { of, throwError } from "rxjs";
-import { GroupService } from "../../app/services";
+import { GroupService } from "../../app/groups/services/group.service";
 
 import { IGroupService } from "../../app/interfaces";
 import { NaiveGroupsStorage } from "@lenotes-ng/data-storage";

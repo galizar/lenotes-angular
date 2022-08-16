@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { AppStateService } from '../services';
-import { NoteStateService } from '../components/notes-display/note-state.service';
+import { AppStateService } from '../../services';
+import { NoteStateService } from '../../notes/services/note-state.service';
 
 interface EditorState {
 	contentToDisplay: string

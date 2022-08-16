@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { GroupService } from './group.service';
 import { Group } from '@lenotes-ng/model';
-import { EnvObject } from '../../environments';
+import { EnvObject } from '../../../environments';
 import { testGroups } from '@lenotes-ng/model';
 
 describe('GroupService', () => {

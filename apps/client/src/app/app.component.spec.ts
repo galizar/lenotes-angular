@@ -3,12 +3,13 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { GroupsDisplayComponent } from './components/groups-display/groups-display.component';
-import { NotesDisplayComponent } from './components/notes-display/notes-display.component';
+import { GroupsDisplayComponent } from './groups/display/groups-display.component';
+import { NotesDisplayComponent } from './notes/display/notes-display.component';
 import { EditorComponent } from './editor/editor.component';
 import { testEnvObject } from '../assets/test';
 
-import { GroupService, NoteService } from './services';
+import { GroupService } from './groups/services/group.service';
+import { NoteService } from './notes/services/note.service';
 import { groupServiceStubBuilder, noteServiceStubBuilder } from '../assets/test';
 import { ReactiveFormsModule } from '@angular/forms';
 
