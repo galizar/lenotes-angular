@@ -1,42 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { CreateGroupDto } from '@lenotes-ng/api-behavior';
-import { UpdateGroupDto } from '@lenotes-ng/api-behavior';
 
+import { ApiGroupsService } from '@lenotes-ng/api-behavior';
 import { DomainObjectStorage } from '@lenotes-ng/data-storage';
 import { Group } from '@lenotes-ng/model';
 
 @Injectable()
-export class GroupsService {
+export class GroupsService extends ApiGroupsService {
 
-	constructor(
-		private storage: DomainObjectStorage<Group>
-	) {}
-
-  create(createGroupDto: CreateGroupDto) {
-
-		const newGroup = {
-			...createGroupDto,
-			id: -1 // id will be set by storage service
-		};
-		return this.storage.create(newGroup);
-  }
-
-  getAll() {
-		return this.storage.getAll();
-  }
-
-  get(id: number): Group {
-		return this.storage.get(id);
-  }
-
-  update(id: number, dto: UpdateGroupDto) {
-
-		const groupToUpdate = this.get(id);
-		const updatedGroup = {...groupToUpdate, ...dto};
-		this.storage.update(updatedGroup);
-  }
-
-  remove(id: number) {
-		this.storage.delete(id);
-  }
+	constructor(storage: DomainObjectStorage<Group>) {
+		super(storage);
+	}
 }

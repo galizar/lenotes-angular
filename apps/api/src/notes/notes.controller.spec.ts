@@ -106,11 +106,11 @@ describe('NotesController', () => {
 		it('delegates remove request to service', () => {
 
 			const idOfNoteToRemove = 0;
-			jest.spyOn(notesService, 'remove');
+			jest.spyOn(notesService, 'delete');
 
 			controller.remove(String(idOfNoteToRemove));
 
-			expect(notesService.remove).toHaveBeenCalledWith(idOfNoteToRemove);
+			expect(notesService.delete).toHaveBeenCalledWith(idOfNoteToRemove);
 		});
 	});
 });

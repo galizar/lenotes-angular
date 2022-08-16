@@ -1,39 +1,47 @@
-import { of } from "rxjs";
+import { of, throwError } from "rxjs";
 import { GroupService } from "../../app/services";
 
-import { Group } from '@lenotes-ng/model';
 import { IGroupService } from "../../app/interfaces";
-import { DomainObjectStorage, NaiveGroupsStorage } from "@lenotes-ng/data-storage";
-import { CreateGroupDto, UpdateGroupDto } from "@lenotes-ng/api-behavior";
+import { NaiveGroupsStorage } from "@lenotes-ng/data-storage";
+import { CreateGroupDto, UpdateGroupDto, ApiGroupsService } from "@lenotes-ng/api-behavior";
 
 export const groupServiceStubBuilder = {
 	build: () => {
 
-		const storage: DomainObjectStorage<Group> = new NaiveGroupsStorage();
+		const storage = new NaiveGroupsStorage();
+		const apiService = new ApiGroupsService(storage);
 
 		const groupServiceStub: IGroupService = {
 			create: (dto: CreateGroupDto) => {
-				const newGroup = {
-					...dto,
-					id: -1 // id will be set by storage service
-				};
-				return of(storage.create(newGroup));
+
+				const idOfNewGroup = apiService.create(dto);
+				return of(idOfNewGroup);
 			},
 			getAll: () => {
-				return of(storage.getAll());
+				return of(apiService.getAll());
 			},
 			get: (id: number) => {
-				return of(storage.get(id));
+				try {
+					return of(storage.get(id));
+				} catch (e) {
+					return throwError(() => { new Error('Error while getting group'); });
+				}
 			},
 			update: (id: number, dto: UpdateGroupDto) => {
-				const groupToUpdate = storage.get(id);
-				const updatedGroup = { ...groupToUpdate, ...dto };
-				storage.update(updatedGroup);
-				return of({});
+				try {
+					apiService.update(id, dto);
+					return of({});
+				} catch (e) {
+					return throwError(() => { new Error('Error while updating group'); });
+				}
 			},
 			delete: (id: number) => {
-				storage.delete(id);
-				return of({});
+				try {
+					apiService.delete(id);
+					return of({});
+				} catch (e) {
+					return throwError(() => { new Error('Error while deleting group'); });
+				}
 			}
 		};
 

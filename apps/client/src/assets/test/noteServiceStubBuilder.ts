@@ -1,54 +1,53 @@
 import { of, throwError } from "rxjs";
 
-import { Note } from "@lenotes-ng/model";
 import { NoteService } from "../../app/services"; 
 import { INoteService } from "../../app/interfaces";
-import { CreateNoteDto, UpdateNoteDto } from "@lenotes-ng/api-behavior";
+import { Note } from "@lenotes-ng/model";
+import { CreateNoteDto, UpdateNoteDto, ApiNotesService } from "@lenotes-ng/api-behavior";
 import { DomainObjectStorage, NaiveNotesStorage } from '@lenotes-ng/data-storage';
 
 export const noteServiceStubBuilder = {
 	build: () => {
 
 		const storage: DomainObjectStorage<Note> = new NaiveNotesStorage();
+		const apiService = new ApiNotesService(storage);
 
 		const noteServiceStub: INoteService = {
 			create: (dto: CreateNoteDto) => {
 
-				const newNote = {
-					...dto,
-					id: -1 // dummy id, id will be set by data storage system
-				};
-
-				return of(storage.create(newNote));
+				const idOfNewNote = apiService.create(dto);
+				return of(idOfNewNote);
 			},
 			get: (id: number) => {
 				try {
-					const note = storage.get(id);
+					const note = apiService.get(id);
 					return of(note);
 				} catch (e) {
-					return throwError(() => {new Error('Error while getting note')});
+					return throwError(() => { new Error('Error while getting note'); });
 				}
 			},
 			getAll: () => {
-				return of(storage.getAll());
+				return of(apiService.getAll());
 			},
 			getInGroup: (groupId: number) => {
-				const notesInGroup = storage.getAll().filter(note => note.groupId === groupId);
+				const notesInGroup = apiService.getInGroup(groupId);
 				return of(notesInGroup);
 			},
 			update: (id: number, dto: UpdateNoteDto) => {
 				try {
-					let noteToUpdate = storage.get(id);
-					const updatedNote = { ...noteToUpdate, ...dto};
-					storage.update(updatedNote);
+					apiService.update(id, dto);
 					return of({}); // stub object. in practice, this object will be an http response
 				} catch (e) {
-					return throwError(() => { new Error('Error while updating note') });
+					return throwError(() => { new Error('Error while updating note'); });
 				}
 			},
 			delete: (id: number) => {
-				storage.delete(id);
-				return of({});
+				try {
+					apiService.delete(id);
+					return of({});
+				} catch (e) {
+					return throwError(() => { new Error('Error while updating note'); });
+				}
 			}
 		};
 		return noteServiceStub as NoteService;

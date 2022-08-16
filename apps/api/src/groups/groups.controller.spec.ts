@@ -1,10 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { CreateGroupDto } from '@lenotes-ng/api-behavior';
 import { GroupsController } from './groups.controller';
 import { GroupsService } from './services/groups.service';
 import { testGroups } from '@lenotes-ng/model';
-import { UpdateGroupDto } from '@lenotes-ng/api-behavior';
+import { CreateGroupDto, UpdateGroupDto } from '@lenotes-ng/api-behavior';
 import { DomainObjectStorage, NaiveGroupsStorage } from '@lenotes-ng/data-storage';
 
 describe('GroupsController', () => {
@@ -92,11 +91,11 @@ describe('GroupsController', () => {
 		it('delegates group removal to group service', () => {
 
 			const groupToRemoveId = '0';
-			jest.spyOn(groupsService, 'remove');
+			jest.spyOn(groupsService, 'delete');
 
 			controller.remove(groupToRemoveId);
 
-			expect(groupsService.remove).toHaveBeenCalledWith(Number(groupToRemoveId))
+			expect(groupsService.delete).toHaveBeenCalledWith(Number(groupToRemoveId))
 		});
 	});
 });

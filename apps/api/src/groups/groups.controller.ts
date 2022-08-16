@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe } from '@nestjs/common';
 import { GroupsService } from './services/groups.service';
-import { CreateGroupDto } from '@lenotes-ng/api-behavior';
-import { UpdateGroupDto } from '@lenotes-ng/api-behavior';
+import { CreateGroupDto, UpdateGroupDto } from '@lenotes-ng/api-behavior';
 
 @Controller('groups')
 @UsePipes(
@@ -35,6 +34,6 @@ export class GroupsController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.groupsService.remove(+id);
+    return this.groupsService.delete(+id);
   }
 }
