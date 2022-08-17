@@ -46,27 +46,7 @@ export class NoteService implements INoteService {
 		return this.http.patch(`${this.env.NOTES_API_ROOT}/${id}`, dto, this.mergePatchOptions)
 	}
 
-  //batchTrash(ids: number[]): Observable<any> {
-  //  return this.http.post(`${this.env.NOTES_API_ROOT}/batchTrashOperation`, {ids});
-  //}
-  
-  //trashInGroup(groupId: number): Observable<any> {
-  //  return this.http.post(`${this.env.NOTES_API_ROOT}/trashInGroupOperation/`, {groupId});
-  //}
-
-  //restoreInGroup(groupId: number): Observable<any> {
-  //  return this.http.post(`${this.env.NOTES_API_ROOT}/restoreInGroupOperation`, {groupId});
-  //}
-
   delete(id: number): Observable<object> {
     return this.http.delete(`${this.env.NOTES_API_ROOT}/${id}`);
   }
-
-  //batchDelete(ids: number[]): Observable<any> {
-  //  return this.http.post(`${this.env.NOTES_API_ROOT}/batchDeleteOperation`, {ids})
-  //}
-
-  //deleteInGroup(groupId: number): Observable<any> {
-  //  return this.http.post(`${this.env.NOTES_API_ROOT}/deleteInGroupOperation`, {groupId});
-  //}
 }

@@ -4,7 +4,7 @@ import { testGroups } from "@lenotes-ng/model";
 
 export class NaiveGroupsStorage extends DomainObjectStorage<Group> {
 
-	private groups: Group[] = (() => testGroups)();
+	private groups: Group[] = testGroups;
 
 	private idPk = testGroups.reduce((prev, curr) => {
 		if (prev.id > curr.id)
@@ -20,7 +20,7 @@ export class NaiveGroupsStorage extends DomainObjectStorage<Group> {
 			...object,
 			id: (() => this.idPk)() // set correct id. new objects have a dummy id.
 		};
-		this.groups.push(newGroup);
+		this.groups = [...this.groups, newGroup];
 		return newGroup.id;
 	}
 

@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { Group } from '@lenotes-ng/model';
@@ -43,7 +43,7 @@ export class GroupService implements IGroupService {
     return this.http.patch(`${this.env.GROUPS_API_ROOT}/${id}`, dto, this.mergePatchOptions);
   }
 
-  delete(id: number): Observable<any> {
+  delete(id: number): Observable<object> {
     return this.http.delete(`${this.env.GROUPS_API_ROOT}/${id}`);
   }
 }

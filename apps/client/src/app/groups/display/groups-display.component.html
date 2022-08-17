@@ -3,17 +3,27 @@
 	<span>Selected group id: {{ vm.groupOnDisplayId }}</span>
 
 	<div
+		class="button-container"
 		*ngFor="let group of vm.groups"
 		(drop)="dropOnGroup($event, group.id)"
 		(dragover)="allowDrop($event)"
 	>
-		<button class="group-button"
-		  *ngIf="!group.isTrashed"
-		  (click)="appStateService.setGroupOnDisplayId(group.id)"
-			[attr.data-group-id]="group.id"
-			data-test-id="select-group-button"
-		>
-			{{group.name}}
-		</button>
+		<div *ngIf="!group.isTrashed">
+			<button class="group-button"
+				(click)="appStateService.setGroupOnDisplayId(group.id)"
+				[attr.data-group-id]="group.id"
+				data-test-id="select-group-button"
+			>
+				{{group.name}}
+			</button>
+		  <button class="delete-button" (click)="triggerGroupDelete(group.id)">-</button>
+		</div>
 	</div>
+
+	<button class="create-button" (click)="toggleFormVisibility()">+</button>
+
+	<form id="group-name-form" (submit)="submitNewGroupForm($event)">
+		<input id="group-name-input" minlength=1 required="text">
+		<input value="create group" type="submit">
+	</form>
 </div>

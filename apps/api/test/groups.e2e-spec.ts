@@ -65,4 +65,14 @@ describe('GroupsController (e2e)', () => {
 			);
 		});
 	});
+
+	describe('/groups/:id (DELETE) handler', () => {
+
+		it('handles delete request', () => {
+
+			return request(app.getHttpServer())
+				.delete('/groups/0')
+				.expect(HttpStatus.OK);
+		});
+	});
 });

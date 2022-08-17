@@ -1,3 +1,17 @@
 .note-button {
+	width: 90%;
+}
+
+.create-button {
 	width: 100%;
+	color: green;
+}
+
+.delete-button {
+	width: 10%;
+	color: red;
+}
+
+.button-container {
+	display: inline;
 }

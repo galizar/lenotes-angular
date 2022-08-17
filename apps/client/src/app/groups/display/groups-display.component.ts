@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { combineLatest, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { Note } from '@lenotes-ng/model';
 import { AppStateService } from '../../services';
@@ -46,5 +46,34 @@ export class GroupsDisplayComponent implements OnInit {
 
 	allowDrop(event: DragEvent): void {
 		event?.preventDefault();
+	}
+
+	toggleFormVisibility() {
+
+		let input = document.getElementById('group-name-form');
+
+		if (input === null) return;
+
+		console.log(input.style.display);
+		console.log(input.textContent);
+
+		if (input.style.display === '') {
+			input.style.display = 'block';
+		} else {
+			input.style.display = '';
+		}
+	}
+
+	submitNewGroupForm(event: SubmitEvent) {
+
+		event.preventDefault();
+		const input = document.getElementById('group-name-input') as HTMLInputElement;
+
+		this.groupStateService.create(input.value);
+	}
+
+	triggerGroupDelete(id: number) {
+
+		this.groupStateService.delete(id);
 	}
 }

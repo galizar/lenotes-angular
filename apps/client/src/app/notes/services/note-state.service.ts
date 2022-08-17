@@ -32,7 +32,7 @@ export class NoteStateService {
 		/** Register observer for update of note state when group on display changes */
 		appStateService.groupOnDisplayId$.pipe(
 			switchMap(groupOnDisplayId => {
-				if (groupOnDisplayId === undefined)
+				if (groupOnDisplayId === undefined) // only happens on initialization
 					return of([]);
 				else
 					return noteService.getInGroup(groupOnDisplayId);

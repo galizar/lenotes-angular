@@ -23,4 +23,45 @@ describe('NoteService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+
+	describe('create request', () => {
+		it('requests note creation', () => {
+			throw new Error('not implemented');
+		});
+
+		it('handles error on request to create a note', () => {
+			throw new Error('not implemented');
+		});
+	});
+
+	describe('create request', () => {
+		it('requests note', () => {
+			throw new Error('not implemented');
+		});
+
+		it('handles error on request to get a note', () => {
+			throw new Error('not implemented');
+		});
+	});
+
+	it('requests all notes', () => {
+		throw new Error('not implemented');
+	});
+
+	describe('update request', () => {
+		it('requests to update a note (success)', () => {
+			throw new Error('not implemented');
+		});
+
+		it('handles error on request to update a note', () => {
+			throw new Error('not implemented');
+		});
+	});
+
+	describe('delete request', () => {
+		it('requests to delete a note', () => {
+			throw new Error('not implemented');
+		});
+	});
 });

@@ -3,6 +3,31 @@
 }
 
 .group-button {
-	width: 100%;
+	width: 90%;
 }
 
+.create-button {
+	width: 100%;
+	color: green;
+}
+
+.delete-button {
+	width: 10%;
+	color: red;
+}
+
+#group-name-form {
+	display: none;
+}
+
+#group-name-input {
+	width: 70%;
+}
+
+#group-name-input:valid {
+	background-color: lightgreen;
+}
+
+#group-name-input:invalid {
+	background-color: lightcoral;
+}
