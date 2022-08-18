@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, mergeMap } from 'rxjs';
-import { HttpResponse } from '@angular/common/http';
+import { BehaviorSubject } from 'rxjs';
 
 import { Group } from '@lenotes-ng/model';
 import { GroupService } from '../services/group.service';
+import { UpdateGroupDto } from '@lenotes-ng/api-behavior';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +30,25 @@ export class GroupStateService {
 			this.groups = [...this.groups, newGroup];
 			this.state.next(this.groups);
 		});
+	}
+
+	update(id: number, dto: UpdateGroupDto) {
+
+		this.groupService.update(id, dto).subscribe();
+
+		this.groups = this.groups.map(group => {
+			if (group.id === id) {
+				return {...group, ...dto};
+			} else {
+				return group;
+			}
+		});
+		this.state.next(this.groups);
+	}
+
+	trash(id: number) {
+
+		this.update(id, {isTrashed: true});
 	}
 
 	delete(id: number) {

@@ -6,7 +6,8 @@
 
 	<div *ngIf="vm.groupOnDisplayId !== undefined">
 		<div class="button-container" *ngFor="let note of vm.notes">
-				<button class="delete-button">-</button>
+			<div *ngIf="!note.isTrashed">
+				<button class="delete-button" (click)="trash(note.id)">-</button>
 				<button 
 					class="note-button"
 					[attr.data-note-id]="note.id" 
@@ -17,8 +18,20 @@
 					>
 					{{note.name}}
 				</button>
+			</div>
 		</div>
-		<button class="create-button">+</button>
+
+		<button class="create-button" (click)="toggleFormVisibility(form, nameInput)">+</button>
+		
+		<form #form [attr.id]="this.createNoteFormId"
+			(submit)="onSubmitCreate($event, form, vm.groupOnDisplayId)">
+
+			<input #nameInput name='name-input' [(ngModel)]="this.nameFormValue"
+			[attr.id]="this.noteNameInputId" minlength=1 required="text"
+			(blur)="onInputBlur(form)">
+
+			<input value="create note" type="submit">
+		</form>
 	</div>
 	
 	<div *ngIf="vm.groupOnDisplayId === undefined">

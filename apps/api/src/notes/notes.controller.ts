@@ -1,7 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe } from '@nestjs/common';
 
 import { NotesService } from './services/notes.service';
-import { CreateNoteDto, UpdateNoteDto } from '@lenotes-ng/api-behavior';
+import { CreateNoteDto } from '@lenotes-ng/api-behavior';
+import { UpdateNoteDto } from './dto/update-note.dto';
 
 @Controller('notes')
 @UsePipes(

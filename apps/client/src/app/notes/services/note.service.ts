@@ -13,11 +13,6 @@ import { CreateNoteDto, UpdateNoteDto } from '@lenotes-ng/api-behavior';
 export class NoteService implements INoteService {
 
 	private env: EnvObject;
-  private mergePatchOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/merge-patch+json' // RFC 7396
-    })
-  }
 
   constructor(
 		@Inject('env')
@@ -43,7 +38,7 @@ export class NoteService implements INoteService {
 	}
 
 	update(id: number, dto: UpdateNoteDto) {
-		return this.http.patch(`${this.env.NOTES_API_ROOT}/${id}`, dto, this.mergePatchOptions)
+		return this.http.patch(`${this.env.NOTES_API_ROOT}/${id}`, dto);
 	}
 
   delete(id: number): Observable<object> {

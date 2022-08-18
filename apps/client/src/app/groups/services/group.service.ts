@@ -6,6 +6,7 @@ import { Group } from '@lenotes-ng/model';
 import { EnvObject } from '../../../environments';
 import { CreateGroupDto, UpdateGroupDto } from '@lenotes-ng/api-behavior';
 import { IGroupService } from '../../interfaces';
+import { ConsoleLogger } from '@nestjs/common';
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +14,6 @@ import { IGroupService } from '../../interfaces';
 export class GroupService implements IGroupService {
 
 	private env;
-  private mergePatchOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/merge-patch+json' // RFC 7396
-    })
-  }
 
   constructor(
 		@Inject('env')
@@ -40,7 +36,8 @@ export class GroupService implements IGroupService {
   }
 
   update(id: number, dto: UpdateGroupDto): Observable<object> {
-    return this.http.patch(`${this.env.GROUPS_API_ROOT}/${id}`, dto, this.mergePatchOptions);
+		console.log(dto);
+    return this.http.patch(`${this.env.GROUPS_API_ROOT}/${id}`, dto);
   }
 
   delete(id: number): Observable<object> {

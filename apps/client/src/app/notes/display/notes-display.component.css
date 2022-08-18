@@ -15,3 +15,19 @@
 .button-container {
 	display: inline;
 }
+
+#create-note-form {
+	display: none;
+}
+
+#note-name-input {
+	width: 70%;
+}
+
+#note-name-input:valid {
+	background-color: lightgreen;
+}
+
+#note-name-input:invalid {
+	background-color: lightcoral;
+}

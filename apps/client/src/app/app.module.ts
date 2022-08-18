@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { environment } from '../environments/environment'; 
 import { AppRoutingModule } from './app-routing.module';
@@ -25,7 +25,8 @@ import { EditorComponent } from './editor/editor.component';
     HttpClientModule,
     BrowserAnimationsModule,
     DragDropModule,
-		ReactiveFormsModule
+		ReactiveFormsModule,
+		FormsModule
   ],
   providers: [
 		{provide: 'env', useValue: environment}

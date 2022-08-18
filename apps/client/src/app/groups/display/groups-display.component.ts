@@ -14,6 +14,10 @@ import { NoteStateService } from '../../notes/services/note-state.service';
 })
 export class GroupsDisplayComponent implements OnInit {
 
+	createFormId = 'create-group-form';
+	formInputId = 'group-name-input';
+	formInputValue: string = '';
+
 	// view model
 	vm$ = combineLatest(
 		[
@@ -48,32 +52,35 @@ export class GroupsDisplayComponent implements OnInit {
 		event?.preventDefault();
 	}
 
-	toggleFormVisibility() {
 
-		let input = document.getElementById('group-name-form');
+	onSubmitCreate(event: SubmitEvent, form: HTMLFormElement) {
 
-		if (input === null) return;
+		event.preventDefault();
+		form.style.display = '';
 
-		console.log(input.style.display);
-		console.log(input.textContent);
+		this.groupStateService.create(this.formInputValue);
+		this.formInputValue = '';
+	}
 
-		if (input.style.display === '') {
-			input.style.display = 'block';
+	toggleFormVisibility(form: HTMLFormElement, nameInput: HTMLInputElement) {
+
+		if (form.style.display === '') {
+			form.style.display = 'block';
+			nameInput.focus();
 		} else {
-			input.style.display = '';
+			form.style.display = '';
 		}
 	}
 
-	submitNewGroupForm(event: SubmitEvent) {
+	onInputBlur(form: HTMLFormElement) {
 
-		event.preventDefault();
-		const input = document.getElementById('group-name-input') as HTMLInputElement;
-
-		this.groupStateService.create(input.value);
+		form.style.display = '';
+		this.formInputValue = '';
 	}
 
-	triggerGroupDelete(id: number) {
+	trash(id: number) {
 
-		this.groupStateService.delete(id);
+		if (confirm('Are you sure you want to trash this group?'))
+			this.groupStateService.trash(id);
 	}
 }

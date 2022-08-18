@@ -16,14 +16,18 @@
 			>
 				{{group.name}}
 			</button>
-		  <button class="delete-button" (click)="triggerGroupDelete(group.id)">-</button>
+		  <button class="delete-button" (click)="trash(group.id)">-</button>
 		</div>
 	</div>
 
-	<button class="create-button" (click)="toggleFormVisibility()">+</button>
+	<button class="create-button" (click)="toggleFormVisibility(form, nameInput)">+</button>
 
-	<form id="group-name-form" (submit)="submitNewGroupForm($event)">
-		<input id="group-name-input" minlength=1 required="text">
+	<form #form [attr.id]="this.createFormId" (submit)="onSubmitCreate($event, form)">
+
+		<input #nameInput name='group-name' [(ngModel)]="this.formInputValue"
+			[attr.id]="this.formInputId" minlength=1 required="text"
+			(blur)="onInputBlur(form)">
+
 		<input value="create group" type="submit">
 	</form>
 </div>
