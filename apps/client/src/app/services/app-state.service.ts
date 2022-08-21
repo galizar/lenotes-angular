@@ -1,10 +1,11 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { map, distinctUntilChanged } from 'rxjs/operators';
 
 interface AppState {
 	noteOnDisplayId?: number,
 	groupOnDisplayId?: number,
+	displayingTrash: boolean
 }
 
 @Injectable({
@@ -14,7 +15,8 @@ export class AppStateService {
 
 	private state: AppState = {
 		noteOnDisplayId: undefined,
-		groupOnDisplayId: undefined
+		groupOnDisplayId: undefined,
+		displayingTrash: false
 	}
 
 	private store = new BehaviorSubject<AppState>(this.state);
@@ -22,22 +24,31 @@ export class AppStateService {
 
 	constructor() {}
 
-	groupOnDisplayId$ = this.state$.pipe(
-		map(state => state.groupOnDisplayId),
-		distinctUntilChanged()
-	);
+	groupOnDisplayId$ = this.getStateProperty$('groupOnDisplayId');
+	noteOnDisplayId$ = this.getStateProperty$('noteOnDisplayId');
+	displayingTrash$ = this.getStateProperty$('displayingTrash');
 
-	noteOnDisplayId$ = this.state$.pipe(
-		map(state => state.noteOnDisplayId),
-		distinctUntilChanged()
-	);
-
-	setGroupOnDisplayId(id: number) {
+	setGroupOnDisplayId(id?: number) {
 		this.updateState({ ...this.state, groupOnDisplayId: id });
   }
 
 	setNoteOnDisplayId(id: number) {
     this.updateState({ ...this.state, noteOnDisplayId: id });
+	}
+	
+	toggleDisplayingTrash() {
+		this.updateState({ 
+			...this.state, 
+			displayingTrash: !this.state.displayingTrash,
+			groupOnDisplayId: undefined
+		});
+	}
+
+	private getStateProperty$<P extends keyof AppState>(prop: P): Observable<AppState[P]> {
+		return this.state$.pipe(
+			map(state => state[prop]),
+			distinctUntilChanged()
+		);
 	}
 
 	private updateState(state: AppState) {

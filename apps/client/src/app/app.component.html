@@ -1,20 +1,29 @@
-<div class="app-container" cdkDropListGroup>
+<div id="app-container" *ngIf="this.vm$ | async as vm">
 
-	<div class="col-3">
-		<div class="row-1">
-			<button >Show trashed only</button>
+	<div id="groups-view">
+		<div>
+			<button (click)="this.appStateService.toggleDisplayingTrash()">
+				{{ vm.displayingTrash ? 'Show non-trashed' : 'Show trashed' }}
+			</button>
 		</div>
 
-		<app-groups-display class="row-11">
+		<app-groups-display>
 		</app-groups-display>
 	</div>
 
-	<app-editor class="col-6">
+	<app-editor>
 	</app-editor>
 
-	<div class="col-3">
-		<div class="row-1"></div>
-		<app-notes-display class="row-11">
+	<div id="notes-view" >
+		<div>
+			<button *ngIf="vm.groupOnDisplayId !== undefined"
+			(click)="this.appStateService.setGroupOnDisplayId(undefined)"
+			>
+				Show all
+			</button>
+		</div>
+
+		<app-notes-display >
 		</app-notes-display>
 	</div>
 </div>

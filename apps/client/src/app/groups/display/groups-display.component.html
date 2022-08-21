@@ -8,7 +8,7 @@
 		(drop)="dropOnGroup($event, group.id)"
 		(dragover)="allowDrop($event)"
 	>
-		<div *ngIf="!group.isTrashed">
+		<div *ngIf="group.isTrashed === vm.displayingTrash"> <!-- Show trashed/non-trashed groups-->
 			<button class="group-button"
 				(click)="appStateService.setGroupOnDisplayId(group.id)"
 				[attr.data-group-id]="group.id"
@@ -20,7 +20,9 @@
 		</div>
 	</div>
 
-	<button class="create-button" (click)="toggleFormVisibility(form, nameInput)">+</button>
+	<button *ngIf="!vm.displayingTrash" class="create-button"
+		(click)="toggleFormVisibility(form, nameInput)"
+	>+</button>
 
 	<form #form [attr.id]="this.createFormId" (submit)="onSubmitCreate($event, form)">
 

@@ -34,7 +34,7 @@ export class NoteStateService {
 		appStateService.groupOnDisplayId$.pipe(
 			switchMap(groupOnDisplayId => {
 				if (groupOnDisplayId === undefined) // only happens on initialization
-					return of([]);
+					return noteService.getAll();
 				else
 					return noteService.getInGroup(groupOnDisplayId);
 			})
@@ -71,7 +71,7 @@ export class NoteStateService {
 		this.updateState({ ...this.state, notes });
 	}
 
-	create(name: string, groupId: number) {
+	create(name: string, groupId?: number) {
 
 		const newNote = {
 			name,
