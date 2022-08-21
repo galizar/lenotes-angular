@@ -9,6 +9,11 @@
   "projectType": "application",
   "sourceRoot": "apps/client/src",
   "prefix": "client",
+	"implicitDependencies": [
+		"api",
+		"model",
+		"api-behavior"
+	],
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",

@@ -22,11 +22,16 @@ export class GroupsDisplayComponent implements OnInit {
 	vm$ = combineLatest(
 		[
 			this.appStateService.groupOnDisplayId$,
-			this.groupStateService.groups$
+			this.groupStateService.groups$,
+			this.appStateService.displayingTrash$
 		]
 	).pipe(
-		map(([groupOnDisplayId, groups]) => {
-			return {groupOnDisplayId, groups}
+		map((props) => {
+			return {
+				groupOnDisplayId: props[0], 
+				groups: props[1], 
+				displayingTrash: props[2]
+			};
 		})
 	);
 

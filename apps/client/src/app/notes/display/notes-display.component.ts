@@ -23,11 +23,17 @@ export class NotesDisplayComponent implements OnInit {
 		[
 			this.appStateService.groupOnDisplayId$,
 			this.appStateService.noteOnDisplayId$,
-			this.noteStateService.notes$
+			this.appStateService.displayingTrash$,
+			this.noteStateService.notes$,
 		]
 	).pipe(
-		map(([groupOnDisplayId, noteOnDisplayId, notes]) => {
-			return {groupOnDisplayId, noteOnDisplayId, notes};
+		map((props) => {
+			return {
+				groupOnDisplayId: props[0], 
+				noteOnDisplayId: props[1], 
+				displayingTrash: props[2],
+				notes: props[3]
+			};
 		})
 	);
 
@@ -43,7 +49,7 @@ export class NotesDisplayComponent implements OnInit {
 		event.dataTransfer?.setData('Note', JSON.stringify(note));
 	}
 
-	onSubmitCreate(event: SubmitEvent, form: HTMLFormElement, groupId: number) {
+	onSubmitCreate(event: SubmitEvent, form: HTMLFormElement, groupId?: number) {
 
 		event.preventDefault();
 		form.style.display = '';

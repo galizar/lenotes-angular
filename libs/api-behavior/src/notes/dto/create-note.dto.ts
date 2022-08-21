@@ -1,4 +1,4 @@
-import { IsDefined } from 'class-validator';
+import { IsDefined, IsOptional } from 'class-validator';
 
 export class CreateNoteDto {
 	@IsDefined()
@@ -7,8 +7,8 @@ export class CreateNoteDto {
 	@IsDefined()
 	content!: string;
 
-	@IsDefined()
-	groupId!: number;
+	@IsOptional()
+	groupId?: number;
 
 	@IsDefined()
 	isTrashed!: boolean;

@@ -2,6 +2,6 @@ export class Note {
 	id!: number
 	name!: string
 	content!: string
-	groupId!: number
+	groupId?: number
 	isTrashed!: boolean
 }
