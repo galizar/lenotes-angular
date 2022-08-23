@@ -3,8 +3,8 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { GroupsDisplayComponent } from './groups/display/groups-display.component';
-import { NotesDisplayComponent } from './notes/display/notes-display.component';
+import { GroupsDisplayComponent } from './groups/groups-display.component';
+import { NotesDisplayComponent } from './notes/notes-display.component';
 import { EditorComponent } from './editor/editor.component';
 import { testEnvObject } from '../assets/test';
 

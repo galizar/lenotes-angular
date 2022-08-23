@@ -49,13 +49,16 @@ describe('NotesDisplayComponent', () => {
 		component.appStateService.setGroupOnDisplayId(groupOnDisplayId);
 		fixture.detectChanges();
 
-		let expectedButtonCount = -1; // dummy to please the compiler 
-		component.noteStateService.notes$.subscribe(notes => {
-			expectedButtonCount = notes.filter(n => !n.isTrashed).length;
+		let expectedButtonCount = 0;
+		component.vm$.subscribe(vm => {
+			for (const note of Object.values(vm.notes)) {
+				if (!note.isTrashed) expectedButtonCount++;
+			}
 		});
 
 		const actualButtonCount = debugElement.queryAll(By.css('.note-button')).length;
 
+		expect(actualButtonCount).toBeGreaterThan(0);
 		expect(actualButtonCount).toEqual(expectedButtonCount);
 	});
 

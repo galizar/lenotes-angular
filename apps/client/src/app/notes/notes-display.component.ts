@@ -9,7 +9,7 @@ import { buildViewModel } from '../util/buildViewModel';
 type NotesViewModel = {
 	groupOnDisplayId?: number,
 	noteOnDisplayId?: number,
-	notes: NoteMap,
+	notes: NoteMap
 	displayingTrash: boolean
 };
 
@@ -31,6 +31,7 @@ export class NotesDisplayComponent implements OnInit {
 		noteOnDisplayId: this.appStateService.noteOnDisplayId$,
 		displayingTrash: this.appStateService.displayingTrash$,
 		notes: this.noteStateService.notes$
+		
 	});
 		
   constructor(

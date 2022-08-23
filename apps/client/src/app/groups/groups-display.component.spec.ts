@@ -54,14 +54,17 @@ describe('GroupsDisplayComponent', () => {
 		// it should display only buttons for groups that
 		// are not trashed. trashed groups will be handled
 		// elsewhere
-		let expectedButtonCount = -1; // dummy, otherwise the compiler blabs
+		let expectedButtonCount = 0;
 		component.vm$.subscribe(vm => {
-			expectedButtonCount = vm.groups.filter(group => !group.isTrashed).length;
+			for (const group of Object.values(vm.groups)) {
+				if (!group.isTrashed) expectedButtonCount++;
+			}
 		});
 
-		const groupButtons = debugElement.queryAll(By.css('.group-button'));
+		const actualButtonCount = debugElement.queryAll(By.css('.group-button')).length;
 
-		expect(groupButtons.length).toEqual(expectedButtonCount);
+		expect(actualButtonCount).toBeGreaterThan(0);
+		expect(actualButtonCount).toEqual(expectedButtonCount);
 	});
 
 	it('selects group when group button is clicked', () => {
@@ -81,11 +84,12 @@ describe('GroupsDisplayComponent', () => {
 
 	it('moves dropped note to group over which it was dropped', () => {
 
-		let noteToMove = testNotes[0];
-		let otherNote = testNotes[1]
-		const toGroupId = otherNote.groupId;
+		const idOfNoteToMove = 0;
+		let propsToModify = testNotes[idOfNoteToMove];
+		let otherProps = testNotes[1]
+		const toGroupId = otherProps.groupId;
 		const dataTransfer = new DataTransfer();
-		dataTransfer.setData('Note', JSON.stringify(noteToMove));
+		dataTransfer.setData('Note', JSON.stringify(propsToModify));
 		const droppedNoteEvent = new DragEvent('drop', {dataTransfer});
 
 		if (toGroupId === undefined)
@@ -97,13 +101,13 @@ describe('GroupsDisplayComponent', () => {
 		// the state when the group it was moved to is on display
 		component.appStateService.setGroupOnDisplayId(toGroupId);
 
-		let actualNote: Note | undefined;
+		let actualProps: Note['props'] | undefined;
 		component.noteStateService.notes$.subscribe(notes => {
-			actualNote = notes.find(n => n.id === noteToMove.id);
+			actualProps = notes[idOfNoteToMove]
 		});
 
-		if (!actualNote) return fail('note is not being moved to target group');
-		expect(actualNote.groupId).toEqual(toGroupId);
+		if (!actualProps) return fail('note is not being moved to target group');
+		expect(actualProps.groupId).toEqual(toGroupId);
 	});
 
 	it('trashes notes in group when group is trashed', () => {

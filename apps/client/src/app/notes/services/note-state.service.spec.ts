@@ -90,13 +90,13 @@ describe('NoteStateService', () => {
 
 		// given
 		const idOfNoteToModify = 0;
-		let noteToModify: Note | undefined;
+		let propsToModify: Note['props'] | undefined;
 		const newContent = "this is some new content created at " + Date.now();
 		noteService.get(idOfNoteToModify).subscribe(props => {
-			noteToModify = {idOfNoteToModify: props};
+			propsToModify =  props
 		});
-		if (noteToModify === undefined) return fail('could not get note to modify from note service');
-		appStateService.setGroupOnDisplayId(noteToModify.groupId); // this is needed for the note to be in the state
+		if (propsToModify === undefined) return fail('could not get note to modify from note service');
+		appStateService.setGroupOnDisplayId(propsToModify.groupId); // this is needed for the note to be in the state
 
 		// when
 		service.setNoteContent(idOfNoteToModify, newContent);
@@ -106,9 +106,9 @@ describe('NoteStateService', () => {
 
 		// local state verification
 		service.notes$.subscribe(notes => {
-			const noteToMove = notes.find(n => n.id === idOfNoteToModify);
-			if (noteToMove === undefined) return fail('note is not in state service');
-			actualContent = noteToMove.content
+			const propsToModify = notes[idOfNoteToModify];
+			if (propsToModify === undefined) return fail('note is not in state service');
+			actualContent = propsToModify.content
 		});
 
 		expect(actualContent).toEqual(newContent);

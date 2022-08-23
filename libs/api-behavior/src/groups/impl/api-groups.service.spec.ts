@@ -29,27 +29,26 @@ describe('ApiGroupsService', () => {
 			const key = prop as keyof typeof newGroup;
 			expect(actualGroup[key]).toEqual(newGroup[key]);
 		}
-		
-		expect(actualGroup.id).toEqual(createdGroupId);
 	});
 
 	it('gets group', () => {
 
-		const groupToGet = testGroups[0];
+		const groupWithId = 0;
+		const expectedGroup = testGroups[groupWithId];
 
-		const actualGroup = service.get(groupToGet.id);
+		const actualGroup = service.get(groupWithId);
 
-		expect(actualGroup).toEqual(groupToGet);
+		expect(actualGroup).toEqual(expectedGroup);
 	});
 
 	describe('group update operations', () => {
 
 		const updateTestFunction = (updateDto: UpdateGroupDto) => {
-			const groupToUpdate = service.get(0);
+			const groupWithId = 0;
 
-			service.update(groupToUpdate.id, updateDto);
+			service.update(groupWithId, updateDto);
 
-			const actualGroup = service.get(groupToUpdate.id);
+			const actualGroup = service.get(groupWithId);
 			for (const [prop, value] of Object.entries(updateDto)) {
 				expect(actualGroup[prop as keyof UpdateGroupDto]).toEqual(value)
 			}
@@ -70,12 +69,12 @@ describe('ApiGroupsService', () => {
 
 	it('removes group', () => {
 
-		const groupToRemove = service.get(0);
+		const groupWithId = 0;
 
-		service.delete(groupToRemove.id);
+		service.delete(groupWithId);
 
 		expect(() => {
-			service.get(groupToRemove.id);
+			service.get(groupWithId);
 		}).toThrowError(Error('group not found'));
 	});
 });
