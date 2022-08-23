@@ -4,18 +4,18 @@
 >
 	<span>Selected note id: {{vm.noteOnDisplayId}}</span>
 
-	<div class="button-container" *ngFor="let note of vm.notes">
-		<div *ngIf="note.isTrashed === vm.displayingTrash">
-			<button class="delete-button" (click)="trash(note.id)">-</button>
+	<div class="button-container" *ngFor="let id of objectKeys(vm.notes)">
+		<div *ngIf="vm.notes[+id].isTrashed === vm.displayingTrash">
+			<button class="delete-button" (click)="trash(+id)">-</button>
 			<button 
 				class="note-button"
-				[attr.data-note-id]="note.id" 
+				[attr.data-note-id]="id" 
 				data-test-id="select-note-button" 
 				draggable="true" 
-				(dragstart)="drag($event, note)"
-				(click)="appStateService.setNoteOnDisplayId(note.id)"
+				(dragstart)="drag($event, {id: vm.notes[+id]})"
+				(click)="appStateService.setNoteOnDisplayId(+id)"
 				>
-				{{note.name}}
+				{{vm.notes[+id].name}}
 			</button>
 		</div>
 	</div>

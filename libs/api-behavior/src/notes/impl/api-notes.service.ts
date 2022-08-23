@@ -1,7 +1,7 @@
 import { IApiNotesService } from "../../index";
 import { CreateNoteDto, UpdateNoteDto, BatchUpdateDto } from '../../index';
 import { DomainObjectStorage } from "@lenotes-ng/data-storage";
-import { Note } from "@lenotes-ng/model";
+import { Note, NoteMap } from "@lenotes-ng/model";
 
 export class ApiNotesService implements IApiNotesService {
 
@@ -9,17 +9,15 @@ export class ApiNotesService implements IApiNotesService {
 		private storage: DomainObjectStorage<Note>
 	) {}
 
-  create(createNoteDto: CreateNoteDto) {
+  create(dto: CreateNoteDto) {
 
 		const newNote = {
-			...createNoteDto,
-			id: -1
+			id: dto // the storage service sets the actual id
 		};
-
 		return this.storage.create(newNote);
   }
 
-  getAll(): Note[] {
+  getAll(): NoteMap {
 		return this.storage.getAll();
   }
 
@@ -27,8 +25,16 @@ export class ApiNotesService implements IApiNotesService {
 		return this.storage.get(id);
   }
 
-	getInGroup(groupId: number): Note[] {
-		return this.storage.getAll().filter(note => note.groupId === groupId);
+	getInGroup(groupId: number): NoteMap {
+
+		let notesInGroup: NoteMap = Object.create(null);
+
+		for (const [id, props] of Object.entries(this.storage.getAll())) {
+			if (props.groupId === groupId) {
+				notesInGroup[Number(id)] = props;
+			}
+		}
+		return notesInGroup;
 	}
 
 	update(id: number, dto: UpdateNoteDto) {

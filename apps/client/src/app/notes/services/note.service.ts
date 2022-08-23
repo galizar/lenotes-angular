@@ -42,7 +42,7 @@ export class NoteService implements INoteService {
 	}
 
 	batchUpdate(ids: number[], dto: UpdateNoteDto) {
-		return this.http.patch(`${this.env.NOTES_API_ROOT}/batchUpdate`, {ids, dto});
+		return this.http.patch(`${this.env.NOTES_API_ROOT}/batchUpdate`, {ids, subDto: dto});
 	}
 
   delete(id: number): Observable<object> {

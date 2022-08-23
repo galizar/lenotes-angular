@@ -105,4 +105,8 @@ describe('GroupsDisplayComponent', () => {
 		if (!actualNote) return fail('note is not being moved to target group');
 		expect(actualNote.groupId).toEqual(toGroupId);
 	});
+
+	it('trashes notes in group when group is trashed', () => {
+		throw Error('no impl');
+	});
 });

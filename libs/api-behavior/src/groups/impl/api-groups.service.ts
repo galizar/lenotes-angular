@@ -12,8 +12,7 @@ export class ApiGroupsService implements IApiGroupsService {
   create(createGroupDto: CreateGroupDto) {
 
 		const newGroup = {
-			...createGroupDto,
-			id: -1 // id will be set by storage service
+			id: createGroupDto,
 		};
 		return this.storage.create(newGroup);
   }

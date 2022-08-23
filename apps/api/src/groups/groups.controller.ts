@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe } from '@nestjs/common';
 import { GroupsService } from './services/groups.service';
-import { BatchUpdateDto, CreateGroupDto, BatchUpdateGroupsDto } from '@lenotes-ng/api-behavior';
+import { BatchUpdateDto, CreateGroupDto } from '@lenotes-ng/api-behavior';
 import { UpdateGroupDto } from './dto/update-group.dto';
 
 @Controller('groups')
@@ -30,14 +30,11 @@ export class GroupsController {
 
   @Patch('updateOne/:id')
   update(@Param('id') id: string, @Body() updateGroupDto: UpdateGroupDto) {
-		console.log(updateGroupDto)
     return this.groupsService.update(+id, updateGroupDto);
   }
 
 	@Patch('batchUpdate')
-	batchUpdate(@Body() dto: BatchUpdateGroupsDto) {
-		console.log('batch update handler called');
-		console.log(dto);
+	batchUpdate(@Body() dto: BatchUpdateDto<UpdateGroupDto>) {
 		return this.groupsService.batchUpdate(dto);
 	}
 

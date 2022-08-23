@@ -1,6 +1,6 @@
-import { Group } from "./Group";
+import { GroupMap } from './GroupMap';
 
-export const testGroups: Record<number, Group['id']> = { 
+export const testGroups: GroupMap = { 
 	0: {
 		name: 'group A',
 		isTrashed: false

@@ -1,11 +1,11 @@
 import { DomainObjectStorage } from "../index";
-import { Group } from "@lenotes-ng/model";
+import { Group, GroupMap } from "@lenotes-ng/model";
 import { testGroups } from "@lenotes-ng/model";
 import { UpdateGroupDto } from "@lenotes-ng/api-behavior";
 
 export class NaiveGroupsStorage extends DomainObjectStorage<Group> {
 
-	private groups: Record<number, Group['id']> = testGroups;
+	private groups: GroupMap = testGroups;
 
 	private idPk = Number(Object.keys(testGroups).reduce((a, b) => {
 		if (a > b)
@@ -36,7 +36,7 @@ export class NaiveGroupsStorage extends DomainObjectStorage<Group> {
 		return {id: groupProps};
 	}
 
-	getAll(): Record<number, Group['id']> {
+	getAll(): GroupMap {
 		return this.groups;
 	}
 
