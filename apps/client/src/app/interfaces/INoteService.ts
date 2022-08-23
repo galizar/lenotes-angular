@@ -1,14 +1,14 @@
 import { Observable } from 'rxjs';
 
-import { Note } from '@lenotes-ng/model';
+import { NoteMap, Note } from '@lenotes-ng/model';
 import { CreateNoteDto, UpdateNoteDto } from '@lenotes-ng/api-behavior';
 
 export interface INoteService {
-	get(id: number): Observable<Note>;
+	get(id: Note['id']): Observable<Note['props']>;
 	/** Returns id of created note */
-	create(dto: CreateNoteDto): Observable<number>;
-	getInGroup(groupId: number): Observable<Note[]>;
-	getAll(): Observable<Note[]>;
-	update(id: number, dto: UpdateNoteDto): Observable<object>;
-	delete(id: number): Observable<object>;
+	create(dto: CreateNoteDto): Observable<Note['id']>;
+	getInGroup(groupId: Note['id']): Observable<NoteMap>;
+	getAll(): Observable<NoteMap>;
+	update(id: Note['id'], dto: UpdateNoteDto): Observable<object>;
+	delete(id: Note['id']): Observable<object>;
 }

@@ -3,7 +3,7 @@ import { HttpTestingController, HttpClientTestingModule } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 
 import { GroupService } from './group.service';
-import { Group } from '@lenotes-ng/model';
+import { GroupMap } from '@lenotes-ng/model';
 import { EnvObject } from '../../../environments';
 import { testGroups } from '@lenotes-ng/model';
 
@@ -33,12 +33,9 @@ describe('GroupService', () => {
 
 	it('gets all groups', () => {
 
-		let actualGroups: Group[] | undefined;
-		service.getAll().subscribe(
-			(groups) => {
-				actualGroups = groups;
-			}
-		);
+		let actualGroups: GroupMap | undefined;
+		service.getAll().subscribe(groups => actualGroups = groups);
+
 		const request = httpController.expectOne(TestEnvObj.GROUPS_API_ROOT);
 		request.flush(testGroups);
 		httpController.verify(); // this verifies that there no outstanding requests

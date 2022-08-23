@@ -7,3 +7,5 @@ export { CreateGroupDto } from './groups/dto/create-group.dto';
 export { UpdateGroupDto } from './groups/dto/update-group.dto';
 export { IApiGroupsService } from './groups/iapi-groups.service';
 export { ApiGroupsService } from './groups/impl/api-groups.service';
+
+export { BatchUpdateDto } from './dto/batch-update.dto';

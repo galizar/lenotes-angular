@@ -1,6 +1,6 @@
 import { ApiNotesService } from "./api-notes.service";
 import { DomainObjectStorage, NaiveNotesStorage } from '@lenotes-ng/data-storage';
-import { Note, testNotes } from '@lenotes-ng/model';
+import { Note, NoteMap, testNotes } from '@lenotes-ng/model';
 import { UpdateNoteDto } from '../../index';
 
 describe('ApiNotesService', () => {
@@ -15,26 +15,31 @@ describe('ApiNotesService', () => {
 
 	it('gets note', () => {
 
-		const noteToGet = testNotes[0];
+		const noteWithId = 0;
+		const expectedNote = testNotes[noteWithId];
 
-		const actualNote = service.get(noteToGet.id);
+		const actualNote = service.get(noteWithId);
 
-		expect(actualNote).toEqual(noteToGet);
+		expect(actualNote).toEqual(expectedNote);
 	});
 
 	it('gets notes in group', () => {
 
 		const groupId = 1;
-		const expectedNotes = testNotes.filter(n => n.groupId === groupId).sort((a, b) => a.id - b.id);
+		const expectedNotes: NoteMap = Object.create(null);
+		for (const [id, props] of Object.entries(testNotes)) {
+			if (props.groupId === groupId)
+				expectedNotes[+id] = props;
+		}
 
-		const actualNotes = service.getInGroup(groupId).sort((a, b) => a.id - b.id);
+		const actualNotes = service.getInGroup(groupId);
 
 		expect(actualNotes).toEqual(expectedNotes);
 	});
 
 	it('creates note', () => {
 
-		let expectedNote = {
+		let expectedNoteProps = {
 			// no id here. id is defined by service
 			name: 'a test note',
 			groupId: 0,
@@ -42,24 +47,21 @@ describe('ApiNotesService', () => {
 			isTrashed: false
 		} 
 
-		const createdNoteId = service.create(expectedNote);
-		const actualNote = service.get(createdNoteId);
+		const createdNoteId = service.create(expectedNoteProps);
+		const actualNoteProps = service.get(createdNoteId);
 
-		for (const prop of Object.keys(expectedNote)) {
-			const key = prop as keyof typeof expectedNote;
-			expect(actualNote[key]).toEqual(expectedNote[key]);
+		for (const prop of Object.keys(expectedNoteProps) as Array<keyof Note['props']>) {
+			expect(actualNoteProps[prop]).toEqual(expectedNoteProps[prop]);
 		}
-		expect(createdNoteId).toBe(actualNote.id);
 	});
 
 	describe('note update operations', () => {
 
 		const updateTestFunction = (updateDto: UpdateNoteDto) => {
-			const noteToUpdate = service.get(0);
+			const noteWithId = 0
+			service.update(noteWithId, updateDto);
 
-			service.update(noteToUpdate.id, updateDto);
-
-			const actualNote = service.get(noteToUpdate.id);
+			const actualNote = service.get(noteWithId);
 			for (const [prop, value] of Object.entries(updateDto)) {
 				expect(actualNote[prop as keyof UpdateNoteDto]).toEqual(value)
 			}
@@ -83,14 +85,18 @@ describe('ApiNotesService', () => {
 		});
 	});
 
+	it('batch updates notes', () => {
+		throw Error('not implemented');
+	})
+
 	it('removes note', () => {
 
-		const noteToRemove = service.get(0);
+		const noteWithId = 0;
 
-		service.delete(noteToRemove.id);
+		service.delete(noteWithId);
 
 		expect(() => {
-			service.get(noteToRemove.id);
+			service.get(noteWithId);
 		}).toThrowError();
 	});
 });

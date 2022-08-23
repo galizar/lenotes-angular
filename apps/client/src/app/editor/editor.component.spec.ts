@@ -51,12 +51,12 @@ describe('EditorComponent', () => {
 	it('displays content of note on display', () => {
 
 		const idOfNoteOnDisplay = 0;
-		let noteOnDisplay: Note | undefined;
-		noteServiceStub.get(idOfNoteOnDisplay).subscribe(note => {
-			noteOnDisplay = note;
+		let propsOnDisplay: Note['props'] | undefined;
+		noteServiceStub.get(idOfNoteOnDisplay).subscribe(props => {
+			propsOnDisplay = props;
 		});
-		if (noteOnDisplay === undefined) return fail('could not get note on display from note service');
-		component.appStateService.setGroupOnDisplayId(noteOnDisplay.groupId);
+		if (propsOnDisplay === undefined) return fail('could not get note on display from note service');
+		component.appStateService.setGroupOnDisplayId(propsOnDisplay.groupId);
 
 		component.appStateService.setNoteOnDisplayId(idOfNoteOnDisplay);
 		fixture.detectChanges();
@@ -66,30 +66,30 @@ describe('EditorComponent', () => {
 		if (!editorTextarea) return fail('not getting textarea element from query');
 		const editorContent = editorTextarea.value;
 
-		expect(editorContent).toEqual(noteOnDisplay.content);
+		expect(editorContent).toEqual(propsOnDisplay.content);
 	});
 
 	it('updates content of note on display', fakeAsync(() => {
 
 		const idOfNoteToModify = 0;
 		const newContent = "this is some new content created at: " + Date.now();
-		let noteToModify: Note | undefined; 
-		noteServiceStub.get(idOfNoteToModify).subscribe(note => {
-			noteToModify = note;
+		let propsToModify: Note['props'] | undefined; 
+		noteServiceStub.get(idOfNoteToModify).subscribe(props => {
+			propsToModify = props;
 		});
-		if (noteToModify === undefined) return fail('could not get note to modify from note service');
-		component.appStateService.setGroupOnDisplayId(noteToModify.groupId);
+		if (propsToModify === undefined) return fail('could not get note to modify from note service');
+		component.appStateService.setGroupOnDisplayId(propsToModify.groupId);
 		component.appStateService.setNoteOnDisplayId(idOfNoteToModify);
 
 		component.content.setValue(newContent);
 		tick(501); // wait for observable to emit (debounce time)
 
-		let modifiedNote: Note | undefined;
-		noteServiceStub.get(idOfNoteToModify).subscribe(note => {
-			modifiedNote = note;
+		let modifiedProps: Note['props'] | undefined;
+		noteServiceStub.get(idOfNoteToModify).subscribe(props => {
+			modifiedProps = props;
 		});
-		if (modifiedNote === undefined) return fail('could not get note after modification from note service');
+		if (modifiedProps === undefined) return fail('could not get note after modification from note service');
 
-		expect(modifiedNote.content).toEqual(newContent);
+		expect(modifiedProps.content).toEqual(newContent);
 	}));
 });

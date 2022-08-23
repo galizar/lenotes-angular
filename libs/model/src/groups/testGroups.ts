@@ -1,19 +1,16 @@
-import { Group } from "./Group";
+import { GroupMap } from './GroupMap';
 
-export const testGroups: Group[] = [
-		{
-			id: 0,
-			name: 'group A',
-			isTrashed: false
-		},
-		{
-			id: 1,
-			name: 'group B',
-			isTrashed: false 
-		},
-		{
-			id: 2,
-			name: 'group C',
-			isTrashed: true 
-		}
-];
+export const testGroups: GroupMap = { 
+	0: {
+		name: 'group A',
+		isTrashed: false
+	},
+	1: {
+		name: 'group B',
+		isTrashed: false
+	},
+	2: {
+		name: 'group C',
+		isTrashed: true
+	}
+};

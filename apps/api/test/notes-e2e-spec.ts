@@ -12,8 +12,6 @@ import { updateDomainObjectTestRequest } from './utilities/testRequests';
 describe('ApiController (e2e)', () => {
   let app: INestApplication;
 
-	const CONTROLLER_ROOT = '/notes';
-
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [NotesModule],
@@ -39,6 +37,8 @@ describe('ApiController (e2e)', () => {
 
 	describe('/notes (PATCH) handler', () => {
 
+		const updateOneRoute = '/notes/updateOne';
+
 		it('handles name update request', () => {
 
 			updateDomainObjectTestRequest(
@@ -46,7 +46,7 @@ describe('ApiController (e2e)', () => {
 				{name: 'señuelo'},
 				HttpStatus.OK,
 				app,
-				CONTROLLER_ROOT
+				updateOneRoute
 			);
 		});
 
@@ -55,7 +55,7 @@ describe('ApiController (e2e)', () => {
 				{ isThisPropertyValid: 'no' },
 				HttpStatus.BAD_REQUEST,
 				app,
-				CONTROLLER_ROOT
+				updateOneRoute
 			);
 		});
 
@@ -65,8 +65,21 @@ describe('ApiController (e2e)', () => {
 				{ content: 'betwix the cup and the lip' },
 				HttpStatus.NOT_FOUND,
 				app,
-				CONTROLLER_ROOT
+				updateOneRoute
 			);
+		});
+	});
+
+	describe('batch update handler', () => {
+
+		it('batch updates notes', () => {
+			return request(app.getHttpServer())
+				.patch('/notes/batchUpdate')
+				.send({
+					ids: [0, 1],
+					subDto: { isTrashed: true }
+				})
+				.expect(HttpStatus.OK);
 		});
 	});
 });

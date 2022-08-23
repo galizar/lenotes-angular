@@ -1,10 +1,10 @@
 import { DomainObject } from '@lenotes-ng/model';
 
 export abstract class DomainObjectStorage<T extends DomainObject> {
-	/** Returns ID of newly created object */
-	abstract create(object: T): number; // C
-	abstract get(id: number): T;      // R
-	abstract getAll(): T[];
+	abstract create(withProps: T['props']): T['id']; // C
+	abstract get(id: T['id']): T['props'];      // R
+	abstract getAll(): Record<T['id'], T['props']>;
 	abstract update(object: T): void; // U
-	abstract delete(id: number): void;// D
+	abstract batchUpdate(ids: Array<T['id']>, dto: Partial<T['props']>): void;
+	abstract delete(id: T['id']): void;// D
 }

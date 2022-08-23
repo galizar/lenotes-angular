@@ -8,8 +8,6 @@ import { updateDomainObjectTestRequest } from './utilities/testRequests';
 describe('GroupsController (e2e)', () => {
   let app: INestApplication;
 
-	const CONTROLLER_ROOT = '/groups';
-
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [GroupsModule],
@@ -33,7 +31,9 @@ describe('GroupsController (e2e)', () => {
 		});
 	});
 
-	describe('/groups/:id (PATCH) handler', () => {
+	describe('/groups/updateOne/:id (PATCH) handler', () => {
+
+		const updateOneRoute = '/groups/updateOne';
 
 		it('handles name update request', () => {
 			updateDomainObjectTestRequest(
@@ -41,7 +41,7 @@ describe('GroupsController (e2e)', () => {
 				{ name: 'nuevo nombre' },
 				HttpStatus.OK,
 				app,
-				CONTROLLER_ROOT
+				updateOneRoute
 			);
 		});
 
@@ -51,7 +51,7 @@ describe('GroupsController (e2e)', () => {
 				{ anExtraneousProp: 'LOL' },
 				HttpStatus.BAD_REQUEST,
 				app,
-				CONTROLLER_ROOT
+				updateOneRoute
 			);
 		});
 
@@ -61,8 +61,21 @@ describe('GroupsController (e2e)', () => {
 				{name: 'foo'},
 				HttpStatus.NOT_FOUND,
 				app,
-				CONTROLLER_ROOT
+				updateOneRoute
 			);
+		});
+	});
+	
+	describe('/batchUpdate (PATCH) handler', () => {
+
+		it('handles batch update request', () => {
+			return request(app.getHttpServer())
+				.patch('/groups/batchUpdate')
+				.send({
+					ids: [0, 1],
+					subDto: { isTrashed: true }
+				})
+				.expect(HttpStatus.OK);
 		});
 	});
 

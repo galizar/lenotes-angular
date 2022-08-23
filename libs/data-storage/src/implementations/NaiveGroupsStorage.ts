@@ -1,56 +1,51 @@
 import { DomainObjectStorage } from "../index";
-import { Group } from "@lenotes-ng/model";
+import { Group, GroupMap } from "@lenotes-ng/model";
 import { testGroups } from "@lenotes-ng/model";
+import { UpdateGroupDto } from "@lenotes-ng/api-behavior";
 
 export class NaiveGroupsStorage extends DomainObjectStorage<Group> {
 
-	private groups: Group[] = testGroups;
+	private groups: GroupMap = testGroups;
 
-	private idPk = testGroups.reduce((prev, curr) => {
-		if (prev.id > curr.id)
-			return prev;
+	private idPk = Number(Object.keys(testGroups).reduce((a, b) => {
+		if (a > b)
+			return a;
 		else
-			return curr;
-	}).id;
+			return b;
+	})[0]);
 
-	create(object: Group) {
+	create(withProps: Group['props']) {
 
-		this.idPk++;
-		const newGroup = {
-			...object,
-			id: (() => this.idPk)() // set correct id. new objects have a dummy id.
-		};
-		this.groups = [...this.groups, newGroup];
-		return newGroup.id;
+		const id = ++this.idPk;
+		this.groups[id] = withProps;
+		return id;
 	}
 
 	get(id: number) {
 		
-		const group = this.groups.find(g => g.id === id);
-		if (group === undefined) {
-			throw Error('group not found');
-		}
-		return group;
+		const props = this.groups[id];
+		if (props === undefined) throw Error('group not found');
+		return props;
 	}
 
-	getAll(): Group[] {
+	getAll(): GroupMap {
 		return this.groups;
 	}
 
-	update(object: Group): void {
+	update(obj: Group): void {
+		this.groups[obj.id] = obj.props;
+	}
 
-		this.groups = this.groups.map(group => {
-			if (group.id === object.id) {
-				return object;
-			} else {
-				return group;
-			}
-		});
+	batchUpdate(ids: Group['id'][], dto: UpdateGroupDto): void {
+
+		for (const id of ids) {
+			for (let prop of Object.keys(dto) as Array<keyof UpdateGroupDto>) {
+				this.groups[id][prop] = dto[prop];
+			};
+		}
 	}
 
 	delete(id: number): void {
-
-		this.get(id); // throws error if group doesn't exist
-		this.groups = this.groups.filter(group => group.id !== id);
+		delete this.groups[id];
 	}
 }

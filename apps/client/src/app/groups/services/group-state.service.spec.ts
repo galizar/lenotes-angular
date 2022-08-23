@@ -3,9 +3,9 @@ import { TestBed } from '@angular/core/testing';
 import { GroupService } from '../services/group.service';
 import { GroupStateService } from './group-state.service';
 import { groupServiceStubBuilder } from '../../../assets/test';
-import { Group, testGroups } from '@lenotes-ng/model';
+import { GroupMap, testGroups } from '@lenotes-ng/model';
 
-fdescribe('GroupStateService', () => {
+describe('GroupStateService', () => {
   let service: GroupStateService;
 	let groupService: GroupService;
 
@@ -28,8 +28,8 @@ fdescribe('GroupStateService', () => {
 
 	it('should obtain groups on initialization', () => {
 
-		let expectedGroups: Group[] | undefined;
-		let actualGroups: Group[] | undefined;
+		let expectedGroups: GroupMap | undefined;
+		let actualGroups: GroupMap | undefined;
 		groupService.getAll().subscribe(groups => {
     	expectedGroups = groups;
 		});
@@ -43,11 +43,10 @@ fdescribe('GroupStateService', () => {
 
 	it('triggers group creation and saves group to state', () => {
 
-
-		let expectedGroupCount = testGroups.length + 1;
+		let expectedGroupCount = Object.keys(testGroups).length + 1;
 		let actualGroupCount: number;
 		service.groups$.subscribe(groups => {
-			actualGroupCount = groups.length;
+			actualGroupCount = Object.keys(groups).length;
 		});
 
 		service.create('a new group at ' + Date.now());
@@ -56,7 +55,6 @@ fdescribe('GroupStateService', () => {
 	});
 
 	it('triggers group deletion and removes it from state', () => {
-
 		throw new Error('not implemented');
 	});
 });

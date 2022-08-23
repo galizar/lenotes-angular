@@ -1,14 +1,14 @@
-import { Injectable, ɵclearResolutionOfComponentResourcesQueue } from '@angular/core';
-import { BehaviorSubject, of } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { switchMap, map, distinctUntilChanged } from 'rxjs/operators';
 
-import { Note } from '@lenotes-ng/model';
+import { Note, NoteMap, NoteProps } from '@lenotes-ng/model';
 import { AppStateService } from '../../services';
 import { NoteService } from './note.service';
 import { UpdateNoteDto } from '@lenotes-ng/api-behavior';
 
 interface NoteState {
-	notes: Note[],
+	notes: NoteMap,
 	noteOnDisplay?: Note
 }
 
@@ -18,7 +18,7 @@ interface NoteState {
 export class NoteStateService {
 
 	private state: NoteState = {
-		notes: [],
+		notes: Object.create(null),
 		noteOnDisplay: undefined
 	}
 
@@ -39,9 +39,8 @@ export class NoteStateService {
 					return noteService.getInGroup(groupOnDisplayId);
 			})
 		).subscribe(notes => {
-			this.setNotes(notes);
+			this.updateStoreNotes(notes);
 		});
-
 	}
 
 	notes$ = this.state$.pipe(
@@ -49,25 +48,18 @@ export class NoteStateService {
 		distinctUntilChanged()
 	);
 
-	get(id: number) {
-		return this.state.notes.find(n => n.id === id);
+	get(id: number): NoteProps {
+		return this.state.notes[id];
 	}
 
 	setNoteContent(id: number, content: string) {
 
-		this.setNotes(
-			this.state.notes.map(note => {
-				if (note.id === id) {
-					note.content = content;
-				}
-				return note;
-			})
-		);
-
+		this.state.notes[id]['content'] = content;
+		this.updateStoreNotes(this.state.notes);
 		this.noteService.update(id, {content});
 	}
 
-	setNotes(notes: Note[]) {
+	updateStoreNotes(notes: NoteMap) {
 		this.updateState({ ...this.state, notes });
 	}
 
@@ -81,7 +73,8 @@ export class NoteStateService {
 		};
 
 		this.noteService.create(newNote).subscribe(id => {
-			this.setNotes([...this.state.notes, {...newNote, id}]);
+			this.state.notes[id] = newNote;
+			this.updateStoreNotes(this.state.notes);
 		});
 	}
 
@@ -92,20 +85,37 @@ export class NoteStateService {
 
 	update(id: number, dto: UpdateNoteDto) {
 
+		this.state.notes[id] = { ...this.state.notes[id], ...dto};
+		this.updateStoreNotes(this.state.notes);
 		this.noteService.update(id, dto).subscribe();
+	}
 
-		const newNotes = this.state.notes.map(note => {
-			if (note.id === id) {
-				return { ...note, ...dto };
+	batchUpdate(ids: number[], dto: UpdateNoteDto) {
+
+		for (const id of ids) {
+			for (const prop of Object.keys(dto) as Array<keyof UpdateNoteDto>) {
+				this.state.notes[id][prop] = dto[prop];
 			}
-			return note;
-		});
-		this.setNotes(newNotes);
+		}
+		this.updateStoreNotes(this.state.notes);
+		this.noteService.batchUpdate(ids, dto).subscribe();
 	}
 
 	trash(id: number) {
 
 		this.update(id, {isTrashed: true});
+	}
+
+	trashInGroup(groupId: number) {
+
+		const idsToTrash = [];
+
+		for (const [id, props] of Object.entries(this.state.notes)) {
+			if (props.groupId === groupId) {
+				idsToTrash.push(Number(id));
+			}
+		}
+		this.batchUpdate(idsToTrash, { isTrashed: true });
 	}
 
 	private updateState(state: NoteState) {

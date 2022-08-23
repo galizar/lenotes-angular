@@ -1,58 +1,52 @@
 import { DomainObjectStorage } from "../index";
 
-import { Note } from '@lenotes-ng/model';
+import { Note, NoteMap } from '@lenotes-ng/model';
 import { testNotes } from "@lenotes-ng/model";
+import { UpdateNoteDto } from "@lenotes-ng/api-behavior";
 
 export class NaiveNotesStorage extends DomainObjectStorage<Note> {
 
-	private notes: Note[] = (() => {
-		return testNotes;
-	})();
+	private notes: NoteMap = testNotes;
 
-	private idPk = testNotes.reduce((prev, curr) => {
-		if (prev.id > curr.id)
-			return prev;
+	private idPk = Number(Object.keys(testNotes).reduce((a, b) => {
+		if (a > b)
+			return a;
 		else
-			return curr;
-	}).id;
+			return b;
+	})[0]);
 
-	create(object: Note) {
+	create(withProps: Note['props']) {
 
-		this.idPk++;
-
-		const newNote = {
-			...object,
-			id: (() => this.idPk)()
-		};
-
-		this.notes.push(newNote);
-		return newNote.id;
+		const id = ++this.idPk;
+		this.notes[id] = withProps;
+		return id;
 	}
 
 	get(id: number) {
-		const note = this.notes.find(note => note.id === id);
-		if (note === undefined) throw Error('Note not found');
-		return note;
+		
+		const props = this.notes[id];
+		if (props === undefined) throw Error('group not found');
+		return props;
 	}
 
-	getAll() {
+	getAll(): NoteMap {
 		return this.notes;
 	}
 
-	update(object: Note): void {
+	update(obj: Note): void {
+		this.notes[obj.id] = obj.props;
+	}
 
-		this.notes = this.notes.map(note => {
-			if (note.id === object.id) {
-				return object;
-			}
-			return note;
-		}) 
+	batchUpdate(ids: Note['id'][], dto: UpdateNoteDto): void {
+
+		for (const id of ids) {
+			for (let prop of Object.keys(dto) as Array<keyof UpdateNoteDto>) {
+				this.notes[id][prop] = dto[prop];
+			};
+		}
 	}
 
 	delete(id: number): void {
-
-		this.get(id); // throw error if note doesn't exist
-
-		this.notes = this.notes.filter(n => n.id !== id);
+		delete this.notes[id];
 	}
 }

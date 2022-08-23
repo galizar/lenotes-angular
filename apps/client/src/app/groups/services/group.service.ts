@@ -1,12 +1,11 @@
 import { Inject, Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { Group } from '@lenotes-ng/model';
+import { GroupProps, GroupMap } from '@lenotes-ng/model';
 import { EnvObject } from '../../../environments';
 import { CreateGroupDto, UpdateGroupDto } from '@lenotes-ng/api-behavior';
 import { IGroupService } from '../../interfaces';
-import { ConsoleLogger } from '@nestjs/common';
 
 @Injectable({
   providedIn: 'root'
@@ -27,18 +26,21 @@ export class GroupService implements IGroupService {
     return this.http.post<number>(this.env.GROUPS_API_ROOT, dto);
   }
 
-  getAll(): Observable<Group[]> {
-    return this.http.get<Group[]>(this.env.GROUPS_API_ROOT);
+  getAll(): Observable<GroupMap> {
+    return this.http.get<GroupMap>(this.env.GROUPS_API_ROOT);
   }
 
-  get(id: number): Observable<Group> {
-    return this.http.get<Group>(`${this.env.GROUPS_API_ROOT}/${id}`);
+  get(id: number): Observable<GroupProps> {
+    return this.http.get<GroupProps>(`${this.env.GROUPS_API_ROOT}/${id}`);
   }
 
   update(id: number, dto: UpdateGroupDto): Observable<object> {
-		console.log(dto);
-    return this.http.patch(`${this.env.GROUPS_API_ROOT}/${id}`, dto);
+    return this.http.patch(`${this.env.GROUPS_API_ROOT}/updateOne/${id}`, dto);
   }
+
+	batchUpdate(ids: number[], dto: UpdateGroupDto): Observable<object> {
+		return this.http.patch(`${this.env.GROUPS_API_ROOT}/batchUpdate`, {ids, dto});
+	}
 
   delete(id: number): Observable<object> {
     return this.http.delete(`${this.env.GROUPS_API_ROOT}/${id}`);
