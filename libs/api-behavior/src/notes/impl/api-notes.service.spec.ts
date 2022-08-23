@@ -83,6 +83,10 @@ describe('ApiNotesService', () => {
 		});
 	});
 
+	it('batch updates notes', () => {
+		throw Error('not implemented');
+	})
+
 	it('removes note', () => {
 
 		const noteToRemove = service.get(0);

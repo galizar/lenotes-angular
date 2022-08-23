@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { AppStateService } from '../../services';
-import { NoteService } from '../services/note.service';
+import { AppStateService } from '../services';
+import { NoteService } from './services/note.service';
 import { NotesDisplayComponent } from './notes-display.component';
 import { 
 	testEnvObject, 
 	noteServiceStubBuilder,
 	appStateServiceStubBuilder
-} from '../../../assets/test';
+} from '../../assets/test';
 import { DebugElement } from '@angular/core';
 
 describe('NotesDisplayComponent', () => {

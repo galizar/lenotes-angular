@@ -2,6 +2,7 @@ import { DomainObjectStorage } from "../index";
 
 import { Note } from '@lenotes-ng/model';
 import { testNotes } from "@lenotes-ng/model";
+import { UpdateNoteDto } from "@lenotes-ng/api-behavior";
 
 export class NaiveNotesStorage extends DomainObjectStorage<Note> {
 
@@ -47,6 +48,22 @@ export class NaiveNotesStorage extends DomainObjectStorage<Note> {
 			}
 			return note;
 		}) 
+	}
+
+	batchUpdate(ids: number[], dto: UpdateNoteDto): void {
+
+		const updatedNotes = [];
+
+		for (const id of ids) {
+			const note = this.get(id);
+
+			for (let prop of Object.keys(dto) as Array<keyof UpdateNoteDto>) {
+				note[prop] = dto[prop];
+			};
+			updatedNotes.push(note);
+		}
+
+		this.notes = updatedNotes;
 	}
 
 	delete(id: number): void {

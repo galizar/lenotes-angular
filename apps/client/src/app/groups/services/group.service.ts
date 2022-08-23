@@ -36,9 +36,12 @@ export class GroupService implements IGroupService {
   }
 
   update(id: number, dto: UpdateGroupDto): Observable<object> {
-		console.log(dto);
-    return this.http.patch(`${this.env.GROUPS_API_ROOT}/${id}`, dto);
+    return this.http.patch(`${this.env.GROUPS_API_ROOT}/updateOne/${id}`, dto);
   }
+
+	batchUpdate(ids: number[], dto: UpdateGroupDto): Observable<object> {
+		return this.http.patch(`${this.env.GROUPS_API_ROOT}/batchUpdate`, {ids, dto});
+	}
 
   delete(id: number): Observable<object> {
     return this.http.delete(`${this.env.GROUPS_API_ROOT}/${id}`);

@@ -64,6 +64,10 @@ describe('ApiGroupsService', () => {
 		});
 	})
 
+	it('batch updates groups', () => {
+		throw Error('not implemented');
+	});
+
 	it('removes group', () => {
 
 		const groupToRemove = service.get(0);

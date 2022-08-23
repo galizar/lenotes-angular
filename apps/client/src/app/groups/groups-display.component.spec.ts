@@ -3,14 +3,14 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { By } from '@angular/platform-browser';
 
 import { GroupsDisplayComponent } from './groups-display.component';
-import { AppStateService } from '../../services';
-import { GroupService } from '../services/group.service';
-import { NoteService } from '../../notes/services/note.service';
+import { AppStateService } from '../services';
+import { GroupService } from './services/group.service';
+import { NoteService } from '../notes/services/note.service';
 import { 
 	groupServiceStubBuilder, 
 	noteServiceStubBuilder, 
 	appStateServiceStubBuilder
-} from '../../../assets/test';
+} from '../../assets/test';
 import { DebugElement } from '@angular/core';
 import { Note } from '@lenotes-ng/model';
 import { testNotes } from '@lenotes-ng/model';
@@ -87,6 +87,9 @@ describe('GroupsDisplayComponent', () => {
 		const dataTransfer = new DataTransfer();
 		dataTransfer.setData('Note', JSON.stringify(noteToMove));
 		const droppedNoteEvent = new DragEvent('drop', {dataTransfer});
+
+		if (toGroupId === undefined)
+			throw Error('toGroupId should be defined');
 
 		component.dropOnGroup(droppedNoteEvent, toGroupId);
 

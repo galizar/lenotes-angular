@@ -72,6 +72,10 @@ describe('GroupsController', () => {
 		});
 	});
 
+	describe('batch update handler', () => {
+		throw Error('no impl');
+	});
+
 	describe('update handler', () => {
 
 		it('delegates group update to group service', () => {

@@ -6,5 +6,6 @@ export abstract class DomainObjectStorage<T extends DomainObject> {
 	abstract get(id: number): T;      // R
 	abstract getAll(): T[];
 	abstract update(object: T): void; // U
+	abstract batchUpdate(ids: number[], dto: Partial<T>): void;
 	abstract delete(id: number): void;// D
 }

@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe } from '@nestjs/common';
 
 import { NotesService } from './services/notes.service';
-import { CreateNoteDto } from '@lenotes-ng/api-behavior';
+import { BatchUpdateDto, CreateNoteDto } from '@lenotes-ng/api-behavior';
 import { UpdateNoteDto } from './dto/update-note.dto';
 
 @Controller('notes')
@@ -34,10 +34,15 @@ export class NotesController {
 		return this.notesService.getInGroup(+id);
 	}
 
-  @Patch(':id')
+  @Patch('updateOne/:id')
   update(@Param('id') id: string, @Body() updateNoteDto: UpdateNoteDto) {
     return this.notesService.update(+id, updateNoteDto);
   }
+
+	@Patch('batchUpdate')
+	batchUpdate(@Body() dto: BatchUpdateDto<UpdateNoteDto>) {
+		return this.notesService.batchUpdate(dto);
+	}
 
   @Delete(':id')
   remove(@Param('id') id: string) {

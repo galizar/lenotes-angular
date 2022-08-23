@@ -57,7 +57,7 @@ describe('NoteStateService', () => {
 		const idOfNoteToMove = 0;
 		const idOfGroupToMoveTo = 1; // or expected group id
 		let actualGroupId: number | undefined;
-		let groupIdOfNoteToMove = -1; // dummy to stop compiler's yapping
+		let groupIdOfNoteToMove;
 		noteService.get(idOfNoteToMove).subscribe(note => {
 			groupIdOfNoteToMove = note.groupId;
 		});
@@ -116,5 +116,9 @@ describe('NoteStateService', () => {
 		noteService.get(idOfNoteToModify).subscribe(note => actualContent = note.content);
 
 		expect(actualContent).toEqual(newContent);
+	});
+
+	it('updates note in batch', () => {
+		throw Error('not implementd');
 	});
 });

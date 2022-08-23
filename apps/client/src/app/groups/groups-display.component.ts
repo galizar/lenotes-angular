@@ -1,11 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
 
-import { Note } from '@lenotes-ng/model';
-import { AppStateService } from '../../services';
-import { GroupStateService } from '../services/group-state.service';
-import { NoteStateService } from '../../notes/services/note-state.service';
+import { Note, Group } from '@lenotes-ng/model';
+import { AppStateService } from '../services';
+import { GroupStateService } from './services/group-state.service';
+import { NoteStateService } from '../notes/services/note-state.service';
+import { buildViewModel } from '../util/buildViewModel';
+
+type GroupsViewModel = {
+	groupOnDisplayId?: number 
+	groups: Group[]
+	displayingTrash: boolean
+};
 
 @Component({
   selector: 'app-groups-display',
@@ -18,22 +23,11 @@ export class GroupsDisplayComponent implements OnInit {
 	formInputId = 'group-name-input';
 	formInputValue: string = '';
 
-	// view model
-	vm$ = combineLatest(
-		[
-			this.appStateService.groupOnDisplayId$,
-			this.groupStateService.groups$,
-			this.appStateService.displayingTrash$
-		]
-	).pipe(
-		map((props) => {
-			return {
-				groupOnDisplayId: props[0], 
-				groups: props[1], 
-				displayingTrash: props[2]
-			};
-		})
-	);
+	vm$ = buildViewModel<GroupsViewModel>({
+		groupOnDisplayId: this.appStateService.groupOnDisplayId$,
+		groups: this.groupStateService.groups$,
+		displayingTrash: this.appStateService.displayingTrash$
+	});
 
   constructor(
 		public noteStateService: NoteStateService,

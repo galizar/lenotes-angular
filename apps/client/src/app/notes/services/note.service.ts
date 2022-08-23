@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { Note } from '@lenotes-ng/model';
@@ -38,7 +38,11 @@ export class NoteService implements INoteService {
 	}
 
 	update(id: number, dto: UpdateNoteDto) {
-		return this.http.patch(`${this.env.NOTES_API_ROOT}/${id}`, dto);
+		return this.http.patch(`${this.env.NOTES_API_ROOT}/updateOne/${id}`, dto);
+	}
+
+	batchUpdate(ids: number[], dto: UpdateNoteDto) {
+		return this.http.patch(`${this.env.NOTES_API_ROOT}/batchUpdate`, {ids, dto});
 	}
 
   delete(id: number): Observable<object> {

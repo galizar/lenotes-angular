@@ -1,7 +1,7 @@
 import { Group } from "@lenotes-ng/model";
 import { DomainObjectStorage } from "@lenotes-ng/data-storage";
 import { IApiGroupsService } from "../../index";
-import { CreateGroupDto, UpdateGroupDto } from "../../index";
+import { CreateGroupDto, UpdateGroupDto, BatchUpdateDto } from "../../index";
 
 export class ApiGroupsService implements IApiGroupsService {
 
@@ -32,6 +32,10 @@ export class ApiGroupsService implements IApiGroupsService {
 		const updatedGroup = {...groupToUpdate, ...dto};
 		this.storage.update(updatedGroup);
   }
+
+	batchUpdate(dto: BatchUpdateDto<UpdateGroupDto>) {
+		this.storage.batchUpdate(dto.ids, dto.subDto);
+	}
 
   delete(id: number) {
 		this.storage.delete(id);

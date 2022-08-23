@@ -101,6 +101,10 @@ describe('NotesController', () => {
 		});
 	});
 
+	describe('batch update handler', () => {
+		throw Error('no impl');
+	});
+
 	describe('remove handler', () => {
 
 		it('delegates remove request to service', () => {

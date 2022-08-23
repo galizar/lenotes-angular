@@ -1,13 +1,13 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe } from '@nestjs/common';
 import { GroupsService } from './services/groups.service';
-import { CreateGroupDto } from '@lenotes-ng/api-behavior';
+import { BatchUpdateDto, CreateGroupDto, BatchUpdateGroupsDto } from '@lenotes-ng/api-behavior';
 import { UpdateGroupDto } from './dto/update-group.dto';
 
 @Controller('groups')
 @UsePipes(
 	new ValidationPipe({
 		whitelist: true,
-		forbidNonWhitelisted: true
+		forbidNonWhitelisted: true,
 	})
 )
 export class GroupsController {
@@ -28,10 +28,18 @@ export class GroupsController {
     return this.groupsService.get(+id);
   }
 
-  @Patch(':id')
+  @Patch('updateOne/:id')
   update(@Param('id') id: string, @Body() updateGroupDto: UpdateGroupDto) {
+		console.log(updateGroupDto)
     return this.groupsService.update(+id, updateGroupDto);
   }
+
+	@Patch('batchUpdate')
+	batchUpdate(@Body() dto: BatchUpdateGroupsDto) {
+		console.log('batch update handler called');
+		console.log(dto);
+		return this.groupsService.batchUpdate(dto);
+	}
 
   @Delete(':id')
   remove(@Param('id') id: string) {

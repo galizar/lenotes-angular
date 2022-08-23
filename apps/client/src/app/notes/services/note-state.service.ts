@@ -92,8 +92,6 @@ export class NoteStateService {
 
 	update(id: number, dto: UpdateNoteDto) {
 
-		this.noteService.update(id, dto).subscribe();
-
 		const newNotes = this.state.notes.map(note => {
 			if (note.id === id) {
 				return { ...note, ...dto };
@@ -101,11 +99,31 @@ export class NoteStateService {
 			return note;
 		});
 		this.setNotes(newNotes);
+		this.noteService.update(id, dto).subscribe();
+	}
+
+	batchUpdate(notes: Note[], dto: UpdateNoteDto) {
+
+		let idsToUpdate = [];
+		for (const note of notes) {
+			for (const prop of Object.keys(dto) as Array<keyof UpdateNoteDto>) {
+				note[prop] = dto[prop];
+			}
+			idsToUpdate.push(note.id);
+		}
+		this.setNotes(notes);
+		this.noteService.batchUpdate(idsToUpdate, dto).subscribe();
 	}
 
 	trash(id: number) {
 
 		this.update(id, {isTrashed: true});
+	}
+
+	trashInGroup(groupId: number) {
+
+		const notesToTrash = this.state.notes.filter(note => note.groupId === groupId);
+		this.batchUpdate(notesToTrash, { isTrashed: true });
 	}
 
 	private updateState(state: NoteState) {

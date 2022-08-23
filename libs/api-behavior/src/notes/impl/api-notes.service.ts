@@ -1,5 +1,5 @@
 import { IApiNotesService } from "../../index";
-import { CreateNoteDto, UpdateNoteDto } from '../../index';
+import { CreateNoteDto, UpdateNoteDto, BatchUpdateDto } from '../../index';
 import { DomainObjectStorage } from "@lenotes-ng/data-storage";
 import { Note } from "@lenotes-ng/model";
 
@@ -37,6 +37,10 @@ export class ApiNotesService implements IApiNotesService {
 		const updatedNote = {...noteToUpdate, ...dto};
 
 		this.storage.update(updatedNote);
+	}
+
+	batchUpdate(dto: BatchUpdateDto<UpdateNoteDto>) {
+		this.storage.batchUpdate(dto.ids, dto.subDto);
 	}
 
 	delete(id: number): void {
