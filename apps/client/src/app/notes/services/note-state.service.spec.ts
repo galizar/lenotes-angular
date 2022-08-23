@@ -35,19 +35,20 @@ describe('NoteStateService', () => {
 	it('updates state to only contain notes of group on display', () => {
 
 		const groupOnDisplayId = 0; 
-		let expectedNoteIds: number[] | undefined;
-		let actualNoteIds: number[] | undefined;
+		let expectedNoteIds: string[] = [];
+		let actualNoteIds: string[] = [];
 		noteService.getInGroup(groupOnDisplayId).subscribe(notes => {
-			expectedNoteIds = notes.filter(n => !n.isTrashed).map(n => n.id);
+			expectedNoteIds = Object.keys(notes);
 		});
 
 		appStateService.setGroupOnDisplayId(groupOnDisplayId);
 
 		service.notes$.subscribe(notes => {
 			// the service filters trashed notes so no need to filter here
-			actualNoteIds = notes.map(n => n.id);
+			actualNoteIds = Object.keys(notes);
 		});
 
+		expect(actualNoteIds.length).toBeGreaterThan(0);
 		expect(actualNoteIds).toEqual(expectedNoteIds);
 	});
 
@@ -57,9 +58,9 @@ describe('NoteStateService', () => {
 		const idOfNoteToMove = 0;
 		const idOfGroupToMoveTo = 1; // or expected group id
 		let actualGroupId: number | undefined;
-		let groupIdOfNoteToMove;
+		let groupIdOfNoteToMove: number | undefined;
 		noteService.get(idOfNoteToMove).subscribe(note => {
-			groupIdOfNoteToMove = note.groupId;
+			groupIdOfNoteToMove = +Object.keys(note)[0];
 		});
 		// it's required to set on display the group id of the note to move
 		// so that the note to move is on state. the test fails if the note to move is
@@ -72,7 +73,7 @@ describe('NoteStateService', () => {
 		// then
 		// local state verification
 		service.notes$.subscribe(notes => {
-			const noteToMove = notes.find(n => n.id === idOfNoteToMove);
+			const noteToMove = notes[idOfNoteToMove];
 			if (noteToMove === undefined) return fail('note is not in state service');
 			actualGroupId = noteToMove.groupId;
 		});
@@ -80,7 +81,7 @@ describe('NoteStateService', () => {
 		expect(actualGroupId).toEqual(idOfGroupToMoveTo);
 
 		// remote state (http service) verification
-		noteService.get(idOfNoteToMove).subscribe(note => actualGroupId = note.groupId);
+		noteService.get(idOfNoteToMove).subscribe(props => actualGroupId = props.groupId);
 			
 		expect(actualGroupId).toEqual(idOfGroupToMoveTo);
 	});
@@ -91,8 +92,8 @@ describe('NoteStateService', () => {
 		const idOfNoteToModify = 0;
 		let noteToModify: Note | undefined;
 		const newContent = "this is some new content created at " + Date.now();
-		noteService.get(idOfNoteToModify).subscribe(note => {
-			noteToModify = note;
+		noteService.get(idOfNoteToModify).subscribe(props => {
+			noteToModify = {idOfNoteToModify: props};
 		});
 		if (noteToModify === undefined) return fail('could not get note to modify from note service');
 		appStateService.setGroupOnDisplayId(noteToModify.groupId); // this is needed for the note to be in the state

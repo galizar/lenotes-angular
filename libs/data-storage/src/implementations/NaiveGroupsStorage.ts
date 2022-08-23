@@ -14,26 +14,18 @@ export class NaiveGroupsStorage extends DomainObjectStorage<Group> {
 			return b;
 	})[0]);
 
-	create(obj: Group) {
+	create(withProps: Group['props']) {
 
-		this.idPk++;
-		const value = Object.values(obj);
-		const newGroup = {
-			[this.idPk]: {
-				...value[0]
-			}
-		};
-		this.groups = {...this.groups, ...newGroup};
-		return this.idPk;
+		const id = ++this.idPk;
+		this.groups[id] = withProps;
+		return id;
 	}
 
 	get(id: number) {
 		
-		const groupProps = this.groups[id];
-		if (groupProps === undefined) {
-			throw Error('group not found');
-		}
-		return {id: groupProps};
+		const props = this.groups[id];
+		if (props === undefined) throw Error('group not found');
+		return props;
 	}
 
 	getAll(): GroupMap {
@@ -41,13 +33,10 @@ export class NaiveGroupsStorage extends DomainObjectStorage<Group> {
 	}
 
 	update(obj: Group): void {
-
-		const id = Number(Object.keys(obj)[0]);
-		const props = Object.values(obj)[0] as Group['id'];
-		this.groups[id] = props;
+		this.groups[obj.id] = obj.props;
 	}
 
-	batchUpdate(ids: number[], dto: UpdateGroupDto): void {
+	batchUpdate(ids: Group['id'][], dto: UpdateGroupDto): void {
 
 		for (const id of ids) {
 			for (let prop of Object.keys(dto) as Array<keyof UpdateGroupDto>) {

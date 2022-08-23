@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { Note, NoteMap } from '@lenotes-ng/model';
+import { NoteProps, NoteMap } from '@lenotes-ng/model';
 import { INoteService } from '../../interfaces';
 import { EnvObject } from '../../../environments';
 import { CreateNoteDto, UpdateNoteDto } from '@lenotes-ng/api-behavior';
@@ -29,8 +29,8 @@ export class NoteService implements INoteService {
     return this.http.get<NoteMap>(this.env.NOTES_API_ROOT);
   }
 
-  get(id: number): Observable<Note> {
-    return this.http.get<Note>(`${this.env.NOTES_API_ROOT}/${id}`);
+  get(id: number): Observable<NoteProps> {
+    return this.http.get<NoteProps>(`${this.env.NOTES_API_ROOT}/${id}`);
   }
 
 	getInGroup(groupId: number): Observable<NoteMap> {

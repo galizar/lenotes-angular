@@ -1,9 +1,9 @@
 import { CreateNoteDto, UpdateNoteDto, BatchUpdateDto } from '../index';
-import { Note, NoteMap } from '@lenotes-ng/model';
+import { NoteProps, NoteMap } from '@lenotes-ng/model';
 
 export interface IApiNotesService {
 	create(dto: CreateNoteDto): number;
-	get(id: number): Note;
+	get(id: number): NoteProps;
 	getInGroup(groupId: number): NoteMap;
 	getAll(): NoteMap;
 	update(id: number, dto: UpdateNoteDto): void;

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { switchMap, map, distinctUntilChanged } from 'rxjs/operators';
 
-import { Note, NoteMap } from '@lenotes-ng/model';
+import { Note, NoteMap, NoteProps } from '@lenotes-ng/model';
 import { AppStateService } from '../../services';
 import { NoteService } from './note.service';
 import { UpdateNoteDto } from '@lenotes-ng/api-behavior';
@@ -48,7 +48,7 @@ export class NoteStateService {
 		distinctUntilChanged()
 	);
 
-	get(id: number) {
+	get(id: number): NoteProps {
 		return this.state.notes[id];
 	}
 

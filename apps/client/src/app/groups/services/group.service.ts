@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { Group, GroupMap } from '@lenotes-ng/model';
+import { GroupProps, GroupMap } from '@lenotes-ng/model';
 import { EnvObject } from '../../../environments';
 import { CreateGroupDto, UpdateGroupDto } from '@lenotes-ng/api-behavior';
 import { IGroupService } from '../../interfaces';
@@ -30,8 +30,8 @@ export class GroupService implements IGroupService {
     return this.http.get<GroupMap>(this.env.GROUPS_API_ROOT);
   }
 
-  get(id: number): Observable<Group> {
-    return this.http.get<Group>(`${this.env.GROUPS_API_ROOT}/${id}`);
+  get(id: number): Observable<GroupProps> {
+    return this.http.get<GroupProps>(`${this.env.GROUPS_API_ROOT}/${id}`);
   }
 
   update(id: number, dto: UpdateGroupDto): Observable<object> {
