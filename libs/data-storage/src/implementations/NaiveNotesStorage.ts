@@ -6,70 +6,58 @@ import { UpdateNoteDto } from "@lenotes-ng/api-behavior";
 
 export class NaiveNotesStorage extends DomainObjectStorage<Note> {
 
-	private notes: Note[] = (() => {
-		return testNotes;
-	})();
+	private notes: Record<number, Note['id']> = testNotes;
 
-	private idPk = testNotes.reduce((prev, curr) => {
-		if (prev.id > curr.id)
-			return prev;
+	private idPk = Number(Object.keys(testNotes).reduce((a, b) => {
+		if (a > b)
+			return a;
 		else
-			return curr;
-	}).id;
+			return b;
+	})[0]);
 
-	create(object: Note) {
+	create(obj: Note) {
 
 		this.idPk++;
-
+		const value = Object.values(obj);
 		const newNote = {
-			...object,
-			id: (() => this.idPk)()
+			[this.idPk]: {
+				...value[0]
+			}
 		};
-
-		this.notes.push(newNote);
-		return newNote.id;
+		this.notes = {...this.notes, ...newNote};
+		return this.idPk;
 	}
 
 	get(id: number) {
-		const note = this.notes.find(note => note.id === id);
-		if (note === undefined) throw Error('Note not found');
-		return note;
+		
+		const groupProps = this.notes[id];
+		if (groupProps === undefined) {
+			throw Error('group not found');
+		}
+		return {id: groupProps};
 	}
 
-	getAll() {
+	getAll(): Record<number, Note['id']> {
 		return this.notes;
 	}
 
-	update(object: Note): void {
+	update(obj: Note): void {
 
-		this.notes = this.notes.map(note => {
-			if (note.id === object.id) {
-				return object;
-			}
-			return note;
-		}) 
+		const id = Number(Object.keys(obj)[0]);
+		const props = Object.values(obj)[0] as Note['id'];
+		this.notes[id] = props;
 	}
 
 	batchUpdate(ids: number[], dto: UpdateNoteDto): void {
 
-		const updatedNotes = [];
-
 		for (const id of ids) {
-			const note = this.get(id);
-
 			for (let prop of Object.keys(dto) as Array<keyof UpdateNoteDto>) {
-				note[prop] = dto[prop];
+				this.notes[id][prop] = dto[prop];
 			};
-			updatedNotes.push(note);
 		}
-
-		this.notes = updatedNotes;
 	}
 
 	delete(id: number): void {
-
-		this.get(id); // throw error if note doesn't exist
-
-		this.notes = this.notes.filter(n => n.id !== id);
+		delete this.notes[id];
 	}
 }

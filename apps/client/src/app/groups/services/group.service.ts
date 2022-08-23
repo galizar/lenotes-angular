@@ -2,11 +2,10 @@ import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { Group } from '@lenotes-ng/model';
+import { Group, GroupMap } from '@lenotes-ng/model';
 import { EnvObject } from '../../../environments';
 import { CreateGroupDto, UpdateGroupDto } from '@lenotes-ng/api-behavior';
 import { IGroupService } from '../../interfaces';
-import { ConsoleLogger } from '@nestjs/common';
 
 @Injectable({
   providedIn: 'root'
@@ -27,8 +26,8 @@ export class GroupService implements IGroupService {
     return this.http.post<number>(this.env.GROUPS_API_ROOT, dto);
   }
 
-  getAll(): Observable<Group[]> {
-    return this.http.get<Group[]>(this.env.GROUPS_API_ROOT);
+  getAll(): Observable<GroupMap> {
+    return this.http.get<GroupMap>(this.env.GROUPS_API_ROOT);
   }
 
   get(id: number): Observable<Group> {

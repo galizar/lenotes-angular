@@ -5,79 +5,58 @@ import { UpdateGroupDto } from "@lenotes-ng/api-behavior";
 
 export class NaiveGroupsStorage extends DomainObjectStorage<Group> {
 
-	private groups: Group[] = testGroups;
+	private groups: Record<number, Group['id']> = testGroups;
 
-	private idBasedGroups: Record<number, Group> = (() => {
-
-		const initialGroups: Record<number, Group> = {};
-		for (const group of testGroups) {
-			initialGroups[group.id] = group;
-		}
-		return initialGroups;
-	})();
-	
-
-	private idPk = testGroups.reduce((prev, curr) => {
-		if (prev.id > curr.id)
-			return prev;
+	private idPk = Number(Object.keys(testGroups).reduce((a, b) => {
+		if (a > b)
+			return a;
 		else
-			return curr;
-	}).id;
+			return b;
+	})[0]);
 
-	create(object: Group) {
+	create(obj: Group) {
 
 		this.idPk++;
+		const value = Object.values(obj);
 		const newGroup = {
-			...object,
-			id: (() => this.idPk)() // set correct id. new objects have a dummy id.
+			[this.idPk]: {
+				...value[0]
+			}
 		};
-		this.groups = [...this.groups, newGroup];
-		return newGroup.id;
+		this.groups = {...this.groups, ...newGroup};
+		return this.idPk;
 	}
 
 	get(id: number) {
 		
-		const group = this.groups.find(g => g.id === id);
-		if (group === undefined) {
+		const groupProps = this.groups[id];
+		if (groupProps === undefined) {
 			throw Error('group not found');
 		}
-		return group;
+		return {id: groupProps};
 	}
 
-	getAll(): Group[] {
+	getAll(): Record<number, Group['id']> {
 		return this.groups;
 	}
 
-	update(object: Group): void {
+	update(obj: Group): void {
 
-		this.groups = this.groups.map(group => {
-			if (group.id === object.id) {
-				return object;
-			} else {
-				return group;
-			}
-		});
+		const id = Number(Object.keys(obj)[0]);
+		const props = Object.values(obj)[0] as Group['id'];
+		this.groups[id] = props;
 	}
 
 	batchUpdate(ids: number[], dto: UpdateGroupDto): void {
 
-		const updatedGroups = [];
-
 		for (const id of ids) {
-			const group = this.get(id);	
-
 			for (let prop of Object.keys(dto) as Array<keyof UpdateGroupDto>) {
-				group[prop] = dto[prop];
+				this.groups[id][prop] = dto[prop];
 			};
-			updatedGroups.push(group);
 		}
-
-		this.groups = updatedGroups;
 	}
 
 	delete(id: number): void {
-
-		this.get(id); // throws error if group doesn't exist
-		this.groups = this.groups.filter(group => group.id !== id);
+		delete this.groups[id];
 	}
 }
