@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { GroupService } from '../services/group.service';
 import { GroupStateService } from './group-state.service';
 import { groupServiceStubBuilder } from '../../../assets/test';
-import { GroupMap, testGroups } from '@lenotes-ng/model';
+import { Group, ObjectMap, testGroups } from '@lenotes-ng/model';
 
 describe('GroupStateService', () => {
   let service: GroupStateService;
@@ -28,8 +28,8 @@ describe('GroupStateService', () => {
 
 	it('should obtain groups on initialization', () => {
 
-		let expectedGroups: GroupMap | undefined;
-		let actualGroups: GroupMap | undefined;
+		let expectedGroups: ObjectMap<Group> | undefined;
+		let actualGroups: ObjectMap<Group> | undefined;
 		groupService.getAll().subscribe(groups => {
     	expectedGroups = groups;
 		});

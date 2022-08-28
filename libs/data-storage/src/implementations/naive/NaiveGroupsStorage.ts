@@ -1,11 +1,11 @@
-import { DomainObjectStorage } from "../index";
-import { Group, GroupMap } from "@lenotes-ng/model";
+import { DomainObjectStorage } from "../../index";
+import { Group, ObjectMap } from "@lenotes-ng/model";
 import { testGroups } from "@lenotes-ng/model";
 import { UpdateGroupDto } from "@lenotes-ng/api-behavior";
 
 export class NaiveGroupsStorage extends DomainObjectStorage<Group> {
 
-	private groups: GroupMap = testGroups;
+	private groups: ObjectMap<Group> = testGroups;
 
 	private idPk = Number(Object.keys(testGroups).reduce((a, b) => {
 		if (a > b)
@@ -14,29 +14,29 @@ export class NaiveGroupsStorage extends DomainObjectStorage<Group> {
 			return b;
 	})[0]);
 
-	create(withProps: Group['props']) {
+	async create(withProps: Group['props']) {
 
 		const id = ++this.idPk;
 		this.groups[id] = withProps;
 		return id;
 	}
 
-	get(id: number) {
-		
-		const props = this.groups[id];
+	async get(id: Group['id']) {
+
+		const props = await this.groups[id];
 		if (props === undefined) throw Error('group not found');
 		return props;
 	}
 
-	getAll(): GroupMap {
+	async getAll() {
 		return this.groups;
 	}
 
-	update(obj: Group): void {
+	async update(obj: Group) {
 		this.groups[obj.id] = obj.props;
 	}
 
-	batchUpdate(ids: Group['id'][], dto: UpdateGroupDto): void {
+	async batchUpdate(ids: Group['id'][], dto: UpdateGroupDto) {
 
 		for (const id of ids) {
 			for (let prop of Object.keys(dto) as Array<keyof UpdateGroupDto>) {
@@ -45,7 +45,7 @@ export class NaiveGroupsStorage extends DomainObjectStorage<Group> {
 		}
 	}
 
-	delete(id: number): void {
+	async delete(id: Group['id']) {
 		delete this.groups[id];
 	}
 }

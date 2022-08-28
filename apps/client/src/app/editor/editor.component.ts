@@ -6,6 +6,7 @@ import { map, debounceTime, sample } from 'rxjs/operators';
 import { AppStateService } from '../services';
 import { NoteStateService } from '../notes/services/note-state.service';
 import { EditorStateService } from './services/editor-state.service';
+import { buildViewModel } from '../util/buildViewModel';
 
 @Component({
   selector: 'app-editor',
@@ -17,13 +18,11 @@ export class EditorComponent implements OnInit {
 	content = new FormControl<string>('');
 
 	// view model
-	vm$ = combineLatest([
-		this.editorStateService.contentToDisplay$
-	]).pipe(
-		map(([contentToDisplay]) => {
-			return {contentToDisplay};
-		})
-	);
+	vm$ = buildViewModel({
+		contentToDisplay: this.editorStateService.contentToDisplay$,
+		noteOnDisplayId: this.appStateService.noteOnDisplayId$,
+		displayingTrash: this.appStateService.displayingTrash$
+	});
 
   constructor(
 		public appStateService: AppStateService,
@@ -36,12 +35,14 @@ export class EditorComponent implements OnInit {
 		
 		/** Register observer to listen for changes to the note on display  */
 		combineLatest([
-			this.content.valueChanges,
-			this.appStateService.noteOnDisplayId$
-		]).pipe(
-			sample(this.content.valueChanges),
+			this.appStateService.noteOnDisplayId$,
+			this.content.valueChanges
+		])
+		.pipe(
+			sample(this.content.valueChanges), // ignore emits where only noteOnDisplay changes
 			debounceTime(500),
-		).subscribe(([content, id]) => {
+		).subscribe(([id]) => {
+			const content = this.content.value;
 			if (id === undefined || content === null) return;
 			this.noteStateService.setNoteContent(id, content);
 		});

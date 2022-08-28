@@ -1,6 +1,6 @@
-import { GroupMap } from './GroupMap';
+import { Group, ObjectMap } from '../index';
 
-export const testGroups: GroupMap = { 
+export const testGroups: ObjectMap<Group> = { 
 	0: {
 		name: 'group A',
 		isTrashed: false

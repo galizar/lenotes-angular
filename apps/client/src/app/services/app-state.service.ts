@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map, distinctUntilChanged } from 'rxjs/operators';
+import { EditorStateService } from "../editor/services/editor-state.service";
 
 interface AppState {
 	noteOnDisplayId?: number,
@@ -29,18 +30,20 @@ export class AppStateService {
 	displayingTrash$ = this.getStateProperty$('displayingTrash');
 
 	setGroupOnDisplayId(id?: number) {
+		console.log('now displaying group id:', id);
 		this.updateState({ ...this.state, groupOnDisplayId: id });
   }
 
 	setNoteOnDisplayId(id: number) {
     this.updateState({ ...this.state, noteOnDisplayId: id });
-	}
-	
+	} 
+
 	toggleDisplayingTrash() {
 		this.updateState({ 
 			...this.state, 
 			displayingTrash: !this.state.displayingTrash,
-			groupOnDisplayId: undefined
+			groupOnDisplayId: undefined,
+			noteOnDisplayId: undefined
 		});
 	}
 

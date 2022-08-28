@@ -14,16 +14,16 @@ describe('ApiGroupsService', () => {
 		service = new ApiGroupsService(storage);
 	});
 
-	it('creates group', () => {
+	it('creates group', async () => {
 
 		const newGroup: CreateGroupDto = {
 			name: 'a new group created at ' + Date.now(),
 			isTrashed: false
 		};
 
-		const createdGroupId = service.create(newGroup);
+		const createdGroupId = await service.create(newGroup);
 
-		const actualGroup = service.get(createdGroupId);
+		const actualGroup = await service.get(createdGroupId);
 
 		for (const prop of Object.keys(newGroup)) {
 			const key = prop as keyof typeof newGroup;
@@ -31,35 +31,35 @@ describe('ApiGroupsService', () => {
 		}
 	});
 
-	it('gets group', () => {
+	it('gets group', async () => {
 
 		const groupWithId = 0;
 		const expectedGroup = testGroups[groupWithId];
 
-		const actualGroup = service.get(groupWithId);
+		const actualGroup = await service.get(groupWithId);
 
 		expect(actualGroup).toEqual(expectedGroup);
 	});
 
 	describe('group update operations', () => {
 
-		const updateTestFunction = (updateDto: UpdateGroupDto) => {
+		const updateTestFunction = async (updateDto: UpdateGroupDto) => {
 			const groupWithId = 0;
 
-			service.update(groupWithId, updateDto);
+			await service.update(groupWithId, updateDto);
 
-			const actualGroup = service.get(groupWithId);
+			const actualGroup = await service.get(groupWithId);
 			for (const [prop, value] of Object.entries(updateDto)) {
 				expect(actualGroup[prop as keyof UpdateGroupDto]).toEqual(value)
 			}
 		};
 
-		it('update name', () => {
-			updateTestFunction({name: 'a freshly baked name at ' + Date.now()});
+		it('update name', async () => {
+			await updateTestFunction({name: 'a freshly baked name at ' + Date.now()});
 		});
 
-		it('update isTrashed', () => {
-			updateTestFunction({isTrashed: true});
+		it('update isTrashed', async () => {
+			await updateTestFunction({isTrashed: true});
 		});
 	})
 
@@ -67,14 +67,16 @@ describe('ApiGroupsService', () => {
 		throw Error('not implemented');
 	});
 
-	it('removes group', () => {
+	it('removes group', async () => {
 
 		const groupWithId = 0;
 
-		service.delete(groupWithId);
+		await service.delete(groupWithId);
 
-		expect(() => {
-			service.get(groupWithId);
-		}).toThrowError(Error('group not found'));
+		try {
+			await service.get(groupWithId);
+		} catch (e) {
+			expect(e).toEqual(Error('group not found'));
+		}
 	});
 });

@@ -1,7 +1,7 @@
 import { IApiNotesService } from "../../index";
 import { CreateNoteDto, UpdateNoteDto, BatchUpdateDto } from '../../index';
 import { DomainObjectStorage } from "@lenotes-ng/data-storage";
-import { Note, NoteProps, NoteMap } from "@lenotes-ng/model";
+import { Note, ObjectMap } from "@lenotes-ng/model";
 
 export class ApiNotesService implements IApiNotesService {
 
@@ -9,25 +9,25 @@ export class ApiNotesService implements IApiNotesService {
 		private storage: DomainObjectStorage<Note>
 	) {}
 
-  create(dto: CreateNoteDto) {
+  async create(dto: CreateNoteDto) {
 
 		const withProps = dto;
-		return this.storage.create(withProps);
+		return await this.storage.create(withProps);
   }
 
-  getAll(): NoteMap {
-		return this.storage.getAll();
+  async getAll() {
+		return await this.storage.getAll();
   }
 
-  get(id: number): NoteProps {
-		return this.storage.get(id);
+  async get(id: number) {
+		return await this.storage.get(id);
   }
 
-	getInGroup(groupId: number): NoteMap {
+	async getInGroup(groupId: number) {
 
-		let notesInGroup: NoteMap = Object.create(null);
+		let notesInGroup: ObjectMap<Note> = Object.create(null);
 
-		for (const [id, props] of Object.entries(this.storage.getAll())) {
+		for (const [id, props] of Object.entries(await this.storage.getAll())) {
 			if (props.groupId === groupId) {
 				notesInGroup[+id] = props;
 			}
@@ -35,17 +35,17 @@ export class ApiNotesService implements IApiNotesService {
 		return notesInGroup;
 	}
 
-	update(id: number, dto: UpdateNoteDto) {
+	async update(id: number, dto: UpdateNoteDto) {
 
-		const noteProps = this.get(id);
+		const noteProps = await this.get(id);
 		this.storage.update({id, props: {...noteProps, ...dto}});
 	}
 
-	batchUpdate(dto: BatchUpdateDto<UpdateNoteDto>) {
-		this.storage.batchUpdate(dto.ids, dto.subDto);
+	async batchUpdate(dto: BatchUpdateDto<UpdateNoteDto>) {
+		await this.storage.batchUpdate(dto.ids, dto.subDto);
 	}
 
-	delete(id: number): void {
-		this.storage.delete(id);
+	async delete(id: number) {
+		await this.storage.delete(id);
 	}
 }

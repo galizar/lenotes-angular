@@ -3,7 +3,7 @@ import { HttpTestingController, HttpClientTestingModule } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 
 import { GroupService } from './group.service';
-import { GroupMap } from '@lenotes-ng/model';
+import { ObjectMap, Group } from '@lenotes-ng/model';
 import { EnvObject } from '../../../environments';
 import { testGroups } from '@lenotes-ng/model';
 
@@ -33,7 +33,7 @@ describe('GroupService', () => {
 
 	it('gets all groups', () => {
 
-		let actualGroups: GroupMap | undefined;
+		let actualGroups: ObjectMap<Group> | undefined;
 		service.getAll().subscribe(groups => actualGroups = groups);
 
 		const request = httpController.expectOne(TestEnvObj.GROUPS_API_ROOT);

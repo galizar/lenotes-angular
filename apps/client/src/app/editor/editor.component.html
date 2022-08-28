@@ -1,4 +1,5 @@
 <div *ngIf="vm$ | async as vm" id="editor">
-	<textarea id="editor-content" [formControl]="content">
+	<textarea id="editor-content" [formControl]="content"
+		[attr.disabled]="vm.noteOnDisplayId === undefined || vm.displayingTrash ? true : null">
 	</textarea>
 </div>

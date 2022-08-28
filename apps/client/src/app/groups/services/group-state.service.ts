@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-import { Group, GroupMap } from '@lenotes-ng/model';
+import { Group, ObjectMap } from '@lenotes-ng/model';
 import { GroupService } from '../services/group.service';
 import { UpdateGroupDto } from '@lenotes-ng/api-behavior';
 
@@ -10,8 +10,8 @@ import { UpdateGroupDto } from '@lenotes-ng/api-behavior';
 })
 export class GroupStateService {
 
-	private groups: GroupMap = Object.create(null);
-	private state = new BehaviorSubject<GroupMap>(this.groups);
+	private groups: ObjectMap<Group> = Object.create(null);
+	private state = new BehaviorSubject<ObjectMap<Group>>(this.groups);
 	public groups$ = this.state.asObservable();
 
   constructor(

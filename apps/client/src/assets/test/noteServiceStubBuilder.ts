@@ -1,10 +1,11 @@
-import { of, throwError } from "rxjs";
+import { of, from, throwError } from "rxjs";
 
 import { NoteService } from "../../app/notes/services/note.service"; 
 import { INoteService } from "../../app/interfaces";
 import { Note } from "@lenotes-ng/model";
 import { CreateNoteDto, UpdateNoteDto, ApiNotesService } from "@lenotes-ng/api-behavior";
 import { DomainObjectStorage, NaiveNotesStorage } from '@lenotes-ng/data-storage';
+import { waitForAsync } from "@angular/core/testing";
 
 export const noteServiceStubBuilder = {
 	build: () => {
@@ -16,22 +17,22 @@ export const noteServiceStubBuilder = {
 			create: (dto: CreateNoteDto) => {
 
 				const idOfNewNote = apiService.create(dto);
-				return of(idOfNewNote);
+				return from(idOfNewNote);
 			},
 			get: (id: number) => {
 				try {
-					const note = apiService.get(id);
-					return of(note);
+					let props = apiService.get(id);
+					return from(props);
 				} catch (e) {
 					return throwError(() => { new Error('Error while getting note'); });
 				}
 			},
 			getAll: () => {
-				return of(apiService.getAll());
+				return from(apiService.getAll());
 			},
 			getInGroup: (groupId: number) => {
 				const notesInGroup = apiService.getInGroup(groupId);
-				return of(notesInGroup);
+				return from(notesInGroup);
 			},
 			update: (id: number, dto: UpdateNoteDto) => {
 				try {

@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { AppStateService } from '../../services';
 import { NoteService } from './note.service';
 import { appStateServiceStubBuilder, noteServiceStubBuilder } from '../../../assets/test';
@@ -32,11 +32,12 @@ describe('NoteStateService', () => {
     expect(service).toBeTruthy();
   });
 
-	it('updates state to only contain notes of group on display', () => {
+	fit('updates state to only contain notes of group on display', () => {
 
 		const groupOnDisplayId = 0; 
 		let expectedNoteIds: string[] = [];
 		let actualNoteIds: string[] = [];
+
 		noteService.getInGroup(groupOnDisplayId).subscribe(notes => {
 			expectedNoteIds = Object.keys(notes);
 		});
@@ -47,6 +48,9 @@ describe('NoteStateService', () => {
 			// the service filters trashed notes so no need to filter here
 			actualNoteIds = Object.keys(notes);
 		});
+
+		console.log('expected', expectedNoteIds);
+		console.log('actual', actualNoteIds);
 
 		expect(actualNoteIds.length).toBeGreaterThan(0);
 		expect(actualNoteIds).toEqual(expectedNoteIds);
@@ -92,10 +96,13 @@ describe('NoteStateService', () => {
 		const idOfNoteToModify = 0;
 		let propsToModify: Note['props'] | undefined;
 		const newContent = "this is some new content created at " + Date.now();
+
 		noteService.get(idOfNoteToModify).subscribe(props => {
-			propsToModify =  props
+			propsToModify = props;
 		});
-		if (propsToModify === undefined) return fail('could not get note to modify from note service');
+
+		if (propsToModify === undefined) throw Error('couldnt get note from service');
+
 		appStateService.setGroupOnDisplayId(propsToModify.groupId); // this is needed for the note to be in the state
 
 		// when

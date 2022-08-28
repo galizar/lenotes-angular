@@ -1,12 +1,12 @@
 import { CreateNoteDto, UpdateNoteDto, BatchUpdateDto } from '../index';
-import { NoteProps, NoteMap } from '@lenotes-ng/model';
+import { Note, Group, ObjectMap } from '@lenotes-ng/model';
 
 export interface IApiNotesService {
-	create(dto: CreateNoteDto): number;
-	get(id: number): NoteProps;
-	getInGroup(groupId: number): NoteMap;
-	getAll(): NoteMap;
-	update(id: number, dto: UpdateNoteDto): void;
-	batchUpdate(dto: BatchUpdateDto<UpdateNoteDto>): void;
-	delete(id: number): void;
+	create(dto: CreateNoteDto): Promise<Note['id']>;
+	get(id: Note['id']): Promise<Note['props']>;
+	getInGroup(groupId: Group['id']): Promise<ObjectMap<Note>>;
+	getAll(): Promise<ObjectMap<Note>>;
+	update(id: Note['id'], dto: UpdateNoteDto): Promise<void>;
+	batchUpdate(dto: BatchUpdateDto<UpdateNoteDto>): Promise<void>;
+	delete(id: Note['id']): Promise<void>;
 }

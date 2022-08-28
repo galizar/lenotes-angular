@@ -1,6 +1,7 @@
-import { GroupProps } from "./GroupProps";
-
 export class Group {
 	id!: number;
-	props!: GroupProps;
+	props!: {
+		name: string,
+		isTrashed: boolean 
+	};
 }

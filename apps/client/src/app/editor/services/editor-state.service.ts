@@ -28,11 +28,13 @@ export class EditorStateService {
 
 		/** Register observer to listen for changes on the content to display */
 		appStateService.noteOnDisplayId$.subscribe(id => {
-
-			if (id === undefined) return;
-			const note = noteStateService.get(id);
-			if (note === undefined) return;
-			this.setContentToDisplay(note.content);
+			if (id === undefined) {
+				this.setContentToDisplay('');
+			} else {
+				const note = noteStateService.get(id);
+				if (note === undefined) return;
+				this.setContentToDisplay(note.content);
+			} 
 		});
 	}
 

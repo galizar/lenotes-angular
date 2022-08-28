@@ -1,4 +1,4 @@
-import { of, throwError } from "rxjs";
+import { from, of, throwError } from "rxjs";
 import { GroupService } from "../../app/groups/services/group.service";
 
 import { IGroupService } from "../../app/interfaces";
@@ -15,14 +15,14 @@ export const groupServiceStubBuilder = {
 			create: (dto: CreateGroupDto) => {
 
 				const idOfNewGroup = apiService.create(dto);
-				return of(idOfNewGroup);
+				return from(idOfNewGroup);
 			},
-			getAll: () => {
-				return of(apiService.getAll());
+			getAll:  () => {
+				return from(apiService.getAll());
 			},
 			get: (id: number) => {
 				try {
-					return of(storage.get(id));
+					return from(storage.get(id));
 				} catch (e) {
 					return throwError(() => { new Error('Error while getting group'); });
 				}

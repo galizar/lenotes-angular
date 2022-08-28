@@ -1,6 +1,9 @@
-import { NoteProps } from "./NoteProps";
-
 export class Note {
 	id!: number;
-	props!: NoteProps;
+	props!: {
+		name: string,
+		groupId?: number,
+		content: string,
+		isTrashed: boolean
+	} 
 };

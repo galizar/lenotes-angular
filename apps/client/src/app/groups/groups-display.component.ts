@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Note, GroupMap} from '@lenotes-ng/model';
+import { Note, Group, ObjectMap} from '@lenotes-ng/model';
 import { AppStateService } from '../services';
 import { GroupStateService } from './services/group-state.service';
 import { NoteStateService } from '../notes/services/note-state.service';
@@ -8,7 +8,7 @@ import { buildViewModel } from '../util/buildViewModel';
 
 type GroupsViewModel = {
 	groupOnDisplayId?: number 
-	groups: GroupMap
+	groups: ObjectMap<Group> 
 	displayingTrash: boolean
 };
 

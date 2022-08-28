@@ -1,6 +1,6 @@
-import { NoteMap } from "./NoteMap";
+import { Note, ObjectMap } from "../index";
 
-export const testNotes: NoteMap = { 
+export const testNotes: ObjectMap<Note> = { 
 	0: {name: 'note 1', content: 'content 1', groupId: 0, isTrashed: false},
 	1: {name: 'note 2', content: 'content 2', groupId: 1, isTrashed: false},
 	2: {name: 'note 3', content: 'content 3', groupId: 2, isTrashed: true},

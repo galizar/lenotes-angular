@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { switchMap, map, distinctUntilChanged } from 'rxjs/operators';
 
-import { Note, NoteMap, NoteProps } from '@lenotes-ng/model';
+import { Note, Group, ObjectMap } from '@lenotes-ng/model';
 import { AppStateService } from '../../services';
 import { NoteService } from './note.service';
 import { UpdateNoteDto } from '@lenotes-ng/api-behavior';
 
 interface NoteState {
-	notes: NoteMap,
+	notes: ObjectMap<Note>,
 	noteOnDisplay?: Note
 }
 
@@ -48,22 +48,22 @@ export class NoteStateService {
 		distinctUntilChanged()
 	);
 
-	get(id: number): NoteProps {
+	get(id: Note['id']) {
 		return this.state.notes[id];
 	}
 
-	setNoteContent(id: number, content: string) {
+	setNoteContent(id: Note['id'], content: string) {
 
 		this.state.notes[id]['content'] = content;
 		this.updateStoreNotes(this.state.notes);
-		this.noteService.update(id, {content});
+		this.noteService.update(id, {content}).subscribe();
 	}
 
-	updateStoreNotes(notes: NoteMap) {
+	updateStoreNotes(notes: ObjectMap<Note>) {
 		this.updateState({ ...this.state, notes });
 	}
 
-	create(name: string, groupId?: number) {
+	create(name: string, groupId?: Group['id']) {
 
 		const newNote = {
 			name,
@@ -78,19 +78,19 @@ export class NoteStateService {
 		});
 	}
 
-	move(id: number, toGroupId: number) {
+	move(id: Note['id'], toGroupId: Group['id']) {
 
 		this.update(id, {groupId: toGroupId});
 	}
 
-	update(id: number, dto: UpdateNoteDto) {
+	update(id: Note['id'], dto: UpdateNoteDto) {
 
 		this.state.notes[id] = { ...this.state.notes[id], ...dto};
 		this.updateStoreNotes(this.state.notes);
 		this.noteService.update(id, dto).subscribe();
 	}
 
-	batchUpdate(ids: number[], dto: UpdateNoteDto) {
+	batchUpdate(ids: Note['id'][], dto: UpdateNoteDto) {
 
 		for (const id of ids) {
 			for (const prop of Object.keys(dto) as Array<keyof UpdateNoteDto>) {
@@ -101,12 +101,12 @@ export class NoteStateService {
 		this.noteService.batchUpdate(ids, dto).subscribe();
 	}
 
-	trash(id: number) {
+	trash(id: Note['id']) {
 
 		this.update(id, {isTrashed: true});
 	}
 
-	trashInGroup(groupId: number) {
+	trashInGroup(groupId: Group['id']) {
 
 		const idsToTrash = [];
 

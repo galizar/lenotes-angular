@@ -1,4 +1,4 @@
-import { Group, GroupProps } from "@lenotes-ng/model";
+import { Group } from "@lenotes-ng/model";
 import { DomainObjectStorage } from "@lenotes-ng/data-storage";
 import { IApiGroupsService } from "../../index";
 import { CreateGroupDto, UpdateGroupDto, BatchUpdateDto } from "../../index";
@@ -9,31 +9,31 @@ export class ApiGroupsService implements IApiGroupsService {
 		private storage: DomainObjectStorage<Group>
 	) {}
 
-  create(createGroupDto: CreateGroupDto) {
+  async create(createGroupDto: CreateGroupDto) {
 
 		const withProps = createGroupDto;
-		return this.storage.create(withProps);
+		return await this.storage.create(withProps);
   }
 
-  getAll() {
-		return this.storage.getAll();
+  async getAll() {
+		return await this.storage.getAll();
   }
 
-  get(id: number): GroupProps {
-		return this.storage.get(id);
+  async get(id: Group['id']) {
+		return await this.storage.get(id);
   }
 
-  update(id: number, dto: UpdateGroupDto) {
+  async update(id: Group['id'], dto: UpdateGroupDto) {
 
-		const groupProps = this.get(id);
-		this.storage.update({id, props: {...groupProps, ...dto}});
+		const groupProps = await this.get(id);
+		await this.storage.update({id, props: {...groupProps, ...dto}});
   }
 
-	batchUpdate(dto: BatchUpdateDto<UpdateGroupDto>) {
-		this.storage.batchUpdate(dto.ids, dto.subDto);
+	async batchUpdate(dto: BatchUpdateDto<UpdateGroupDto>) {
+		await this.storage.batchUpdate(dto.ids, dto.subDto);
 	}
 
-  delete(id: number) {
-		this.storage.delete(id);
+  async delete(id: Group['id']) {
+		await this.storage.delete(id);
   }
 }

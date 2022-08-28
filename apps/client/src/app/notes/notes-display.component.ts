@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs';
 
 import { AppStateService } from '../services';
-import { Note, NoteMap } from '@lenotes-ng/model';
+import { Note, ObjectMap } from '@lenotes-ng/model';
 import { NoteStateService } from './services/note-state.service';
 import { buildViewModel } from '../util/buildViewModel';
 
 type NotesViewModel = {
 	groupOnDisplayId?: number,
 	noteOnDisplayId?: number,
-	notes: NoteMap
+	notes: ObjectMap<Note>
 	displayingTrash: boolean
 };
 
