@@ -1,50 +1,55 @@
-import { from, of, throwError } from "rxjs";
-import { GroupService } from "../../app/groups/services/group.service";
+import { of, throwError } from "rxjs";
 
+import { GroupService } from "../../app/groups/services/group.service";
 import { IGroupService } from "../../app/interfaces";
-import { NaiveGroupsStorage } from "@lenotes-ng/data-storage";
-import { CreateGroupDto, UpdateGroupDto, ApiGroupsService } from "@lenotes-ng/api-behavior";
+import { CreateGroupDto, UpdateGroupDto } from "@lenotes-ng/api-behavior";
+import { Group, testGroups, ObjectMap } from '@lenotes-ng/model';
 
 export const groupServiceStubBuilder = {
 	build: () => {
 
-		const storage = new NaiveGroupsStorage();
-		const apiService = new ApiGroupsService(storage);
+		let groups: ObjectMap<Group> = testGroups; // state initialization
 
-		const groupServiceStub: IGroupService = {
-			create: (dto: CreateGroupDto) => {
+		let idPk = Number(Object.keys(testGroups).reduce((a, b) => {
+			if (a > b)
+				return a;
+			else
+				return b;
+		})[0]);
 
-				const idOfNewGroup = apiService.create(dto);
-				return from(idOfNewGroup);
+		const groupserviceStub: IGroupService = {
+			create: (withProps: CreateGroupDto) => {
+				const id = ++idPk;
+				groups[id] = withProps
+				return of(id);
 			},
-			getAll:  () => {
-				return from(apiService.getAll());
-			},
-			get: (id: number) => {
-				try {
-					return from(storage.get(id));
-				} catch (e) {
-					return throwError(() => { new Error('Error while getting group'); });
+			get: (id: Group['id']) => {
+				const props = groups[id];
+				if (props === undefined) {
+					return throwError(() => { throw Error('Not found') });
 				}
+				return of(props);
 			},
-			update: (id: number, dto: UpdateGroupDto) => {
-				try {
-					apiService.update(id, dto);
-					return of({});
-				} catch (e) {
-					return throwError(() => { new Error('Error while updating group'); });
-				}
+			getAll: () => {
+				return of(groups);
 			},
-			delete: (id: number) => {
-				try {
-					apiService.delete(id);
-					return of({});
-				} catch (e) {
-					return throwError(() => { new Error('Error while deleting group'); });
+			update: (id: Group['id'], dto: UpdateGroupDto) => {
+				groups[id] = {...groups[id], ...dto};
+				return of({});
+			},
+			batchUpdate: (ids: Group['id'][], dto: UpdateGroupDto) => {
+				for (const id of ids) {
+					for (let prop of Object.keys(dto) as Array<keyof UpdateGroupDto>) {
+						groups[id][prop] = dto[prop];
+					};
 				}
+				return of({});
+			},
+			delete: (id: Group['id']) => {
+				delete groups[id];
+				return of({});
 			}
-		};
-
-		return groupServiceStub as GroupService;
+		}
+		return groupserviceStub as GroupService;
 	}
 };

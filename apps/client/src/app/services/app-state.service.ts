@@ -30,7 +30,6 @@ export class AppStateService {
 	displayingTrash$ = this.getStateProperty$('displayingTrash');
 
 	setGroupOnDisplayId(id?: number) {
-		console.log('now displaying group id:', id);
 		this.updateState({ ...this.state, groupOnDisplayId: id });
   }
 

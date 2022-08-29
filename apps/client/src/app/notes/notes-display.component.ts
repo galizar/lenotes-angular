@@ -1,17 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { map } from 'rxjs';
+import { combineLatest, map } from 'rxjs';
 
 import { AppStateService } from '../services';
-import { Note, ObjectMap } from '@lenotes-ng/model';
+import { Note } from '@lenotes-ng/model';
 import { NoteStateService } from './services/note-state.service';
-import { buildViewModel } from '../util/buildViewModel';
-
-type NotesViewModel = {
-	groupOnDisplayId?: number,
-	noteOnDisplayId?: number,
-	notes: ObjectMap<Note>
-	displayingTrash: boolean
-};
 
 @Component({
   selector: 'app-notes-display',
@@ -23,17 +15,15 @@ export class NotesDisplayComponent implements OnInit {
 	createNoteFormId = 'create-note-form';
 	noteNameInputId = 'note-name-input';
 	nameFormValue = '';
-	objectKeys = Object.keys;
 
 	// view model
-	vm$ = buildViewModel<NotesViewModel>({
+	vm$ = combineLatest({
 		groupOnDisplayId: this.appStateService.groupOnDisplayId$,
 		noteOnDisplayId: this.appStateService.noteOnDisplayId$,
 		displayingTrash: this.appStateService.displayingTrash$,
 		notes: this.noteStateService.notes$
-		
-	});
-		
+	})
+
   constructor(
 		public appStateService: AppStateService,
 		public noteStateService: NoteStateService) { 

@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { DebugElement } from '@angular/core';
 
 import { AppStateService } from '../services';
 import { NoteService } from './services/note.service';
@@ -7,11 +8,10 @@ import { NotesDisplayComponent } from './notes-display.component';
 import { 
 	testEnvObject, 
 	noteServiceStubBuilder,
-	appStateServiceStubBuilder
+	appStateServiceStubBuilder,
 } from '../../assets/test';
-import { DebugElement } from '@angular/core';
 
-describe('NotesDisplayComponent', () => {
+fdescribe('NotesDisplayComponent', () => {
   let component: NotesDisplayComponent;
   let fixture: ComponentFixture<NotesDisplayComponent>;
 	let debugElement: DebugElement;
@@ -24,7 +24,8 @@ describe('NotesDisplayComponent', () => {
     await TestBed.configureTestingModule({
 			imports: [ ],
       declarations: [ NotesDisplayComponent ],
-			providers: [ {provide: 'env', useValue: testEnvObject},
+			providers: [ 
+				{provide: 'env', useValue: testEnvObject},
 				{provide: NoteService, useValue: noteServiceStub},
 				{provide: AppStateService, useValue: appStateServiceStub}
 			]
@@ -34,7 +35,7 @@ describe('NotesDisplayComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NotesDisplayComponent);
-    fixture.detectChanges()
+    fixture.detectChanges();
     component = fixture.componentInstance;
 		debugElement = fixture.debugElement;
   });
@@ -50,9 +51,11 @@ describe('NotesDisplayComponent', () => {
 		fixture.detectChanges();
 
 		let expectedButtonCount = 0;
+		console.log('is vm undefined?', component.vm$ === undefined);
+		console.log('then what the hell it is?', component.vm$);
 		component.vm$.subscribe(vm => {
-			for (const note of Object.values(vm.notes)) {
-				if (!note.isTrashed) expectedButtonCount++;
+			for (const props of Object.values(vm.notes)) {
+				if (!props.isTrashed) expectedButtonCount++;
 			}
 		});
 
@@ -65,9 +68,7 @@ describe('NotesDisplayComponent', () => {
 	it('selects note when note button is clicked', () => {
 
 		let expectedNoteOnDisplayId: number | undefined;
-		// making sure here a group is on display, otherwise there may be no note buttons
-		component.appStateService.setGroupOnDisplayId(1);
-		fixture.detectChanges();
+
 		const firstNoteButton = debugElement.query(By.css('.note-button'));
 		expectedNoteOnDisplayId = Number(firstNoteButton.attributes['data-note-id']);
 

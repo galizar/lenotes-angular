@@ -10,5 +10,6 @@ export interface INoteService {
 	getInGroup(groupId: Note['id']): Observable<ObjectMap<Note>>;
 	getAll(): Observable<ObjectMap<Note>>;
 	update(id: Note['id'], dto: UpdateNoteDto): Observable<object>;
+	batchUpdate(ids: Note['id'][], dto: UpdateNoteDto): Observable<object>;
 	delete(id: Note['id']): Observable<object>;
 }

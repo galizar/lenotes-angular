@@ -1,56 +1,59 @@
-import { of, from, throwError } from "rxjs";
+import { throwError, of } from 'rxjs';
 
-import { NoteService } from "../../app/notes/services/note.service"; 
-import { INoteService } from "../../app/interfaces";
-import { Note } from "@lenotes-ng/model";
-import { CreateNoteDto, UpdateNoteDto, ApiNotesService } from "@lenotes-ng/api-behavior";
-import { DomainObjectStorage, NaiveNotesStorage } from '@lenotes-ng/data-storage';
-import { waitForAsync } from "@angular/core/testing";
+import { Note, Group, testNotes, ObjectMap } from '@lenotes-ng/model';
+import { NoteService } from '../../app/notes/services/note.service';
+import { INoteService } from '../../app/interfaces';
+import { CreateNoteDto, UpdateNoteDto } from '@lenotes-ng/api-behavior';
 
 export const noteServiceStubBuilder = {
 	build: () => {
 
-		const storage: DomainObjectStorage<Note> = new NaiveNotesStorage();
-		const apiService = new ApiNotesService(storage);
+		let notes: ObjectMap<Note> = testNotes; // state initialization
+
+		let idPk = Number(Object.keys(testNotes).reduce((a, b) => {
+			if (a > b)
+				return a;
+			else
+				return b;
+		})[0]);
 
 		const noteServiceStub: INoteService = {
-			create: (dto: CreateNoteDto) => {
-
-				const idOfNewNote = apiService.create(dto);
-				return from(idOfNewNote);
+			create: (withProps: CreateNoteDto) => {
+				const id = ++idPk;
+				notes[id] = withProps
+				return of(id);
 			},
-			get: (id: number) => {
-				try {
-					let props = apiService.get(id);
-					return from(props);
-				} catch (e) {
-					return throwError(() => { new Error('Error while getting note'); });
+			get: (id: Note['id']) => {
+				const props = notes[id];
+				if (props === undefined) {
+					return throwError(() => { throw Error('Not found') });
 				}
+				return of(props);
 			},
 			getAll: () => {
-				return from(apiService.getAll());
+				return of(notes);
 			},
-			getInGroup: (groupId: number) => {
-				const notesInGroup = apiService.getInGroup(groupId);
-				return from(notesInGroup);
+			getInGroup: (groupId: Group['id']) => {
+				const notesInGroup = Object.values(notes).filter(props => props.groupId === groupId);
+				return of(notesInGroup);
 			},
-			update: (id: number, dto: UpdateNoteDto) => {
-				try {
-					apiService.update(id, dto);
-					return of({}); // stub object. in practice, this object will be an http response
-				} catch (e) {
-					return throwError(() => { new Error('Error while updating note'); });
+			update: (id: Note['id'], dto: UpdateNoteDto) => {
+				notes[id] = {...notes[id], ...dto};
+				return of({});
+			},
+			batchUpdate: (ids: Note['id'][], dto: UpdateNoteDto) => {
+				for (const id of ids) {
+					for (let prop of Object.keys(dto) as Array<keyof UpdateNoteDto>) {
+						notes[id][prop] = dto[prop];
+					};
 				}
+				return of({});
 			},
-			delete: (id: number) => {
-				try {
-					apiService.delete(id);
-					return of({});
-				} catch (e) {
-					return throwError(() => { new Error('Error while updating note'); });
-				}
+			delete: (id: Note['id']) => {
+				delete notes[id];
+				return of({});
 			}
-		};
+		}
 		return noteServiceStub as NoteService;
 	}
 }

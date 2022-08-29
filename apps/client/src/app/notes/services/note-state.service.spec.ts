@@ -1,8 +1,8 @@
-import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
+
 import { AppStateService } from '../../services';
 import { NoteService } from './note.service';
 import { appStateServiceStubBuilder, noteServiceStubBuilder } from '../../../assets/test';
-
 import { NoteStateService } from './note-state.service';
 import { Note } from '@lenotes-ng/model';
 
@@ -32,14 +32,14 @@ describe('NoteStateService', () => {
     expect(service).toBeTruthy();
   });
 
-	fit('updates state to only contain notes of group on display', () => {
+	it('updates state to only contain notes of group on display', () => {
 
 		const groupOnDisplayId = 0; 
 		let expectedNoteIds: string[] = [];
 		let actualNoteIds: string[] = [];
 
-		noteService.getInGroup(groupOnDisplayId).subscribe(notes => {
-			expectedNoteIds = Object.keys(notes);
+		noteService.getInGroup(groupOnDisplayId).subscribe(props => {
+			expectedNoteIds = Object.keys(props);
 		});
 
 		appStateService.setGroupOnDisplayId(groupOnDisplayId);
@@ -48,9 +48,6 @@ describe('NoteStateService', () => {
 			// the service filters trashed notes so no need to filter here
 			actualNoteIds = Object.keys(notes);
 		});
-
-		console.log('expected', expectedNoteIds);
-		console.log('actual', actualNoteIds);
 
 		expect(actualNoteIds.length).toBeGreaterThan(0);
 		expect(actualNoteIds).toEqual(expectedNoteIds);

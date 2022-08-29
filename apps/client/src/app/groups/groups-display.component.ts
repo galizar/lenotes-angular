@@ -1,16 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { combineLatest } from 'rxjs';
 
-import { Note, Group, ObjectMap} from '@lenotes-ng/model';
+import { Note } from '@lenotes-ng/model';
 import { AppStateService } from '../services';
 import { GroupStateService } from './services/group-state.service';
 import { NoteStateService } from '../notes/services/note-state.service';
-import { buildViewModel } from '../util/buildViewModel';
-
-type GroupsViewModel = {
-	groupOnDisplayId?: number 
-	groups: ObjectMap<Group> 
-	displayingTrash: boolean
-};
 
 @Component({
   selector: 'app-groups-display',
@@ -24,7 +18,7 @@ export class GroupsDisplayComponent implements OnInit {
 	formInputValue: string = '';
 	objectKeys = Object.keys;
 
-	vm$ = buildViewModel<GroupsViewModel>({
+	vm$ = combineLatest({
 		groupOnDisplayId: this.appStateService.groupOnDisplayId$,
 		groups: this.groupStateService.groups$,
 		displayingTrash: this.appStateService.displayingTrash$

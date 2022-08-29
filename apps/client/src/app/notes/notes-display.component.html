@@ -4,19 +4,18 @@
 >
 	<span>Selected note id: {{vm.noteOnDisplayId}}</span>
 
-	<!-- If only destructuring was possible this would be a lot more readable -->
-	<div class="button-container" *ngFor="let id of objectKeys(vm.notes)">
-		<div *ngIf="vm.notes[+id].isTrashed === vm.displayingTrash">
-			<button class="delete-button" (click)="trash(+id)">-</button>
+	<div class="button-container" *ngFor="let note of vm.notes | keyvalue">
+		<div *ngIf="note.value.isTrashed === vm.displayingTrash">
+			<button class="delete-button" (click)="trash(+note.key)">-</button>
 			<button 
 				class="note-button"
-				[attr.data-note-id]="id" 
+				[attr.data-note-id]="note.key" 
 				data-test-id="select-note-button" 
 				draggable="true" 
-				(dragstart)="drag($event, {id: +id, props: vm.notes[+id]})"
-				(click)="appStateService.setNoteOnDisplayId(+id)"
+				(dragstart)="drag($event, {id: +note.key, props: note.value})"
+				(click)="appStateService.setNoteOnDisplayId(+note.key)"
 				>
-				{{vm.notes[+id].name}}
+				{{note.value.name}}
 			</button>
 		</div>
 	</div>

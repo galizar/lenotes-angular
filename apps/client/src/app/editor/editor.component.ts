@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { combineLatest } from 'rxjs';
-import { map, debounceTime, sample } from 'rxjs/operators';
+import { debounceTime, sample } from 'rxjs/operators';
 
 import { AppStateService } from '../services';
 import { NoteStateService } from '../notes/services/note-state.service';
 import { EditorStateService } from './services/editor-state.service';
-import { buildViewModel } from '../util/buildViewModel';
 
 @Component({
   selector: 'app-editor',
@@ -18,7 +17,7 @@ export class EditorComponent implements OnInit {
 	content = new FormControl<string>('');
 
 	// view model
-	vm$ = buildViewModel({
+	vm$ = combineLatest({
 		contentToDisplay: this.editorStateService.contentToDisplay$,
 		noteOnDisplayId: this.appStateService.noteOnDisplayId$,
 		displayingTrash: this.appStateService.displayingTrash$

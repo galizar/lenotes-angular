@@ -13,6 +13,7 @@ export const appStateServiceStubBuilder = {
 			noteOnDisplayId$: noteOnDisplayId.asObservable(),
 
 			setGroupOnDisplayId: (id: number) => {
+				console.log('groupOnDisplayId', id);
 				groupOnDisplayId.next(id);
 			},
 			setNoteOnDisplayId: (id: number) => {
