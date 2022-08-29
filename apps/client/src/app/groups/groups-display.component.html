@@ -4,19 +4,19 @@
 
 	<div
 		class="button-container"
-		*ngFor="let id of objectKeys(vm.groups)"
-		(drop)="dropOnGroup($event, +id)"
+		*ngFor="let group of vm.groups | keyvalue"
+		(drop)="dropOnGroup($event, +group.key)"
 		(dragover)="allowDrop($event)"
 	>
-		<div *ngIf="vm.groups[+id].isTrashed === vm.displayingTrash"> <!-- Show trashed/non-trashed groups-->
+		<div *ngIf="group.value.isTrashed === vm.displayingTrash"> <!-- Show trashed/non-trashed groups-->
 			<button class="group-button"
-				(click)="appStateService.setGroupOnDisplayId(+id)"
-				[attr.data-group-id]="id"
+				(click)="appStateService.setGroupOnDisplayId(+group.key)"
+				[attr.data-group-id]="group.key"
 				data-test-id="select-group-button"
 			>
-				{{vm.groups[+id].name}}
+				{{group.value.name}}
 			</button>
-		  <button class="delete-button" (click)="trash(+id)">-</button>
+		  <button class="delete-button" (click)="trash(+group.key)">-</button>
 		</div>
 	</div>
 

@@ -1,6 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, tick, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { AppStateService } from '../services';
 import { NoteService } from './services/note.service';
@@ -8,10 +9,9 @@ import { NotesDisplayComponent } from './notes-display.component';
 import { 
 	testEnvObject, 
 	noteServiceStubBuilder,
-	appStateServiceStubBuilder,
 } from '../../assets/test';
 
-fdescribe('NotesDisplayComponent', () => {
+describe('NotesDisplayComponent', () => {
   let component: NotesDisplayComponent;
   let fixture: ComponentFixture<NotesDisplayComponent>;
 	let debugElement: DebugElement;
@@ -19,15 +19,17 @@ fdescribe('NotesDisplayComponent', () => {
   beforeEach(async () => {
 
 		const noteServiceStub = noteServiceStubBuilder.build();
-		const appStateServiceStub = appStateServiceStubBuilder.build();
+		const appStateService = new AppStateService();
 
     await TestBed.configureTestingModule({
-			imports: [ ],
+			imports: [ 
+				FormsModule
+			],
       declarations: [ NotesDisplayComponent ],
 			providers: [ 
 				{provide: 'env', useValue: testEnvObject},
 				{provide: NoteService, useValue: noteServiceStub},
-				{provide: AppStateService, useValue: appStateServiceStub}
+				{provide: AppStateService, useValue: appStateService}
 			]
     })
 		.compileComponents();
@@ -51,8 +53,6 @@ fdescribe('NotesDisplayComponent', () => {
 		fixture.detectChanges();
 
 		let expectedButtonCount = 0;
-		console.log('is vm undefined?', component.vm$ === undefined);
-		console.log('then what the hell it is?', component.vm$);
 		component.vm$.subscribe(vm => {
 			for (const props of Object.values(vm.notes)) {
 				if (!props.isTrashed) expectedButtonCount++;

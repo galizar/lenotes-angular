@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { AppStateService } from '../../services';
 import { NoteService } from './note.service';
-import { appStateServiceStubBuilder, noteServiceStubBuilder } from '../../../assets/test';
+import { noteServiceStubBuilder } from '../../../assets/test';
 import { NoteStateService } from './note-state.service';
 import { Note } from '@lenotes-ng/model';
 
@@ -15,12 +15,11 @@ describe('NoteStateService', () => {
   beforeEach(() => {
 
 		const noteServiceStub = noteServiceStubBuilder.build();
-		const appStateServiceStub = appStateServiceStubBuilder.build();
 
     TestBed.configureTestingModule({
 			providers: [
 				{provide: NoteService, useValue: noteServiceStub},
-				{provide: AppStateService, useValue: appStateServiceStub}
+				{provide: AppStateService, useValue: new AppStateService()}
 			]
 		});
     service = TestBed.inject(NoteStateService);

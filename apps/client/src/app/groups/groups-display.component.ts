@@ -16,7 +16,6 @@ export class GroupsDisplayComponent implements OnInit {
 	createFormId = 'create-group-form';
 	formInputId = 'group-name-input';
 	formInputValue: string = '';
-	objectKeys = Object.keys;
 
 	vm$ = combineLatest({
 		groupOnDisplayId: this.appStateService.groupOnDisplayId$,

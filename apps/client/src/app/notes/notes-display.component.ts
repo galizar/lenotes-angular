@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { combineLatest, map } from 'rxjs';
+import { combineLatest } from 'rxjs';
 
 import { AppStateService } from '../services';
 import { Note } from '@lenotes-ng/model';

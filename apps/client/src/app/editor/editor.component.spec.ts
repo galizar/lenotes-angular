@@ -15,13 +15,12 @@ import { NoteService } from '../notes/services/note.service';
 describe('EditorComponent', () => {
   let component: EditorComponent;
   let fixture: ComponentFixture<EditorComponent>;
-	let appStateServiceStub: AppStateService;
-	let noteServiceStub: NoteService;
+	let noteService: NoteService;
 
   beforeEach(async () => {
 
-		appStateServiceStub = appStateServiceStubBuilder.build();
-		noteServiceStub = noteServiceStubBuilder.build();
+		const appStateService = new AppStateService();
+		const noteServiceStub = noteServiceStubBuilder.build();
 
     await TestBed.configureTestingModule({
       declarations: [ EditorComponent ],
@@ -29,20 +28,24 @@ describe('EditorComponent', () => {
 				ReactiveFormsModule
 			],
 			providers: [
-				{provide: AppStateService, useValue: appStateServiceStub},
+				{provide: AppStateService, useValue: appStateService},
 				{provide: NoteService, useValue: noteServiceStub},
 				{
 					provide: NoteStateService,
-					useValue: new NoteStateService(noteServiceStub, appStateServiceStub)
+					useValue: new NoteStateService(noteServiceStub, appStateService)
 				}
 			]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(EditorComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
   });
+
+	beforeEach(() => {
+    fixture = TestBed.createComponent(EditorComponent);
+    fixture.detectChanges();
+    component = fixture.componentInstance;
+		noteService = TestBed.inject(NoteService);
+	});
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -52,7 +55,7 @@ describe('EditorComponent', () => {
 
 		const idOfNoteOnDisplay = 0;
 		let propsOnDisplay: Note['props'] | undefined;
-		noteServiceStub.get(idOfNoteOnDisplay).subscribe(props => {
+		noteService.get(idOfNoteOnDisplay).subscribe(props => {
 			propsOnDisplay = props;
 		});
 		if (propsOnDisplay === undefined) return fail('could not get note on display from note service');
@@ -74,7 +77,7 @@ describe('EditorComponent', () => {
 		const idOfNoteToModify = 0;
 		const newContent = "this is some new content created at: " + Date.now();
 		let propsToModify: Note['props'] | undefined; 
-		noteServiceStub.get(idOfNoteToModify).subscribe(props => {
+		noteService.get(idOfNoteToModify).subscribe(props => {
 			propsToModify = props;
 		});
 		if (propsToModify === undefined) return fail('could not get note to modify from note service');
@@ -85,7 +88,7 @@ describe('EditorComponent', () => {
 		tick(501); // wait for observable to emit (debounce time)
 
 		let modifiedProps: Note['props'] | undefined;
-		noteServiceStub.get(idOfNoteToModify).subscribe(props => {
+		noteService.get(idOfNoteToModify).subscribe(props => {
 			modifiedProps = props;
 		});
 		if (modifiedProps === undefined) return fail('could not get note after modification from note service');

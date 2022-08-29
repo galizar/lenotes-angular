@@ -11,7 +11,8 @@ import { testEnvObject } from '../assets/test';
 import { GroupService } from './groups/services/group.service';
 import { NoteService } from './notes/services/note.service';
 import { groupServiceStubBuilder, noteServiceStubBuilder } from '../assets/test';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AppStateService } from './services';
 
 describe('AppComponent', () => {
 	let appFixture: ComponentFixture<AppComponent>;
@@ -25,10 +26,12 @@ describe('AppComponent', () => {
 
 		const groupServiceStub = groupServiceStubBuilder.build();
 		const noteServiceStub = noteServiceStubBuilder.build();
+		const appStateService = new AppStateService();
 
     await TestBed.configureTestingModule({
       imports: [
-				ReactiveFormsModule
+				ReactiveFormsModule,
+				FormsModule
 			],
       declarations: [
         AppComponent,
@@ -39,6 +42,7 @@ describe('AppComponent', () => {
 			providers: [ 
 				{provide: GroupService, useValue: groupServiceStub},
 				{provide: NoteService, useValue: noteServiceStub},
+				{provide: AppStateService, useValue: appStateService},
 				{provide: 'env', useValue: testEnvObject},
 			]
     }).compileComponents();

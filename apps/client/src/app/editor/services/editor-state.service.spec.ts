@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { appStateServiceStubBuilder, noteServiceStubBuilder } from '../../../assets/test';
+import { noteServiceStubBuilder } from '../../../assets/test';
 import { AppStateService } from '../../services';
 import { NoteService } from '../../notes/services/note.service';
 
@@ -10,12 +10,12 @@ describe('EditorStateService', () => {
 
   beforeEach(() => {
 
-		const appStateServiceStub = appStateServiceStubBuilder.build();
+		const appStateService = new AppStateService();
 		const noteServiceStub = noteServiceStubBuilder.build();
 
     TestBed.configureTestingModule({
 			providers: [
-				{provide: AppStateService, useValue: appStateServiceStub},
+				{provide: AppStateService, useValue: appStateService},
 				{provide: NoteService, useValue: noteServiceStub}
 			]
 		});

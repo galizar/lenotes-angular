@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing'; 
 import { By } from '@angular/platform-browser';
+import { DebugElement } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { GroupsDisplayComponent } from './groups-display.component';
 import { AppStateService } from '../services';
@@ -9,9 +10,7 @@ import { NoteService } from '../notes/services/note.service';
 import { 
 	groupServiceStubBuilder, 
 	noteServiceStubBuilder, 
-	appStateServiceStubBuilder
 } from '../../assets/test';
-import { DebugElement } from '@angular/core';
 import { Note } from '@lenotes-ng/model';
 import { testNotes } from '@lenotes-ng/model';
 
@@ -22,17 +21,19 @@ describe('GroupsDisplayComponent', () => {
 	
   beforeEach(async () => {
 
-		const appStateServiceStub = appStateServiceStubBuilder.build();
+		const appStateService = new AppStateService();
 		const groupServiceStub = groupServiceStubBuilder.build();
 		const noteServiceStub = noteServiceStubBuilder.build();
 
     await TestBed.configureTestingModule({
-			imports: [HttpClientTestingModule],
+			imports: [
+				FormsModule
+			],
       declarations: [ GroupsDisplayComponent ],
 			providers: [
 				{ provide: GroupService, useValue: groupServiceStub }, 
 			  { provide: NoteService, useValue: noteServiceStub },
-				{ provide: AppStateService, useValue: appStateServiceStub }
+				{ provide: AppStateService, useValue: appStateService }
 			]
     })
     .compileComponents();

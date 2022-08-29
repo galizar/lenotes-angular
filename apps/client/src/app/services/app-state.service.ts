@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map, distinctUntilChanged } from 'rxjs/operators';
-import { EditorStateService } from "../editor/services/editor-state.service";
 
 interface AppState {
 	noteOnDisplayId?: number,
