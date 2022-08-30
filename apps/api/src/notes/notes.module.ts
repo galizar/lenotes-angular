@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 
 import { NotesService } from './services/notes.service';
 import { NotesController } from './notes.controller';
-import { DomainObjectStorage, NaiveNotesStorage } from '@lenotes-ng/data-storage';
+import { DomainObjectStorage, KyselyNotesStorage } from '@lenotes-ng/data-storage';
 
 @Module({
   controllers: [NotesController],
@@ -10,7 +10,7 @@ import { DomainObjectStorage, NaiveNotesStorage } from '@lenotes-ng/data-storage
 		NotesService, 
 		{
 			provide: DomainObjectStorage,
-			useValue: new NaiveNotesStorage()
+			useValue: new KyselyNotesStorage() 
 		}
 	]
 })

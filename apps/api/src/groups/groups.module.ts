@@ -1,8 +1,8 @@
-import { Module } from '@nestjs/common';
+import { Inject, Module } from '@nestjs/common';
 
 import { GroupsService } from './services/groups.service';
 import { GroupsController } from './groups.controller';
-import { DomainObjectStorage, NaiveGroupsStorage } from '@lenotes-ng/data-storage';
+import { DomainObjectStorage, KyselyGroupsStorage } from '@lenotes-ng/data-storage';
 
 @Module({
   controllers: [GroupsController],
@@ -10,7 +10,7 @@ import { DomainObjectStorage, NaiveGroupsStorage } from '@lenotes-ng/data-storag
 		GroupsService,
 		{
 			provide: DomainObjectStorage,
-			useValue: new NaiveGroupsStorage()
+			useValue: new KyselyGroupsStorage() 
 		}
 	]
 })
