@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 import { GroupsDisplayComponent } from './groups/groups-display.component';
 import { NotesDisplayComponent } from './notes/notes-display.component';
 import { EditorComponent } from './editor/editor.component';
+import { AuthComponent } from './auth/auth.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { EditorComponent } from './editor/editor.component';
     GroupsDisplayComponent,
     NotesDisplayComponent,
     EditorComponent,
+		AuthComponent
   ],
   imports: [
     BrowserModule,
