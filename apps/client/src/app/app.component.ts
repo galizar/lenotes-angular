@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { combineLatest, map } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { AppStateService } from './services';
 
 @Component({
@@ -10,17 +10,10 @@ import { AppStateService } from './services';
 export class AppComponent {
   title = 'lenotes-angular';
 
-	vm$ = combineLatest([
-		this.appStateService.displayingTrash$,
-		this.appStateService.groupOnDisplayId$
-	]).pipe(
-		map((props) => {
-			return {
-				displayingTrash: props[0],
-				groupOnDisplayId: props[1]
-			};
-		})
-	)
+	vm$ = combineLatest({
+		displayingTrash: this.appStateService.displayingTrash$,
+		groupOnDisplayId: this.appStateService.groupOnDisplayId$
+	});
 
 	constructor(
 		public appStateService: AppStateService

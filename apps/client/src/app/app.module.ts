@@ -11,7 +11,6 @@ import { AppComponent } from './app.component';
 import { GroupsDisplayComponent } from './groups/groups-display.component';
 import { NotesDisplayComponent } from './notes/notes-display.component';
 import { EditorComponent } from './editor/editor.component';
-import { AuthComponent } from './auth/auth.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +18,6 @@ import { AuthComponent } from './auth/auth.component';
     GroupsDisplayComponent,
     NotesDisplayComponent,
     EditorComponent,
-		AuthComponent
   ],
   imports: [
     BrowserModule,
@@ -30,9 +28,11 @@ import { AuthComponent } from './auth/auth.component';
 		ReactiveFormsModule,
 		FormsModule
   ],
+	exports: [
+		AppComponent
+	],
   providers: [
 		{provide: 'env', useValue: environment}
 	],
-  bootstrap: [AppComponent]
 })
 export class AppModule { }
