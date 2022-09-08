@@ -11,7 +11,7 @@ let paths = {};
 for (let [alias, [path]] of Object.entries(tsConfig.paths)) {
 
 	path = path.replace(/\.ts/i, '.js');
-	paths[alias] = [`${outputRoot}/${path}`]
+	paths[alias] = [`${outputRoot}/${path}`];
 }
 
 tsConfigPaths.register({
