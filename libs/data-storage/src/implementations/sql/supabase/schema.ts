@@ -12,45 +12,45 @@ export interface Database {
       groups: {
         Row: {
           id: number;
-          name: string | null;
-          is_trashed: boolean | null;
+          name: string;
+          is_trashed: boolean;
           user_id: string;
         };
         Insert: {
           id?: number;
-          name?: string | null;
-          is_trashed?: boolean | null;
+          name: string;
+          is_trashed: boolean;
           user_id: string;
         };
         Update: {
           id?: number;
-          name?: string | null;
-          is_trashed?: boolean | null;
+          name?: string;
+          is_trashed?: boolean;
           user_id?: string;
         };
       };
       notes: {
         Row: {
           id: number;
-          name: string | null;
-          content: string | null;
-          is_trashed: boolean | null;
+          name: string;
+          content: string;
+          is_trashed: boolean;
           group_id: number | null;
           user_id: string;
         };
         Insert: {
           id?: number;
-          name?: string | null;
-          content?: string | null;
-          is_trashed?: boolean | null;
+          name: string;
+          content: string;
+          is_trashed: boolean;
           group_id?: number | null;
           user_id: string;
         };
         Update: {
           id?: number;
-          name?: string | null;
-          content?: string | null;
-          is_trashed?: boolean | null;
+          name?: string;
+          content?: string;
+          is_trashed?: boolean;
           group_id?: number | null;
           user_id?: string;
         };
@@ -67,4 +67,6 @@ export interface Database {
     };
   };
 }
+
+export type group = Database['public']['Tables']['groups']['Row'];
 
