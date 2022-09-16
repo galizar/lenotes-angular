@@ -5,10 +5,11 @@ import { Group } from '@lenotes-ng/model';
 describe('SupabaseGroupsStorage', () => {
 
 	let storage = new SupabaseGroupsStorage();
+	const supaClient = supabase(process.env.SUPABASE_URL!, process.env.SUPABASE_KEY!)
 
 	beforeAll(async () => {
 
-		await supabase.auth.signIn({
+		await supaClient.auth.signIn({
 			email: process.env.DUMMY_EMAIL, 
 			password: process.env.DUMMY_PASSWORD
 		});
@@ -66,7 +67,7 @@ describe('SupabaseGroupsStorage', () => {
 
 	//it('creates a group', async () => {
 
-	//	const data = await supabase.auth.signIn({
+	//	const data = await supaClient.auth.signIn({
 	//		email: process.env.DUMMY_EMAIL, 
 	//		password: process.env.DUMMY_PASSWORD
 	//	});

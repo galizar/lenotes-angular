@@ -1,4 +1,6 @@
-import { DomainObjectStorage, supabase } from "@lenotes-ng/data-storage";
+import { createClient } from "@supabase/supabase-js";
+
+import { DomainObjectStorage } from "@lenotes-ng/data-storage";
 import { Note } from "@lenotes-ng/model";
 import { Database } from '../schema';
 import { UpdateNoteDto } from "@lenotes-ng/api-behavior";
@@ -6,6 +8,7 @@ import { propsCamelCasify, propsSnakeCasify } from '../util/camelCaseUtilities';
 
 type note = Database['public']['Tables']['notes']['Row'];
 const propColumns = 'name, content, group_id, is_trashed';
+const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_KEY!);
 
 export class SupabaseNotesStorage extends DomainObjectStorage<Note> {
 

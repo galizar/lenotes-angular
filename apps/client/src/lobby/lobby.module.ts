@@ -4,6 +4,7 @@ import { environment } from '../environments/environment';
 import { AppModule } from '../app/app.module';
 import { LobbyComponent } from './lobby.component';
 import { AuthComponent } from '../auth/auth.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
 	declarations: [
@@ -11,7 +12,8 @@ import { AuthComponent } from '../auth/auth.component';
 	],
 	imports: [
 		AppModule,
-		AuthComponent
+		AuthComponent,
+		CommonModule
 	],
 	providers: [ 
 		{ provide: 'env', useValue: environment}

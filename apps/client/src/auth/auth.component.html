@@ -1,1 +1,51 @@
-<div></div>
+<div id="auth-container">
+	<div id="auth-form">
+		<p id="form-title"> lenotes-ng </p>
+
+		<div id="auth-inputs">
+			<form [formGroup]="authForm" (ngSubmit)="submitAuthForm()">
+				<div id="email-input">
+					<label for="email">email</label>
+					<input  name="email" type="email" formControlName="email" required>
+				</div>
+				<div id="password-input">
+					<label for="password">password</label>
+					<input  name="password" type="text" formControlName="password" required>
+				</div>
+				 <div id="confirm-password-input" *ngIf="authType === 'signup'">
+					<label for="pass-confirm">confirm password</label>
+					<input name="pass-confirm"
+						type="text" formControlName="confirmPassword" required>
+				 </div>
+				<button type="submit" [disabled]="!authForm.valid">
+					{{ authType === 'login' ? 'Log In' : 'Sign Up' }}
+				</button>
+			</form>
+
+			<div *ngIf="(email!.invalid || password!.invalid) && (email!.dirty ||
+				email!.touched || password!.dirty || password!.touched)" class="alert"
+				>
+				<div *ngIf="email!.errors?.['email']">
+					Please introduce a valid email.
+				</div>
+				<div *ngIf="password!.errors?.['required']">
+					Please introduce a password.
+				</div>
+				<div *ngIf="password!.errors?.['minlength']">
+					Please introduce a password at least six-characters long
+				</div>
+				<div *ngIf="authType === 'signup' && authForm!.errors?.['passwordMatch']">
+					Passwords don't match. Please try again.
+				</div>
+			</div>
+		</div>
+
+		<div *ngIf="authType === 'login'; else elseToggle">
+			Not a member yet? <button (click)="toggleAuthType()">Sign up</button>
+		</div>
+		<ng-template #elseToggle>
+			Already a member? <button (click)="toggleAuthType()">Log In</button> 
+		</ng-template>
+
+	</div>
+</div>

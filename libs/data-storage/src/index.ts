@@ -4,5 +4,3 @@ export { NaiveNotesStorage } from './implementations/naive/NaiveNotesStorage';
 
 export { KyselyGroupsStorage } from './implementations/sql/kysely/KyselyGroupsStorage';
 export { KyselyNotesStorage } from './implementations/sql/kysely/KyselyNotesStorage';
-
-export { supabase } from './implementations/sql/supabase/db';

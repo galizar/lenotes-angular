@@ -1,11 +1,14 @@
-import { DomainObjectStorage, supabase } from "@lenotes-ng/data-storage";
-import { Group, ObjectMap } from "@lenotes-ng/model";
+import { createClient } from "@supabase/supabase-js";
+
+import { DomainObjectStorage } from "@lenotes-ng/data-storage";
+import { Group } from "@lenotes-ng/model";
 import { Database } from '../schema';
 import { UpdateGroupDto } from "@lenotes-ng/api-behavior";
 import { propsCamelCasify, propsSnakeCasify } from '../util/camelCaseUtilities';
 
 type group = Database['public']['Tables']['groups']['Row'];
 const propColumns = 'name, is_trashed';
+const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_KEY!);
 
 export class SupabaseGroupsStorage extends DomainObjectStorage<Group> {
 
