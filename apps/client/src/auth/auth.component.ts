@@ -3,8 +3,6 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { 
 	AbstractControl, 
 	FormBuilder, 
-	FormControl, 
-	FormGroup, 
 	FormsModule, 
 	ReactiveFormsModule, 
 	ValidationErrors, 
@@ -12,6 +10,7 @@ import {
 } from '@angular/forms';
 
 import { SupabaseClient, createClient } from '@supabase/supabase-js';
+import { BehaviorSubject } from 'rxjs';
 import { EnvObject } from '../environments';
 import { environment } from '../environments/environment';
 
@@ -33,23 +32,24 @@ export class AuthComponent {
 
 	authType: 'signup' | 'login' = 'login';
 	supabase: SupabaseClient;
+
 	authForm = this.fb.nonNullable.group({
-		email: ['', {
-			validators: [
-				Validators.required,
-				Validators.email
-			]
-		}],
-		password: ['', {
-			validators: [
-				Validators.required,
-				Validators.minLength(6),
-			]
-		}],
-		confirmPassword: ['']
-	}, {
-		validators: [this.passwordMatchValidator()]
-	});
+			email: ['', {
+				validators: [
+					Validators.required,
+					Validators.email
+				]
+			}],
+			password: ['', {
+				validators: [
+					Validators.required,
+					Validators.minLength(6),
+				]
+			}],
+			confirmPassword: ['']
+		}, {
+			validators: [this.passwordMatchValidator()] 
+		});
 	
 	constructor( 
 		private fb: FormBuilder,
@@ -79,8 +79,10 @@ export class AuthComponent {
 	}
 
 	passwordMatchValidator() {
-
 		return (control: AbstractControl): ValidationErrors | null => {
+
+			if (this.authType === 'login') return null; // log in: no password to match
+
 			const password = control.get('password');
 			const confirmPassword = control.get('confirmPassword');
 
@@ -95,9 +97,12 @@ export class AuthComponent {
 			password: '', 
 			confirmPassword: ''
 		});
-		if (this.authType === 'signup')
+
+		if (this.authType === 'signup') {
 			this.authType = 'login';
-		else
+		}
+		else {
 			this.authType = 'signup';
+		}
 	}
 }

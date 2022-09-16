@@ -10,32 +10,37 @@
 				</div>
 				<div id="password-input">
 					<label for="password">password</label>
-					<input  name="password" type="text" formControlName="password" required>
+					<input  name="password" type="password" formControlName="password" required>
 				</div>
 				 <div id="confirm-password-input" *ngIf="authType === 'signup'">
 					<label for="pass-confirm">confirm password</label>
 					<input name="pass-confirm"
-						type="text" formControlName="confirmPassword" required>
+						type="password" formControlName="confirmPassword" required>
 				 </div>
 				<button type="submit" [disabled]="!authForm.valid">
 					{{ authType === 'login' ? 'Log In' : 'Sign Up' }}
 				</button>
 			</form>
 
-			<div *ngIf="(email!.invalid || password!.invalid) && (email!.dirty ||
-				email!.touched || password!.dirty || password!.touched)" class="alert"
+			<div *ngIf="!authForm.valid && (authForm.dirty || authForm.touched)" class="alert"
 				>
-				<div *ngIf="email!.errors?.['email']">
+				<div *ngIf="(email!.errors?.['email']) && (email!.dirty || email!.touched)">
 					Please introduce a valid email.
 				</div>
-				<div *ngIf="password!.errors?.['required']">
+				<div *ngIf="(password!.errors?.['required']) && (password!.dirty || password!.touched)">
 					Please introduce a password.
 				</div>
 				<div *ngIf="password!.errors?.['minlength']">
 					Please introduce a password at least six-characters long
 				</div>
-				<div *ngIf="authType === 'signup' && authForm!.errors?.['passwordMatch']">
+				<div *ngIf="authType === 'signup' && 
+					authForm!.errors?.['passwordMatch'] && 
+					(confirmPassword!.dirty || confirmPassword!.touched)">
 					Passwords don't match. Please try again.
+				</div>
+
+				<div>
+					{{authForm.errors}}
 				</div>
 			</div>
 		</div>
