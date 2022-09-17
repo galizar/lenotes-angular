@@ -24,7 +24,6 @@ export class LobbyComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
-
 		this.supabase.auth.getSessionFromUrl().then(({data}) => {
 			if (data) this.user = data.user;
 		});
@@ -39,7 +38,6 @@ export class LobbyComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy() {
-
 		this.authListener?.unsubscribe();
 	}
 }

@@ -3,6 +3,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { 
 	AbstractControl, 
 	FormBuilder, 
+	FormControl, 
 	FormsModule, 
 	ReactiveFormsModule, 
 	ValidationErrors, 
@@ -10,6 +11,7 @@ import {
 } from '@angular/forms';
 
 import { SupabaseClient, createClient } from '@supabase/supabase-js';
+import { AlterColumnBuilder } from 'kysely';
 import { BehaviorSubject } from 'rxjs';
 import { EnvObject } from '../environments';
 import { environment } from '../environments/environment';
@@ -33,20 +35,24 @@ export class AuthComponent {
 	authType: 'signup' | 'login' = 'login';
 	supabase: SupabaseClient;
 
-	authForm = this.fb.nonNullable.group({
-			email: ['', {
+	authForm = this.fb.group({
+			email: new FormControl('', {
+				nonNullable: true,
 				validators: [
 					Validators.required,
 					Validators.email
 				]
-			}],
-			password: ['', {
+			}),
+			password: new FormControl('', {
+				nonNullable: true,
 				validators: [
 					Validators.required,
 					Validators.minLength(6),
 				]
-			}],
-			confirmPassword: ['']
+			}),
+			confirmPassword: new FormControl('', {
+				nonNullable: true
+			})
 		}, {
 			validators: [this.passwordMatchValidator()] 
 		});
@@ -59,29 +65,30 @@ export class AuthComponent {
 	}
 
 	get email() { return this.authForm.get('email'); }
-	get password() { return this.authForm.get('password') }
+	get password() { return this.authForm.get('password'); }
 	get confirmPassword() { return this.authForm.get('confirmPassword'); }
 
 	async handleAuth(type: 'login' | 'signup', email: string, password: string) {
-
 		const { user, error } =
 			type === 'login'
 				? await this.supabase.auth.signIn({ email, password })
 				: await this.supabase.auth.signUp({ email, password });
+
+		if (!user && !error) { // this is a sign up
+			alert('Please check your email for verification');
+		} else if (error) {
+			alert(`An error occurred ${error.message}. Please try again.`);
+		}
 	}
 
-	// TODO: wire this up
 	submitAuthForm() {
-
-		alert('check the console');
-		console.log('email in form', this.email!.value);
-		console.log('password in form', this.password!.value);
+		this.handleAuth(this.authType, this.email!.value, this.password!.value);
 	}
 
 	passwordMatchValidator() {
 		return (control: AbstractControl): ValidationErrors | null => {
 
-			if (this.authType === 'login') return null; // log in: no password to match
+			if (this.authType === 'login') return null;
 
 			const password = control.get('password');
 			const confirmPassword = control.get('confirmPassword');
