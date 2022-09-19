@@ -9,12 +9,13 @@ import {
 	ValidationErrors, 
 	Validators
 } from '@angular/forms';
-
 import { SupabaseClient, createClient } from '@supabase/supabase-js';
 import { AlterColumnBuilder } from 'kysely';
 import { BehaviorSubject } from 'rxjs';
+
 import { EnvObject } from '../environments';
 import { environment } from '../environments/environment';
+import { AuthService } from './services/auth.service';
 
 @Component({
 	standalone: true,
@@ -27,13 +28,13 @@ import { environment } from '../environments/environment';
 		ReactiveFormsModule
 	],
 	providers: [
-		{provide: 'env', useValue: environment}
+		{provide: 'env', useValue: environment},
+		AuthService
 	]
 })
 export class AuthComponent {
 
 	authType: 'signup' | 'login' = 'login';
-	supabase: SupabaseClient;
 
 	authForm = this.fb.group({
 			email: new FormControl('', {
@@ -60,9 +61,8 @@ export class AuthComponent {
 	constructor( 
 		private fb: FormBuilder,
 		@Inject('env') env: EnvObject,
-	) {
-		this.supabase = createClient(env.SUPABASE_URL, env.SUPABASE_KEY);
-	}
+		public auth: AuthService
+	) { }
 
 	get email() { return this.authForm.get('email'); }
 	get password() { return this.authForm.get('password'); }
@@ -71,8 +71,8 @@ export class AuthComponent {
 	async handleAuth(type: 'login' | 'signup', email: string, password: string) {
 		const { user, error } =
 			type === 'login'
-				? await this.supabase.auth.signIn({ email, password })
-				: await this.supabase.auth.signUp({ email, password });
+				? await this.auth.signIn(email, password)
+				: await this.auth.signUp(email, password);
 
 		if (!user && !error) { // this is a sign up
 			alert('Please check your email for verification');
