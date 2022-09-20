@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import { 
 	AbstractControl, 
 	FormBuilder, 
@@ -9,9 +9,6 @@ import {
 	ValidationErrors, 
 	Validators
 } from '@angular/forms';
-import { SupabaseClient, createClient } from '@supabase/supabase-js';
-import { AlterColumnBuilder } from 'kysely';
-import { BehaviorSubject } from 'rxjs';
 
 import { EnvObject } from '../environments';
 import { environment } from '../environments/environment';
@@ -29,11 +26,11 @@ import { AuthService } from './services/auth.service';
 	],
 	providers: [
 		{provide: 'env', useValue: environment},
-		AuthService
 	]
 })
 export class AuthComponent {
 
+	private env: EnvObject;
 	authType: 'signup' | 'login' = 'login';
 
 	authForm = this.fb.group({
@@ -53,6 +50,9 @@ export class AuthComponent {
 			}),
 			confirmPassword: new FormControl('', {
 				nonNullable: true
+			}),
+			keepSignedIn: new FormControl(false, {
+				nonNullable: true
 			})
 		}, {
 			validators: [this.passwordMatchValidator()] 
@@ -62,11 +62,14 @@ export class AuthComponent {
 		private fb: FormBuilder,
 		@Inject('env') env: EnvObject,
 		public auth: AuthService
-	) { }
+	) { 
+		this.env = env;
+	}
 
 	get email() { return this.authForm.get('email'); }
 	get password() { return this.authForm.get('password'); }
 	get confirmPassword() { return this.authForm.get('confirmPassword'); }
+	get keepSignedIn() { return this.authForm.get('keepSignedIn'); }
 
 	async handleAuth(type: 'login' | 'signup', email: string, password: string) {
 		const { user, error } =
@@ -82,6 +85,9 @@ export class AuthComponent {
 	}
 
 	submitAuthForm() {
+		if (this.keepSignedIn) {
+			localStorage.setItem('keepSignedIn', 'yes');
+		}
 		this.handleAuth(this.authType, this.email!.value, this.password!.value);
 	}
 
@@ -102,7 +108,8 @@ export class AuthComponent {
 		this.authForm.setValue({ 
 			email: '', 
 			password: '', 
-			confirmPassword: ''
+			confirmPassword: '',
+			keepSignedIn: false
 		});
 
 		if (this.authType === 'signup') {

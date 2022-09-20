@@ -1,5 +1,5 @@
 <div>
-	<div *ngIf="this.auth.user; else elseBlock"> 
+	<div *ngIf="this.auth.user | async as user; else elseBlock"> 
 		<app-root> 
 		</app-root>
 	</div>

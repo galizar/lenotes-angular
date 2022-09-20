@@ -17,6 +17,10 @@
 					<input name="pass-confirm"
 						type="password" formControlName="confirmPassword" required>
 				 </div>
+				<div *ngIf="authType === 'login'">
+					<label for="keep-signed-in">Keep signed in?</label>
+					<input type="checkbox" name="keep-signed-in" formControlName="keepSignedIn">
+				</div>
 				<button type="submit" [disabled]="!authForm.valid">
 					{{ authType === 'login' ? 'Log In' : 'Sign Up' }}
 				</button>

@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { createClient, Subscription, SupabaseClient, User } from '@supabase/supabase-js';
+import { BehaviorSubject } from 'rxjs';
 
 import { EnvObject } from '../../environments/EnvObject';
 
@@ -9,23 +10,26 @@ import { EnvObject } from '../../environments/EnvObject';
 export class AuthService {
 
 	private supabase: SupabaseClient;
-	user: User | null = null;
+	user = new BehaviorSubject<User | null>(null);
 	listener: Subscription | null = null;
 
 	constructor(
-		@Inject('env') env: EnvObject
+		@Inject('env') env: EnvObject,
 	) {
+		// iff this property is set in local storage keep signed in
+		const keepSignedIn = localStorage.getItem('keepSignedIn');
+
 		this.supabase = createClient(env.SUPABASE_URL, env.SUPABASE_KEY, {
-			autoRefreshToken: false
+			autoRefreshToken: keepSignedIn ? true : false
 		});
 
 		this.supabase.auth.getSessionFromUrl().then(({data}) => {
-			if (data) this.user = data.user;
+			if (data) this.user.next(data.user);
 		});
 
 		const { data: listener } = this.supabase.auth.onAuthStateChange(
 			(event, session) => {
-				this.user = session?.user ?? null;
+				this.user.next(session?.user ?? null);
 			}
 		);
 

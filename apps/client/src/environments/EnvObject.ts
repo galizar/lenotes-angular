@@ -1,3 +1,5 @@
+import { SupabaseAuthClientOptions } from "@supabase/supabase-js/dist/module/lib/types";
+
 export interface EnvObject {
 	production: boolean,
 	GROUPS_API_ROOT: string,
