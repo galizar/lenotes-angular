@@ -10,7 +10,6 @@ import {
 	Validators
 } from '@angular/forms';
 
-import { EnvObject } from '../environments';
 import { environment } from '../environments/environment';
 import { AuthService } from './services/auth.service';
 
@@ -30,7 +29,6 @@ import { AuthService } from './services/auth.service';
 })
 export class AuthComponent {
 
-	private env: EnvObject;
 	authType: 'signup' | 'login' = 'login';
 
 	authForm = this.fb.group({
@@ -60,10 +58,8 @@ export class AuthComponent {
 	
 	constructor( 
 		private fb: FormBuilder,
-		@Inject('env') env: EnvObject,
 		public auth: AuthService
 	) { 
-		this.env = env;
 	}
 
 	get email() { return this.authForm.get('email'); }
