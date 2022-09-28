@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 import { GroupsDisplayComponent } from './groups/groups-display.component';
 import { NotesDisplayComponent } from './notes/notes-display.component';
 import { EditorComponent } from './editor/editor.component';
+import { AuthInterceptor } from '../auth/interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,12 @@ import { EditorComponent } from './editor/editor.component';
 		AppComponent
 	],
   providers: [
-		{provide: 'env', useValue: environment}
+		{provide: 'env', useValue: environment},
+		{
+			provide: HTTP_INTERCEPTORS, 
+			useClass: AuthInterceptor, 
+			multi: true,
+		}
 	],
 })
 export class AppModule { }

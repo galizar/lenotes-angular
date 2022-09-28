@@ -1,93 +1,95 @@
-import { createClient } from "@supabase/supabase-js";
-
 import { DomainObjectStorage } from "@lenotes-ng/data-storage";
-import { Note } from "@lenotes-ng/model";
-import { Database } from '../schema';
-import { UpdateNoteDto } from "@lenotes-ng/api-behavior";
+import { Note, ObjectMap } from "@lenotes-ng/model";
 import { propsCamelCasify, propsSnakeCasify } from '../util/camelCaseUtilities';
+import { supabase } from '../db';
+import { validate } from "../util/validate";
 
-type note = Database['public']['Tables']['notes']['Row'];
-const propColumns = 'name, content, group_id, is_trashed';
-const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_KEY!);
+const propColumns = 'name, content, groupId:group_id, isTrashed:is_trashed';
 
 export class SupabaseNotesStorage extends DomainObjectStorage<Note> {
 
 	async create(withProps: Note['props']) {
 
-		const session = await supabase.auth.session();
-
-		setImmediate(() => {
-			if (session === null || session.access_token === undefined) {
-				throw Error('no user is signed in');
-			}
-		});
-
-		const {user} = await supabase.auth.api.getUser(session?.access_token!);
+		const {data: authData, error: authError} = await supabase.auth.getUser();
 
 		const {data, error} = await supabase
-			.from<note>('notes')
-			.insert({...propsSnakeCasify(withProps), user_id: user!.id});
+			.from('notes')
+			.insert({...propsSnakeCasify(withProps), user_id: authData.user!.id})
+			.select().single();
 
-		if (error) throw Error(error.message);
+		validate(data, error);
 
-		return data![0].id;
+		return data!.id;
 	}
 
 	async get(id: number): Promise<Note['props']> {
 
-		const {data, error} = await supabase
-			.from<note>('notes')
+		const { data, error } = await supabase
+			.from('notes')
 			.select(propColumns)
-			.eq('id', id);
+			.eq('id', id)
+			.single();
 		
-		if (error) throw Error(error.message);
-
-		if (data === null || data.length === 0) {
-			throw Error('not found');
-		}
-
-		const note = data[0];
-		return propsCamelCasify(note);
+		validate(data, error);
+		
+		return {
+			...data!,
+			groupId: data!.groupId ?? undefined,
+		};
 	}
 
-	async getAll() {
+	async getAll(): Promise<ObjectMap<Note>> {
 
 		const {data, error} = await supabase
-			.from<note>('notes')
-			.select(propColumns);
+			.from('notes')
+			.select(`id, ${propColumns}`);
 		
-		if (error) throw Error(error.message);
+		let propsMap: ObjectMap<Note> = {};
 
-		return propsCamelCasify(data);
+		validate(data, error);
+
+		for (let {id, ...props} of data!) {
+			propsMap[id] = {
+				...props,
+				groupId: props.groupId ?? undefined
+			};
+		}
+
+		return propsMap;
 	}
 
 	async update(object: Note) {
 
 		const {error} = await supabase	
-			.from<note>('notes')
-			.update({...propsSnakeCasify(object.props)}, {returning: 'minimal'})
+			.from('notes')
+			.update({
+				name: object.props.name,
+				content: object.props.content,
+				group_id: object.props.groupId,
+				is_trashed: object.props.isTrashed
+			})
 			.eq('id', object.id);
 
-		if (error) throw Error(error.message);
+		if (error) throw Error(error.message)
 	}
 
-	async batchUpdate(ids: Note['id'][], dto: UpdateNoteDto) {
+	async batchUpdate(ids: Note['id'][], dto: Partial<Note['props']>) {
 
 		const {error} = await supabase
-			.from<note>('notes')
-			.update({...propsSnakeCasify(dto)}, {returning: 'minimal'})
+			.from('notes')
+			.update({...propsSnakeCasify(dto)})
 			.in('id', ids);
 
-		if (error) throw Error(error.message);
+		if (error) throw Error(error.message)
 	}
 
 	async delete(id: number) {
 
 		const {error} = await supabase
-			.from<note>('notes')
-			.delete({returning: 'minimal'})
+			.from('notes')
+			.delete()
 			.eq('id', id);
 		
-		if (error) throw Error(error.message);
+		if (error) throw Error(error.message)
 	}
 }

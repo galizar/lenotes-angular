@@ -21,15 +21,16 @@
 	</div>
 
 	<button *ngIf="!vm.displayingTrash" class="create-button"
-		(click)="toggleFormVisibility(form, nameInput)"
+		(click)="toggleFormVisibility(nameInput)"
 	>+</button>
 
-	<form #form [attr.id]="this.createFormId" (submit)="onSubmitCreate($event, form)">
+	<form #form="ngForm" [hidden]="isFormHidden" [attr.id]="this.createFormId">
 
 		<input #nameInput name='group-name' [(ngModel)]="this.formInputValue"
 			[attr.id]="this.formInputId" minlength=1 required="text"
-			(blur)="onInputBlur(form)">
+			(blur)="onInputBlur($event, submitButton)">
 
-		<input value="create group" type="submit">
+		<button #submitButton type="submit" [disabled]="!form.valid"
+		(click)="onSubmitCreate()">Create</button>
 	</form>
 </div>

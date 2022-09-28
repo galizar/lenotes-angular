@@ -15,6 +15,7 @@ export class NotesDisplayComponent implements OnInit {
 	createNoteFormId = 'create-note-form';
 	noteNameInputId = 'note-name-input';
 	nameFormValue = '';
+	isFormHidden = true;
 
 	// view model
 	vm$ = combineLatest({
@@ -36,28 +37,34 @@ export class NotesDisplayComponent implements OnInit {
 		event.dataTransfer?.setData('Note', JSON.stringify(note));
 	}
 
-	onSubmitCreate(event: SubmitEvent, form: HTMLFormElement, groupId?: number) {
+	onSubmitCreate(groupId?: number) {
 
-		event.preventDefault();
-		form.style.display = '';
+		this.isFormHidden = true;
 
 		this.noteStateService.create(this.nameFormValue, groupId);
 		this.nameFormValue = '';
 	}
 
-	toggleFormVisibility(form: HTMLFormElement, input: HTMLInputElement) {
+	toggleFormVisibility(input: HTMLInputElement) {
 
-		if (form.style.display === '') {
-			form.style.display = 'block';
+		if (this.isFormHidden) {
+			this.isFormHidden = false;
 			input.focus();
 		} else {
-			form.style.display = '';
+			this.isFormHidden = true;
 		}
 	}
 
-	onInputBlur(form: HTMLFormElement) {
+	onInputBlur(event: FocusEvent, submitButton: HTMLButtonElement) {
 
-		form.style.display = '';
+		const relatedTarget = event.relatedTarget as HTMLElement;
+		if (
+			relatedTarget && 
+			(submitButton.getAttribute('id') === relatedTarget.getAttribute('id'))
+		) {
+			return; // ignore blur event; it's caused by click on submit button
+		}
+		this.isFormHidden = true;
 		this.nameFormValue = '';
 	}
 

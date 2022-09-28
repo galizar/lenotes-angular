@@ -68,12 +68,12 @@ export class AuthComponent {
 	get keepSignedIn() { return this.authForm.get('keepSignedIn'); }
 
 	async handleAuth(type: 'login' | 'signup', email: string, password: string) {
-		const { user, error } =
+		const { data, error } =
 			type === 'login'
 				? await this.auth.signIn(email, password)
 				: await this.auth.signUp(email, password);
 
-		if (!user && !error) { // this is a sign up
+		if (!data.user && !error) { // this is a sign up
 			alert('Please check your email for verification');
 		} else if (error) {
 			alert(`An error occurred ${error.message}. Please try again.`);

@@ -16,10 +16,6 @@
 	display: inline;
 }
 
-#create-note-form {
-	display: none;
-}
-
 #note-name-input {
 	width: 70%;
 }

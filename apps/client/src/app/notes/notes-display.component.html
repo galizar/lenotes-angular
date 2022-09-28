@@ -21,16 +21,16 @@
 	</div>
 
 	<button *ngIf="!vm.displayingTrash" class="create-button"
-		(click)="toggleFormVisibility(form, nameInput)"
+		(click)="toggleFormVisibility(nameInput)"
 	>+</button>
 	
-	<form #form [attr.id]="this.createNoteFormId"
-		(submit)="onSubmitCreate($event, form, vm.groupOnDisplayId)">
+	<form #form="ngForm" [hidden]="isFormHidden" [attr.id]="createNoteFormId">
 
-		<input #nameInput name='name-input' [(ngModel)]="this.nameFormValue"
-		[attr.id]="this.noteNameInputId" minlength=1 required="text"
-		(blur)="onInputBlur(form)">
+		<input #nameInput name='name-input' [(ngModel)]="nameFormValue"
+		[attr.id]="this.noteNameInputId" minlength=1 required
+		(blur)="onInputBlur($event, submitButton)">
 
-		<input value="create note" type="submit">
+		<button #submitButton id="form-submit-button" type="submit"
+		[disabled]="!form.valid" (click)="onSubmitCreate(vm.groupOnDisplayId)">Create</button>
 	</form>
 </div>

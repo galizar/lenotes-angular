@@ -16,6 +16,7 @@ export class GroupsDisplayComponent implements OnInit {
 	createFormId = 'create-group-form';
 	formInputId = 'group-name-input';
 	formInputValue: string = '';
+	isFormHidden = true;
 
 	vm$ = combineLatest({
 		groupOnDisplayId: this.appStateService.groupOnDisplayId$,
@@ -47,28 +48,33 @@ export class GroupsDisplayComponent implements OnInit {
 		event?.preventDefault();
 	}
 
-	onSubmitCreate(event: SubmitEvent, form: HTMLFormElement) {
+	onSubmitCreate() {
 
-		event.preventDefault();
-		form.style.display = '';
-
+		this.isFormHidden = true;
 		this.groupStateService.create(this.formInputValue);
 		this.formInputValue = '';
 	}
 
-	toggleFormVisibility(form: HTMLFormElement, nameInput: HTMLInputElement) {
+	toggleFormVisibility(nameInput: HTMLInputElement) {
 
-		if (form.style.display === '') {
-			form.style.display = 'block';
+		if (this.isFormHidden) {
+			this.isFormHidden = false;
 			nameInput.focus();
 		} else {
-			form.style.display = '';
+			this.isFormHidden = true;
 		}
 	}
 
-	onInputBlur(form: HTMLFormElement) {
+	onInputBlur(event: FocusEvent, submitButton: HTMLButtonElement) {
 
-		form.style.display = '';
+		const relatedTarget = event.relatedTarget as HTMLElement;
+		if (
+			relatedTarget && 
+			(submitButton.getAttribute('id') === relatedTarget.getAttribute('id'))
+		) {
+			return;
+		}
+		this.isFormHidden = true;
 		this.formInputValue = '';
 	}
 
