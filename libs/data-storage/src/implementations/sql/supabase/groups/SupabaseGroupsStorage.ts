@@ -11,11 +11,9 @@ export class SupabaseGroupsStorage extends DomainObjectStorage<Group> {
 
 	async create(withProps: Group['props']) {
 
-		const {data: authData, error: authError} = await supabase.auth.getUser();
-
 		const {data, error} = await supabase
 			.from('groups')
-			.insert({...propsSnakeCasify(withProps), user_id: authData.user!.id})
+			.insert({...propsSnakeCasify(withProps)})
 			.select().single();
 
 		validate(data, error);

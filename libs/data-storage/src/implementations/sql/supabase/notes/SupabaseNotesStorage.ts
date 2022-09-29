@@ -10,11 +10,9 @@ export class SupabaseNotesStorage extends DomainObjectStorage<Note> {
 
 	async create(withProps: Note['props']) {
 
-		const {data: authData, error: authError} = await supabase.auth.getUser();
-
 		const {data, error} = await supabase
 			.from('notes')
-			.insert({...propsSnakeCasify(withProps), user_id: authData.user!.id})
+			.insert({...propsSnakeCasify(withProps)})
 			.select().single();
 
 		validate(data, error);
