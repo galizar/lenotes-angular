@@ -1,0 +1,60 @@
+<div id="auth-container">
+	<div id="auth-form">
+		<p id="form-title"> lenotes-ng </p>
+
+		<div id="auth-inputs">
+			<form [formGroup]="authForm" (ngSubmit)="submitAuthForm()">
+				<div id="email-input">
+					<label for="email">email</label>
+					<input  name="email" type="email" formControlName="email" required>
+				</div>
+				<div id="password-input">
+					<label for="password">password</label>
+					<input  name="password" type="password" formControlName="password" required>
+				</div>
+				 <div id="confirm-password-input" *ngIf="authType === 'signup'">
+					<label for="pass-confirm">confirm password</label>
+					<input name="pass-confirm"
+						type="password" formControlName="confirmPassword" required>
+				 </div>
+				<div *ngIf="authType === 'login'">
+					<label for="keep-signed-in">Keep signed in?</label>
+					<input type="checkbox" name="keep-signed-in" formControlName="keepSignedIn">
+				</div>
+				<button type="submit" [disabled]="!authForm.valid">
+					{{ authType === 'login' ? 'Log In' : 'Sign Up' }}
+				</button>
+			</form>
+
+			<div *ngIf="!authForm.valid && (authForm.dirty || authForm.touched)" class="alert"
+				>
+				<div *ngIf="(email!.errors?.['email']) && (email!.dirty || email!.touched)">
+					Please introduce a valid email.
+				</div>
+				<div *ngIf="(password!.errors?.['required']) && (password!.dirty || password!.touched)">
+					Please introduce a password.
+				</div>
+				<div *ngIf="password!.errors?.['minlength']">
+					Please introduce a password at least six-characters long
+				</div>
+				<div *ngIf="authType === 'signup' && 
+					authForm!.errors?.['passwordMatch'] && 
+					(confirmPassword!.dirty || confirmPassword!.touched)">
+					Passwords don't match. Please try again.
+				</div>
+
+				<div>
+					{{authForm.errors}}
+				</div>
+			</div>
+		</div>
+
+		<div *ngIf="authType === 'login'; else elseToggle">
+			Not a member yet? <button (click)="toggleAuthType()">Sign up</button>
+		</div>
+		<ng-template #elseToggle>
+			Already a member? <button (click)="toggleAuthType()">Log In</button> 
+		</ng-template>
+
+	</div>
+</div>

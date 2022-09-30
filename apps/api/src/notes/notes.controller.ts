@@ -1,4 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe } from '@nestjs/common';
+import { 
+	Controller, 
+	Get, 
+	Post, 
+	Body, 
+	Patch, 
+	Param, 
+	Delete, 
+	UsePipes, 
+	ValidationPipe, 
+	Req 
+} from '@nestjs/common';
+import { Request } from 'express';
 
 import { NotesService } from './services/notes.service';
 import { BatchUpdateDto, CreateNoteDto } from '@lenotes-ng/api-behavior';

@@ -2,19 +2,19 @@
 // correct relative path. this script is used by the start target of this project
 const tsConfigPaths = require('tsconfig-paths');
 
-const configLoadResult = tsConfigPaths.loadConfig('apps/api/tsconfig.app.json');
+const tsConfig = tsConfigPaths.loadConfig('apps/api/tsconfig.app.json');
 
-const apiOutputRoot = 'dist/out-tsc';
+const outputRoot = 'dist/out-tsc';
 
-// each new path added to the root tsconfig (that this project depends on) 
-// must be added to this paths object too
-let paths = {
-	'@lenotes-ng/model': [`${apiOutputRoot}/libs/model/src/index.js`],
-	'@lenotes-ng/data-storage': [`${apiOutputRoot}/libs/data-storage/src/index.js`],
-	'@lenotes-ng/api-behavior': [`${apiOutputRoot}/libs/api-behavior/src/index.js`],
-};
+let paths = {};
+
+for (let [alias, [path]] of Object.entries(tsConfig.paths)) {
+
+	path = path.replace(/\.ts/i, '.js');
+	paths[alias] = [`${outputRoot}/${path}`];
+}
 
 tsConfigPaths.register({
-	baseUrl: configLoadResult.absoluteBaseUrl,
-	paths 
+	baseUrl: tsConfig.absoluteBaseUrl,
+	paths
 });
