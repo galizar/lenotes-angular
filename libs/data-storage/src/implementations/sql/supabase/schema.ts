@@ -67,6 +67,3 @@ export interface Database {
     };
   };
 }
-
-export type group = Database['public']['Tables']['groups']['Row'];
-
