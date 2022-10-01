@@ -1,4 +1,3 @@
-/** Transforms an array of snake_case strings to camelCase strings */
 export const camelCasify = (str: string) => {
 	return str.replace(/_./gi, s => s.replace(/_/, '').toUpperCase());
 }

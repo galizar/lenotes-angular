@@ -1,0 +1,93 @@
+#auth-container {
+	background: #272B45;
+	height: 100%;
+	width: 100%;
+	box-sizing: border-box;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center; /* having flex-direction: column this aligns in block direction */
+	position: relative;
+
+	justify-content: center; /* center in inline direction */ 
+}
+
+#auth-form {
+	padding: 50px 20px;
+	gap: 25px;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	border: 1px solid #FF5959;
+	border-radius: 5px;
+	box-shadow: 5px 4px 4px rgba(0, 0, 0, 0.25), inset 5px 4px 4px rgba(0, 0, 0, 0.25);
+
+	color: white;
+}
+
+#form-title {
+	font-size: 24px;
+}
+
+#auth-inputs {
+	font-size: 16px;
+	gap: 5px;
+}
+
+#email-input, #password-input, #confirm-password-input {
+	display: flex;
+	flex-direction: column;
+}
+
+#keep-signed-in-query {
+	display: flex;
+	flex-direction: row;
+	font-size: 14px;
+}
+
+#submit-button-container {
+	display: flex;
+	justify-content: center;
+}
+
+#submit-button {
+	background-color: #FF5959;
+	height: 50px;
+	color: white;
+	border: 0px;
+	margin-top: 10px;
+	margin-inline: 45px;
+	width: 100%;
+	box-shadow: 5px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+#submit-button:disabled {
+	background-color: #8A8C99;
+}
+
+#submit-button:enabled:focus {
+	box-shadow: 5px 4px 4px rgba(0, 0, 0, 0.25), inset 5px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+#auth-toggle-button {
+	background-color: #8A8C99;
+	border: 0px;
+	border-radius: 2px;
+	color: white;
+}
+
+#auth-toggle-button:hover {
+	background-color: #FF5959;
+}
+
+input[type=password], input[type=email] {
+	width: 360px;
+	height: 35px;
+	font-size: 16px;
+}
+
+button[type=submit] {
+	font-size: 24px;
+}

@@ -6,24 +6,26 @@
 			<form [formGroup]="authForm" (ngSubmit)="submitAuthForm()">
 				<div id="email-input">
 					<label for="email">email</label>
-					<input  name="email" type="email" formControlName="email" required>
+					<input name="email" type="email" formControlName="email" required>
 				</div>
 				<div id="password-input">
 					<label for="password">password</label>
-					<input  name="password" type="password" formControlName="password" required>
+					<input name="password" type="password" formControlName="password" required>
 				</div>
-				 <div id="confirm-password-input" *ngIf="authType === 'signup'">
+				<div id="confirm-password-input" *ngIf="authType === 'signup'">
 					<label for="pass-confirm">confirm password</label>
 					<input name="pass-confirm"
 						type="password" formControlName="confirmPassword" required>
-				 </div>
-				<div *ngIf="authType === 'login'">
+				</div>
+				<div id="keep-signed-in-query" *ngIf="authType === 'login'">
 					<label for="keep-signed-in">Keep signed in?</label>
 					<input type="checkbox" name="keep-signed-in" formControlName="keepSignedIn">
 				</div>
-				<button type="submit" [disabled]="!authForm.valid">
-					{{ authType === 'login' ? 'Log In' : 'Sign Up' }}
-				</button>
+				<div id="submit-button-container">
+					<button id="submit-button" type="submit" [disabled]="!authForm.valid">
+						{{ authType === 'login' ? 'Log In' : 'Sign Up' }}
+					</button>
+				</div>
 			</form>
 
 			<div *ngIf="!authForm.valid && (authForm.dirty || authForm.touched)" class="alert"
@@ -35,26 +37,25 @@
 					Please introduce a password.
 				</div>
 				<div *ngIf="password!.errors?.['minlength']">
-					Please introduce a password at least six-characters long
+					Password should be at least six-characters long 
 				</div>
 				<div *ngIf="authType === 'signup' && 
 					authForm!.errors?.['passwordMatch'] && 
 					(confirmPassword!.dirty || confirmPassword!.touched)">
 					Passwords don't match. Please try again.
 				</div>
-
-				<div>
-					{{authForm.errors}}
-				</div>
 			</div>
 		</div>
 
 		<div *ngIf="authType === 'login'; else elseToggle">
-			Not a member yet? <button (click)="toggleAuthType()">Sign up</button>
+			<span>
+				Not a member yet? <button id="auth-toggle-button" (click)="toggleAuthType()">Sign up</button>
+			</span>
 		</div>
 		<ng-template #elseToggle>
-			Already a member? <button (click)="toggleAuthType()">Log In</button> 
+			<span>
+				Already a member? <button id="auth-toggle-button" (click)="toggleAuthType()">Log In</button> 
+			</span>
 		</ng-template>
-
 	</div>
 </div>

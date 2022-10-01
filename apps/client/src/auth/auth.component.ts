@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Inject, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { 
 	AbstractControl, 
 	FormBuilder, 
@@ -107,6 +107,9 @@ export class AuthComponent {
 			confirmPassword: '',
 			keepSignedIn: false
 		});
+
+		this.authForm.markAsUntouched();
+		this.authForm.markAsPristine();
 
 		if (this.authType === 'signup') {
 			this.authType = 'login';
