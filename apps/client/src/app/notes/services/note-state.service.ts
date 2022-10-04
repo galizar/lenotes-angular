@@ -9,7 +9,6 @@ import { UpdateNoteDto } from '@lenotes-ng/api-behavior';
 
 interface NoteState {
 	notes: ObjectMap<Note>,
-	noteOnDisplay?: Note
 }
 
 @Injectable({
@@ -19,7 +18,6 @@ export class NoteStateService {
 
 	private state: NoteState = {
 		notes: Object.create(null),
-		noteOnDisplay: undefined
 	}
 
 	private store = new BehaviorSubject<NoteState>(this.state);

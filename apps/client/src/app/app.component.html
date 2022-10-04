@@ -1,29 +1,46 @@
 <div id="app-container" *ngIf="this.vm$ | async as vm">
 
-	<div id="groups-view">
-		<div>
-			<button (click)="this.appStateService.toggleDisplayingTrash()">
-				{{ vm.displayingTrash ? 'Show non-trashed' : 'Show trashed' }}
-			</button>
-		</div> 
+	<div id="navbar">
+		<div *ngIf="appStateService.displayingTrash$ | async as displayingTrash; else trashCan">
+			<img id="out-trash-can" src="assets/icons/untrashCan.svg" 
+				alt="out trash can" role="img" (click)="appStateService.toggleDisplayingTrash()"
+				(dragover)="allowDrop($event)" />
+		</div>
+		<ng-template #trashCan>
+			<img id="trash-can" src="assets/icons/trashCan.svg" alt="trash can"
+				role="img" (click)="appStateService.toggleDisplayingTrash()"
+				(dragover)="allowDrop($event)" (drop)="dropToTrash($event)" />
+		</ng-template>
+		
+		<span id="note-name">
+			{{vm.nameToDisplay ? vm.nameToDisplay : 'no note selected'}}
+			{{vm.displayingTrash ? '(in trash)' : ''}}
+		</span>
 
-		<app-groups-display>
-		</app-groups-display>
+		<img id="menu" src="assets/icons/arepaMenu.svg" alt="menu" role="img">
 	</div>
 
-	<app-editor>
-	</app-editor>
-
-	<div id="notes-view" >
-		<div>
-			<button *ngIf="vm.groupOnDisplayId !== undefined"
-			(click)="this.appStateService.setGroupOnDisplayId(undefined)"
-			>
-				Show all
-			</button>
+	<div id="app-view">
+		<div id="groups-view">
+			<app-groups-display>
+			</app-groups-display>
 		</div>
 
-		<app-notes-display >
-		</app-notes-display>
+		<app-editor>
+		</app-editor>
+
+		<div id="notes-view" >
+			<div>
+				<button *ngIf="vm.groupOnDisplayId !== undefined"
+					(click)="appStateService.setGroupOnDisplayId(undefined)"
+					id="show-all-button"
+				>
+					Show all
+				</button>
+			</div>
+
+			<app-notes-display >
+			</app-notes-display>
+		</div>
 	</div>
 </div>

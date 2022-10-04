@@ -1,7 +1,5 @@
-<div *ngIf="vm$ | async as vm" class="groups-list">
+<div *ngIf="vm$ | async as vm" id="groups-list">
 	
-	<span>Selected group id: {{ vm.groupOnDisplayId }}</span>
-
 	<div
 		class="button-container"
 		*ngFor="let group of vm.groups | keyvalue"
@@ -12,25 +10,25 @@
 			<button class="group-button"
 				(click)="appStateService.setGroupOnDisplayId(+group.key)"
 				[attr.data-group-id]="group.key"
+				draggable="true"
+				(dragstart)="drag($event, {id: +group.key, props: group.value})"
 				data-test-id="select-group-button"
+				[class.selected]="vm.groupOnDisplayId === +group.key"
 			>
 				{{group.value.name}}
 			</button>
-		  <button class="delete-button" (click)="trash(+group.key)">-</button>
 		</div>
 	</div>
 
-	<button *ngIf="!vm.displayingTrash" class="create-button"
-		(click)="toggleFormVisibility(nameInput)"
-	>+</button>
+	<form #form="ngForm" [hidden]="isFormHidden" [attr.id]="this.createFormId"
+		(ngSubmit)="onSubmitCreate()">
 
-	<form #form="ngForm" [hidden]="isFormHidden" [attr.id]="this.createFormId">
-
-		<input #nameInput name='group-name' [(ngModel)]="this.formInputValue"
-			[attr.id]="this.formInputId" minlength=1 required="text"
-			(blur)="onInputBlur($event, submitButton)">
-
-		<button #submitButton type="submit" [disabled]="!form.valid"
-		(click)="onSubmitCreate()">Create</button>
+		<input #nameInput [attr.id]="this.formInputId" class="group-button"
+			name='group-name' [(ngModel)]="this.formInputValue" minlength=1
+			required="text" (blur)="onInputBlur($event)">
 	</form>
+
+	<button *ngIf="!vm.displayingTrash" id="create-button"
+		(click)="toggleFormVisibility(nameInput)" [class.showing-form]="!isFormHidden"
+	>+</button>
 </div>

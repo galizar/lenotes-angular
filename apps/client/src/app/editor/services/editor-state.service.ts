@@ -6,7 +6,8 @@ import { AppStateService } from '../../services';
 import { NoteStateService } from '../../notes/services/note-state.service';
 
 interface EditorState {
-	contentToDisplay: string
+	contentToDisplay: string,
+	nameToDisplay: string
 }
 
 @Injectable({
@@ -15,7 +16,8 @@ interface EditorState {
 export class EditorStateService {
 
 	private state: EditorState = {
-		contentToDisplay: ''
+		contentToDisplay: '',
+		nameToDisplay: ''
 	}
 
 	private store = new BehaviorSubject<EditorState>(this.state);
@@ -29,24 +31,26 @@ export class EditorStateService {
 		/** Register observer to listen for changes on the content to display */
 		appStateService.noteOnDisplayId$.subscribe(id => {
 			if (id === undefined) {
-				this.setContentToDisplay('');
+				this.updateState({contentToDisplay: '', nameToDisplay: ''})
 			} else {
 				const note = noteStateService.get(id);
-				if (note === undefined) return;
-				this.setContentToDisplay(note.content);
+				this.updateState({
+					contentToDisplay: note.content,
+					nameToDisplay: note.name
+				});
 			} 
 		});
 	}
 
 	contentToDisplay$ = this.state$.pipe(
 		map(state => state.contentToDisplay)
-	)
+	);
 
-	setContentToDisplay(content: string) {
-		this.updateState({ ...this.state, contentToDisplay: content});
-	}
+	nameToDisplay$ = this.state$.pipe(
+		map(state => state.nameToDisplay)
+	);
 
-	updateState(state: EditorState) {
-		this.store.next((this.state = state));
+	updateState(state: Partial<EditorState>) {
+		this.store.next((this.state = {...this.state, ...state}));
 	}
 }

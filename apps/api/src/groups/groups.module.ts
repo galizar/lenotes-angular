@@ -5,7 +5,8 @@ import { GroupsService } from './services/groups.service';
 import { GroupsController } from './groups.controller';
 import { 
 	DomainObjectStorage, 
-	SupabaseGroupsStorage 
+	SupabaseGroupsStorage,
+	NaiveGroupsStorage
 } from '@lenotes-ng/data-storage';
 import auth from '../middleware/auth';
 
@@ -15,14 +16,14 @@ import auth from '../middleware/auth';
 		GroupsService,
 		{
 			provide: DomainObjectStorage,
-			useValue: new SupabaseGroupsStorage() 
+			useValue: new NaiveGroupsStorage() 
 		}
 	]
 })
-export class GroupsModule implements NestModule {
-	configure(consumer: MiddlewareConsumer) {
-		consumer
-		.apply(cookieParser(), auth)
-		.forRoutes(GroupsController);
-	}
+export class GroupsModule { // implements NestModule
+	//configure(consumer: MiddlewareConsumer) {
+	//	consumer
+	//	.apply(cookieParser(), auth)
+	//	.forRoutes(GroupsController);
+	//}
 }

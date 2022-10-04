@@ -1,29 +1,35 @@
-.groups-display {
-	float: left;
-}
-
 .group-button {
-	width: 90%;
-}
-
-.create-button {
 	width: 100%;
-	color: green;
+	background-color: #8A8C99;
+	color: white;
+	border: 1px solid #272B45;
+	border-radius: 3px;
+	font-size: 16px;
 }
 
-.delete-button {
-	width: 10%;
-	color: red;
+.group-button:hover {
+	color: #272B45;
+}
+
+.selected {
+	box-shadow: inset 0px 2px 4px #272B45;
+}
+
+#create-button {
+	width: 100%;
+	color: #FF5959;
+	background-color: #272B45;
+	font-size: 16px;
+	border: 0px;
+	transition-property: box-shadow;
+	transition-duration: 250ms;
+}
+
+#create-button.showing-form {
+	box-shadow: inset 0px 2px 4px #8A8C99;
 }
 
 #group-name-input {
-	width: 70%;
-}
-
-#group-name-input:valid {
-	background-color: lightgreen;
-}
-
-#group-name-input:invalid {
-	background-color: lightcoral;
+	text-align: center;
+	background-color: #272B45;
 }

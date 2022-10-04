@@ -49,21 +49,16 @@ export class NotesDisplayComponent implements OnInit {
 
 		if (this.isFormHidden) {
 			this.isFormHidden = false;
-			input.focus();
+
+			// input element is not visible immediately. schedule focus to another macrotask 
+			setTimeout(() => input.focus()); 
 		} else {
 			this.isFormHidden = true;
 		}
 	}
 
-	onInputBlur(event: FocusEvent, submitButton: HTMLButtonElement) {
+	onInputBlur(event: FocusEvent) {
 
-		const relatedTarget = event.relatedTarget as HTMLElement;
-		if (
-			relatedTarget && 
-			(submitButton.getAttribute('id') === relatedTarget.getAttribute('id'))
-		) {
-			return; // ignore blur event; it's caused by click on submit button
-		}
 		this.isFormHidden = true;
 		this.nameFormValue = '';
 	}

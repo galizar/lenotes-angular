@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { combineLatest } from 'rxjs';
 
-import { Note } from '@lenotes-ng/model';
+import { Note, Group } from '@lenotes-ng/model';
 import { AppStateService } from '../services';
 import { GroupStateService } from './services/group-state.service';
 import { NoteStateService } from '../notes/services/note-state.service';
@@ -48,32 +48,30 @@ export class GroupsDisplayComponent implements OnInit {
 		event?.preventDefault();
 	}
 
-	onSubmitCreate() {
+	drag(event: DragEvent, group: Group) {
+		event.dataTransfer?.setData('Group', JSON.stringify(group));
+	}
 
+	onSubmitCreate() {
 		this.isFormHidden = true;
 		this.groupStateService.create(this.formInputValue);
 		this.formInputValue = '';
 	}
 
-	toggleFormVisibility(nameInput: HTMLInputElement) {
+	toggleFormVisibility(input: HTMLInputElement) {
 
 		if (this.isFormHidden) {
 			this.isFormHidden = false;
-			nameInput.focus();
+
+			// input element is not visible immediately. schedule focus to another macrotask 
+			setTimeout(() => input.focus()); 
 		} else {
 			this.isFormHidden = true;
 		}
 	}
 
-	onInputBlur(event: FocusEvent, submitButton: HTMLButtonElement) {
+	onInputBlur(event: FocusEvent) {
 
-		const relatedTarget = event.relatedTarget as HTMLElement;
-		if (
-			relatedTarget && 
-			(submitButton.getAttribute('id') === relatedTarget.getAttribute('id'))
-		) {
-			return;
-		}
 		this.isFormHidden = true;
 		this.formInputValue = '';
 	}

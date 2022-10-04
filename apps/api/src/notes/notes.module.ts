@@ -6,6 +6,7 @@ import { NotesController } from './notes.controller';
 import { 
 	DomainObjectStorage, 
 	SupabaseNotesStorage,
+	NaiveNotesStorage
 } from '@lenotes-ng/data-storage';
 import auth from '../middleware/auth';
 
@@ -15,15 +16,15 @@ import auth from '../middleware/auth';
 		NotesService, 
 		{
 			provide: DomainObjectStorage,
-			useValue: new SupabaseNotesStorage() 
+			useValue: new NaiveNotesStorage() 
 		}
 	]
 })
-export class NotesModule implements NestModule {
+export class NotesModule { // implements NestModule
 	
-	configure(consumer: MiddlewareConsumer) {
-		consumer
-			.apply(cookieParser(), auth)
-			.forRoutes(NotesController);
-	}
+	//configure(consumer: MiddlewareConsumer) {
+	//	consumer
+	//		.apply(cookieParser(), auth)
+	//		.forRoutes(NotesController);
+	//}
 }

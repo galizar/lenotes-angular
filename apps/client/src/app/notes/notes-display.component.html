@@ -1,12 +1,10 @@
 <div
 	*ngIf="vm$ | async as vm"
-	class="notes-list"
+	id="notes-list"
 >
-	<span>Selected note id: {{vm.noteOnDisplayId}}</span>
 
 	<div class="button-container" *ngFor="let note of vm.notes | keyvalue">
 		<div *ngIf="note.value.isTrashed === vm.displayingTrash">
-			<button class="delete-button" (click)="trash(+note.key)">-</button>
 			<button 
 				class="note-button"
 				[attr.data-note-id]="note.key" 
@@ -14,23 +12,23 @@
 				draggable="true" 
 				(dragstart)="drag($event, {id: +note.key, props: note.value})"
 				(click)="appStateService.setNoteOnDisplayId(+note.key)"
+				[class.selected]="vm.noteOnDisplayId === +note.key"
 				>
 				{{note.value.name}}
 			</button>
 		</div>
 	</div>
 
-	<button *ngIf="!vm.displayingTrash" class="create-button"
-		(click)="toggleFormVisibility(nameInput)"
-	>+</button>
-	
-	<form #form="ngForm" [hidden]="isFormHidden" [attr.id]="createNoteFormId">
+	<form #form="ngForm" [hidden]="isFormHidden" [attr.id]="createNoteFormId"
+		(ngSubmit)="onSubmitCreate($event)">
 
-		<input #nameInput name='name-input' [(ngModel)]="nameFormValue"
-		[attr.id]="this.noteNameInputId" minlength=1 required
-		(blur)="onInputBlur($event, submitButton)">
+		<input #nameInput [attr.id]="this.noteNameInputId" class="note-button"
+		name='name-input' [(ngModel)]="nameFormValue" minlength=1 required
+		(blur)="onInputBlur($event)">
 
-		<button #submitButton id="form-submit-button" type="submit"
-		[disabled]="!form.valid" (click)="onSubmitCreate(vm.groupOnDisplayId)">Create</button>
 	</form>
+
+	<button *ngIf="!vm.displayingTrash" id="create-button"
+		(click)="toggleFormVisibility(nameInput)" [class.showing-form]="!isFormHidden"
+	>+</button>
 </div>

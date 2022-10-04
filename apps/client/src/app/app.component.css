@@ -1,6 +1,62 @@
 #app-container {
+	height: 100vh;
+	display: grid;
+	grid-template-rows: 40px 1fr;
+}
+
+#navbar {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+
+	width: 100%;
+	height: 40px;
+	padding-inline: 16px;
+
+	z-index: 1;
+	background-color: #FF5959;
+}
+
+#trash-can, #out-trash-can {
+	align-self: center;
+	justify-self: left;
+}
+
+#trash-can:hover, #out-trash-can:hover, #menu:hover {
+	cursor: pointer;
+}
+
+#note-name {
+	align-self: center;
+	justify-self: center;
+	color: white;
+	font-size: 24px;
+}
+
+#menu {
+	align-self: center;
+	justify-self: right;
+}
+
+#app-view {
+	background-color: #0F1022;
 	display: grid;
 	grid-template-columns: 3fr 6fr 3fr;
 	flex-flow: row nowrap;
-	height: 100%;
+}
+
+#show-all-button {
+	width: 100%;
+	background-color: #272B45;
+	color: white;
+	border: 0px;
+	border-bottom: 1px solid #FF5959;
+	border-radius: 3px;
+	font-size: 16px;
+
+	transition-property: color;
+	transition-duration: 250ms;
+}
+
+#show-all-button:hover {
+	color: #FF5959;
 }
