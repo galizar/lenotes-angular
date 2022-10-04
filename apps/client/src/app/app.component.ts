@@ -14,6 +14,7 @@ import { GroupStateService } from './groups/services/group-state.service';
 })
 export class AppComponent {
   title = 'lenotes-angular';
+	showingMenu = false;
 
 	vm$ = combineLatest({
 		displayingTrash: this.appStateService.displayingTrash$,
@@ -30,6 +31,10 @@ export class AppComponent {
 
 	allowDrop(event: DragEvent) {
 		event.preventDefault();
+	}
+
+	toggleMenu() {
+		this.showingMenu = !this.showingMenu;
 	}
 
 	dropToTrash(event: DragEvent) {
@@ -53,6 +58,5 @@ export class AppComponent {
 	}
 
 	dropToRestore(event: DragEvent) {
-
 	}
 }

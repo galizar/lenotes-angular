@@ -1,7 +1,9 @@
 #app-container {
 	height: 100vh;
+	width: 100%;
 	display: grid;
 	grid-template-rows: 40px 1fr;
+	position: fixed;
 }
 
 #navbar {
@@ -19,10 +21,13 @@
 #trash-can, #out-trash-can {
 	align-self: center;
 	justify-self: left;
+	transition: 500ms;
 }
 
-#trash-can:hover, #out-trash-can:hover, #menu:hover {
+#trash-can:hover, #out-trash-can:hover, #menu-button:hover {
+	box-shadow: 0px 2px 4px white;
 	cursor: pointer;
+	border-radius: 50%;
 }
 
 #note-name {
@@ -32,12 +37,14 @@
 	font-size: 24px;
 }
 
-#menu {
+#menu-button {
 	align-self: center;
 	justify-self: right;
+	transition: 500ms;
 }
 
 #app-view {
+	position: relative;
 	background-color: #0F1022;
 	display: grid;
 	grid-template-columns: 3fr 6fr 3fr;
@@ -59,4 +66,50 @@
 
 #show-all-button:hover {
 	color: #FF5959;
+}
+
+#overlay-menu {
+	position: absolute;
+	height: 100%;
+	z-index: 1;
+	width: 240px;
+	left: 100%;
+	top: 0;
+	background-color: #0F1022;
+	border-left: 1px solid #FF5959;
+	transition: 300ms;
+	color:white;
+}
+
+#overlay-menu.showing {
+	left: calc(100% - 240px);
+}
+
+#menu-header {
+	height: 40px;
+	font-size: 20px;
+}
+
+.menu-item {
+	height: 24px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	border-bottom: 1px solid #FF5959;
+}
+
+.menu-item > button {
+	color: white;
+	font-size: 16px;
+	border: 0px;
+	width: 100%;
+	height: 100%;
+	background-color: #272B45;
+	transition-property: box-shadow;
+	transition-duration: 300ms;
+}
+
+.menu-item > button:hover {
+	box-shadow: inset 0px 4px 4px #8A8C99;
 }

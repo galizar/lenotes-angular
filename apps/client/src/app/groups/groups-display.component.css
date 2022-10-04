@@ -22,7 +22,7 @@
 	font-size: 16px;
 	border: 0px;
 	transition-property: box-shadow;
-	transition-duration: 250ms;
+	transition-duration: 500ms;
 }
 
 #create-button.showing-form {

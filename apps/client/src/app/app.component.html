@@ -17,7 +17,8 @@
 			{{vm.displayingTrash ? '(in trash)' : ''}}
 		</span>
 
-		<img id="menu" src="assets/icons/arepaMenu.svg" alt="menu" role="img">
+		<img id="menu-button" src="assets/icons/arepaMenu.svg" alt="menu" role="img"
+			(click)="toggleMenu()">
 	</div>
 
 	<div id="app-view">
@@ -41,6 +42,24 @@
 
 			<app-notes-display >
 			</app-notes-display>
+		</div>
+
+		<div id="overlay-menu" [class.showing]="showingMenu">
+			<div id="menu-header" class="menu-item">
+				<span>lenotes-ng</span>
+			</div>
+
+			<div class="menu-item">
+				<button>Log out</button>
+			</div>
+
+			<div class="menu-item">
+				<button
+				  (click)="appStateService.toggleDisplayingTrash()"
+					>
+					{{vm.displayingTrash ? 'Out of trash' : 'Trash'}}
+				</button>
+			</div>
 		</div>
 	</div>
 </div>
