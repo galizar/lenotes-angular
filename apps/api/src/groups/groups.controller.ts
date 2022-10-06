@@ -2,6 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, Validation
 import { GroupsService } from './services/groups.service';
 import { BatchUpdateDto, CreateGroupDto } from '@lenotes-ng/api-behavior';
 import { UpdateGroupDto } from './dto/update-group.dto';
+import { BatchDeleteDto } from '../dto/batch-delete.dto';
+import { Group } from '@lenotes-ng/model';
 
 @Controller('groups')
 @UsePipes(
@@ -42,4 +44,9 @@ export class GroupsController {
   remove(@Param('id') id: string) {
     return this.groupsService.delete(+id);
   }
+
+	@Patch('batchDelete')
+	batchDelete(@Body() dto: BatchDeleteDto<Group>) {
+		return this.groupsService.batchDelete(dto.ids);
+	}
 }

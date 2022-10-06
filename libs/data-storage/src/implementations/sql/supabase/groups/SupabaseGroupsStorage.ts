@@ -80,4 +80,14 @@ export class SupabaseGroupsStorage extends DomainObjectStorage<Group> {
 		
 		if (error) throw Error(error.message);
 	}
+
+	async batchDelete(ids: Group['id'][]) {
+
+		const {error} = await supabase
+			.from('groups')
+			.delete()
+			.in('id', ids);
+
+		if (error) throw Error(error.message);
+	}
 }

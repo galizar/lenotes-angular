@@ -64,6 +64,13 @@ export class GroupService implements IGroupService {
 			);
   }
 
+	batchDelete(ids: Group['id'][]): Observable<object> {
+		return this.http.patch(`${this.env.GROUPS_API_ROOT}/batchDelete`, {ids})
+			.pipe(
+				catchError(this.handleError)
+			);
+	}
+
 	private handleError(error: HttpErrorResponse) {
 		if (error.status === 0) {
 			// client-side error

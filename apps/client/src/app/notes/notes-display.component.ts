@@ -57,15 +57,79 @@ export class NotesDisplayComponent implements OnInit {
 		}
 	}
 
-	onInputBlur(event: FocusEvent) {
+	onBlurCreateInput(event: FocusEvent) {
 
 		this.isFormHidden = true;
 		this.nameFormValue = '';
 	}
 
-	trash(id: number) {
+	showCtxMenu(event: MouseEvent, ctxMenu: HTMLDivElement) {
+		event.preventDefault();
+		ctxMenu.style.display = 'flex';
+		ctxMenu.style.position = 'fixed';
+		ctxMenu.style.left = `${event.clientX}px`;
+		ctxMenu.style.top = `${event.clientY}px`;
+		ctxMenu.focus();
+	}
 
-		if (confirm('Are you sure you want to trash this note'))
-			this.noteStateService.trash(id);
+	onBlurCtxMenu(event: FocusEvent, ctxMenu: HTMLDivElement) {
+
+		const relatedTarget = event.relatedTarget as HTMLElement;
+		// prevent blur when clicking on the ctx menu items
+		if (relatedTarget && relatedTarget.className === 'ctx-menu-item') return;
+
+		ctxMenu.style.display = 'none';
+	}
+
+	showRenameInput(
+		form: HTMLFormElement, 
+		input: HTMLInputElement,
+		button: HTMLButtonElement, 
+		ctxMenu: HTMLDivElement
+	) {
+		ctxMenu.style.display = 'none';
+		form.style.display = 'block';
+		button.replaceWith(form);
+		input.focus();
+	}
+
+	onBlurRenameInput(
+		form: HTMLFormElement, 
+		input: HTMLInputElement, 
+		button: HTMLButtonElement
+	) {
+		form.style.display = 'none';
+		input.value = '';
+		form.replaceWith(button);
+	}
+
+	onSubmitRename(id: Note['id'], form: HTMLFormElement, input: HTMLInputElement) {
+		if (input.checkValidity()) {
+			form.style.display = 'none';
+			this.noteStateService.update(id, {name: input.value});
+		}
+	}
+
+	trashOrDelete(
+		ctxMenu: HTMLDivElement, 
+		id: Note['id'],
+		displayingTrash: boolean
+	) {
+		// remove ctx menu 
+		ctxMenu.style.display = 'none';
+
+		if (displayingTrash) {
+			this.delete(id);
+		} else {
+			if (confirm('Are you sure you want to trash this note?')) {
+				this.noteStateService.trash(id);
+			}
+		}
+	}
+
+	delete(id: Note['id']) {
+		if (confirm('Are you sure you want to delete this note?')) {
+			this.noteStateService.delete(id);
+		}
 	}
 }

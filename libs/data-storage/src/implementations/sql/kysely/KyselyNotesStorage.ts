@@ -65,4 +65,11 @@ export class KyselyNotesStorage extends DomainObjectStorage<Note> {
 			.where('noteId', '=', id)
 			.execute();
 	}
+
+	async batchDelete(ids: Note['id'][]) {
+		await this.db
+			.deleteFrom('notes')
+			.where('noteId', 'in', ids)
+			.execute();
+	}
 }

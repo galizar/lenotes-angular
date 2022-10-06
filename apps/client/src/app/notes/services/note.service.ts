@@ -70,6 +70,14 @@ export class NoteService implements INoteService {
 			);
   }
 
+	batchDelete(ids: Note['id'][]) {
+		console.log('note service batch delete notes', ids);
+		return this.http.patch(`${this.env.NOTES_API_ROOT}/batchDelete`, {ids})
+			.pipe(
+				catchError(this.handleError)
+			);
+	}
+
 	private handleError(error: HttpErrorResponse) {
 		if (error.status === 0) {
 			// client-side error

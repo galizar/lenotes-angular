@@ -49,4 +49,10 @@ export class NaiveNotesStorage extends DomainObjectStorage<Note> {
 	async delete(id: Note['id']) {
 		delete this.notes[id];
 	}
+
+	async batchDelete(ids: Note['id'][]) {
+		for (const id of ids) {
+			delete this.notes[id];
+		}
+	}
 }

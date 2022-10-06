@@ -31,21 +31,20 @@ export class GroupStateService {
 		});
 	}
 
-	update(id: number, dto: UpdateGroupDto) {
+	update(id: Group['id'], dto: UpdateGroupDto) {
 
 		this.groups[id] = { ...this.groups[id], ...dto};
 		this.state.next(this.groups);
 		this.groupService.update(id, dto).subscribe();
 	}
 
-	trash(id: number) {
-
+	trash(id: Group['id']) {
 		this.update(id, {isTrashed: true});
 	}
 
-	delete(id: number) {
-
+	delete(id: Group['id']) {
 		delete this.groups[id];
 		this.state.next(this.groups);
+		this.groupService.delete(id).subscribe();
 	}
 }

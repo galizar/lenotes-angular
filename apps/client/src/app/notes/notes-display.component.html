@@ -6,16 +6,51 @@
 	<div class="button-container" *ngFor="let note of vm.notes | keyvalue">
 		<div *ngIf="note.value.isTrashed === vm.displayingTrash">
 			<button 
+				#noteButton
 				class="note-button"
+				(click)="appStateService.setNoteOnDisplayId(+note.key)"
+				(contextmenu)="showCtxMenu($event, ctxMenu)"
 				[attr.data-note-id]="note.key" 
 				data-test-id="select-note-button" 
 				draggable="true" 
 				(dragstart)="drag($event, {id: +note.key, props: note.value})"
-				(click)="appStateService.setNoteOnDisplayId(+note.key)"
 				[class.selected]="vm.noteOnDisplayId === +note.key"
 				>
 				{{note.value.name}}
 			</button>
+			<form 
+				#renameForm 
+				id="rename-form" 
+				(submit)="onSubmitRename(+note.key, renameForm, renameInput)"
+			>
+				<input 
+					#renameInput 
+					id="rename-input" 
+					class="note-button" 
+					type="text"
+					required
+					(blur)="onBlurRenameInput(renameForm, renameInput, noteButton)"
+					>
+			</form>
+			<div 
+				#ctxMenu 
+				class="ctx-menu" 
+				(blur)="onBlurCtxMenu($event, ctxMenu)" 
+				tabindex="-1"
+				>
+				<button class="ctx-menu-item" 
+					(click)="trashOrDelete(ctxMenu, +note.key, vm.displayingTrash)"
+					>
+					{{vm.displayingTrash ? 'Delete permanently' : 'Move to trash'}}
+				</button>
+				<button 
+					*ngIf="!vm.displayingTrash"
+					class="ctx-menu-item"
+					(click)="showRenameInput(renameForm, renameInput, noteButton, ctxMenu)"
+					>
+					Rename
+				</button>
+			</div>
 		</div>
 	</div>
 
@@ -24,7 +59,7 @@
 
 		<input #nameInput [attr.id]="this.noteNameInputId" class="note-button"
 		name='name-input' [(ngModel)]="nameFormValue" minlength=1 required
-		(blur)="onInputBlur($event)">
+		(blur)="onBlurCreateInput($event)">
 
 	</form>
 

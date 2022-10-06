@@ -5,6 +5,7 @@ import { Note, Group } from '@lenotes-ng/model';
 import { AppStateService } from '../services';
 import { GroupStateService } from './services/group-state.service';
 import { NoteStateService } from '../notes/services/note-state.service';
+import { ConsoleLogger } from '@nestjs/common';
 
 @Component({
   selector: 'app-groups-display',
@@ -14,9 +15,9 @@ import { NoteStateService } from '../notes/services/note-state.service';
 export class GroupsDisplayComponent implements OnInit {
 
 	createFormId = 'create-group-form';
-	formInputId = 'group-name-input';
-	formInputValue: string = '';
-	isFormHidden = true;
+	createFormInputId = 'group-name-input';
+	createFormInputValue: string = '';
+	isCreateFormHidden = true;
 
 	vm$ = combineLatest({
 		groupOnDisplayId: this.appStateService.groupOnDisplayId$,
@@ -53,34 +54,97 @@ export class GroupsDisplayComponent implements OnInit {
 	}
 
 	onSubmitCreate() {
-		this.isFormHidden = true;
-		this.groupStateService.create(this.formInputValue);
-		this.formInputValue = '';
+		this.isCreateFormHidden = true;
+		this.groupStateService.create(this.createFormInputValue);
+		this.createFormInputValue = '';
 	}
 
 	toggleFormVisibility(input: HTMLInputElement) {
 
-		if (this.isFormHidden) {
-			this.isFormHidden = false;
+		if (this.isCreateFormHidden) {
+			this.isCreateFormHidden = false;
 
 			// input element is not visible immediately. schedule focus to another macrotask 
 			setTimeout(() => input.focus()); 
 		} else {
-			this.isFormHidden = true;
+			this.isCreateFormHidden = true;
 		}
 	}
 
-	onInputBlur(event: FocusEvent) {
-
-		this.isFormHidden = true;
-		this.formInputValue = '';
+	showCtxMenu(event: MouseEvent, ctxMenu: HTMLDivElement)	{
+		event.preventDefault();
+		ctxMenu.style.display = 'flex';
+		ctxMenu.style.position = 'fixed';
+		ctxMenu.style.left = `${event.clientX}px`;
+		ctxMenu.style.top = `${event.clientY}px`;
+		ctxMenu.focus();
 	}
 
-	trash(id: number) {
+	onBlurCtxMenu(event: FocusEvent, ctxMenu: HTMLDivElement) {
+		
+		const relatedTarget = event.relatedTarget as HTMLElement;
+		// prevent blur when clicking on the ctx menu items
+		if (relatedTarget && relatedTarget.className === 'ctx-menu-item') return;
 
-		if (confirm('Are you sure you want to trash this group? This will trash all notes within too')) {
-			this.groupStateService.trash(id);
-			this.noteStateService.trashInGroup(id);
+		ctxMenu.style.display = 'none';
+	}
+
+	showRenameInput(
+		form: HTMLFormElement, 
+		input: HTMLInputElement,
+		button: HTMLButtonElement, 
+		ctxMenu: HTMLDivElement
+	) {
+		ctxMenu.style.display = 'none';
+		form.style.display = 'block';
+		button.replaceWith(form);
+		input.focus();
+	}
+
+	onBlurRenameInput(
+		form: HTMLFormElement, 
+		input: HTMLInputElement, 
+		button: HTMLButtonElement
+	) {
+		form.style.display = 'none';
+		input.value = '';
+		form.replaceWith(button);
+	}
+
+	onSubmitRename(id: Group['id'], form: HTMLFormElement, input: HTMLInputElement) {
+		if (input.checkValidity()) {
+			form.style.display = 'none';
+			this.groupStateService.update(id, {name: input.value});
+		}
+	}
+
+	onBlurCreateInput(event: FocusEvent) {
+		this.isCreateFormHidden = true;
+		this.createFormInputValue = '';
+	}
+
+	trashOrDelete(
+		ctxMenu: HTMLDivElement, 
+		id: Group['id'],
+		displayingTrash: boolean
+	) {
+		// remove ctx menu 
+		ctxMenu.style.display = 'none';
+
+		if (displayingTrash) {
+			this.delete(id);
+		} else {
+			if (confirm('Are you sure you want to trash this group? This will trash all notes within too')) {
+				this.groupStateService.trash(id);
+				this.noteStateService.trashInGroup(id);
+			}
+		}
+	}
+
+	delete(id: Group['id']) {
+		if (confirm('Are you sure you want to delete this group? This will delete all notes within too')) {
+			this.groupStateService.delete(id);
+			this.noteStateService.deleteInGroup(id);
 		}
 	}
 }

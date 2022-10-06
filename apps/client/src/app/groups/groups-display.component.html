@@ -7,28 +7,64 @@
 		(dragover)="allowDrop($event)"
 	>
 		<div *ngIf="group.value.isTrashed === vm.displayingTrash"> <!-- Show trashed/non-trashed groups-->
-			<button class="group-button"
+			<button
+				#groupButton
+				class="group-button"
 				(click)="appStateService.setGroupOnDisplayId(+group.key)"
+				(contextmenu)="showCtxMenu($event, ctxMenu)"
 				[attr.data-group-id]="group.key"
 				draggable="true"
 				(dragstart)="drag($event, {id: +group.key, props: group.value})"
-				data-test-id="select-group-button"
+				data-test-id="select-group-input"
 				[class.selected]="vm.groupOnDisplayId === +group.key"
 			>
 				{{group.value.name}}
 			</button>
+			<form 
+				#renameForm 
+				id="rename-form" 
+				(submit)="onSubmitRename(+group.key, renameForm, renameInput)"
+			>
+				<input 
+					#renameInput 
+					id="rename-input" 
+					class="group-button" 
+					type="text"
+					required
+					(blur)="onBlurRenameInput(renameForm, renameInput, groupButton)"
+					>
+			</form>
+			<div 
+				#ctxMenu 
+				class="ctx-menu" 
+				(blur)="onBlurCtxMenu($event, ctxMenu)" 
+				tabindex="-1"
+				>
+				<button class="ctx-menu-item" 
+					(click)="trashOrDelete(ctxMenu, +group.key, vm.displayingTrash)"
+					>
+					{{vm.displayingTrash ? 'Delete permanently' : 'Move to trash'}}
+				</button>
+				<button 
+					*ngIf="!vm.displayingTrash"
+					class="ctx-menu-item"
+					(click)="showRenameInput(renameForm, renameInput, groupButton, ctxMenu)"
+					>
+					Rename
+				</button>
+			</div>
 		</div>
 	</div>
 
-	<form #form="ngForm" [hidden]="isFormHidden" [attr.id]="this.createFormId"
+	<form #form="ngForm" [hidden]="isCreateFormHidden" [attr.id]="this.createFormId"
 		(ngSubmit)="onSubmitCreate()">
 
-		<input #nameInput [attr.id]="this.formInputId" class="group-button"
-			name='group-name' [(ngModel)]="this.formInputValue" minlength=1
-			required="text" (blur)="onInputBlur($event)">
+		<input #nameInput [attr.id]="this.createFormInputId" class="group-button"
+			name='group-name' [(ngModel)]="this.createFormInputValue" minlength=1
+			required="text" (blur)="onBlurCreateInput($event)">
 	</form>
 
 	<button *ngIf="!vm.displayingTrash" id="create-button"
-		(click)="toggleFormVisibility(nameInput)" [class.showing-form]="!isFormHidden"
+		(click)="toggleFormVisibility(nameInput)" [class.showing-form]="!isCreateFormHidden"
 	>+</button>
 </div>

@@ -48,4 +48,10 @@ export class NaiveGroupsStorage extends DomainObjectStorage<Group> {
 	async delete(id: Group['id']) {
 		delete this.groups[id];
 	}
+
+	async batchDelete(ids: Group['id'][]) {
+		for (const id of ids) {
+			delete this.groups[id];
+		}
+	}
 }

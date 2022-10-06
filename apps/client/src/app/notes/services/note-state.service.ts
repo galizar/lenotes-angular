@@ -100,6 +100,21 @@ export class NoteStateService {
 		this.updateStoreNotes(this.state.notes);
 		this.noteService.batchUpdate(ids, dto).subscribe();
 	}
+	
+	delete(id: Note['id']) {
+
+		delete this.state.notes[id];
+		this.noteService.delete(id).subscribe();
+	}
+
+	batchDelete(ids: Note['id'][]) {
+
+		for (const id of ids) {
+			delete this.state.notes[id];
+		}
+		this.updateStoreNotes(this.state.notes);
+		this.noteService.batchDelete(ids).subscribe();
+	}
 
 	trash(id: Note['id']) {
 
@@ -116,6 +131,18 @@ export class NoteStateService {
 			}
 		}
 		this.batchUpdate(idsToTrash, { isTrashed: true });
+	}
+
+	deleteInGroup(groupId: Group['id']) {
+
+		const idsToDelete = [];
+
+		for (const [id, props] of Object.entries(this.state.notes)) {
+			if (props.groupId === groupId) {
+				idsToDelete.push(Number(id));
+			}
+		}
+		this.batchDelete(idsToDelete);
 	}
 
 	private updateState(state: NoteState) {

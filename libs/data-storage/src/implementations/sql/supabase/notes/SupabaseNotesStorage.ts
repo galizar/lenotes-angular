@@ -90,4 +90,13 @@ export class SupabaseNotesStorage extends DomainObjectStorage<Note> {
 		
 		if (error) throw Error(error.message)
 	}
+
+	async batchDelete(ids: Note['id'][]): Promise<void> {
+		const {error}	= await supabase
+			.from('notes')
+			.delete()
+			.in('id', ids);
+
+		if (error) throw Error(error.message);
+	}
 }

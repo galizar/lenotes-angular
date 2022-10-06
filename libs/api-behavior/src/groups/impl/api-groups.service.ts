@@ -36,4 +36,8 @@ export class ApiGroupsService implements IApiGroupsService {
   async delete(id: Group['id']) {
 		await this.storage.delete(id);
   }
+
+	async batchDelete(ids: Group['id'][]) {
+		await this.storage.batchDelete(ids);
+	}
 }

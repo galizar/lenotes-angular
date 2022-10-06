@@ -64,4 +64,11 @@ export class KyselyGroupsStorage extends DomainObjectStorage<Group> {
 			.where('groupId', '=', id)
 			.execute();
 	}
+
+	async batchDelete(ids: Group['id'][]) {
+		await this.db
+			.deleteFrom('groups')
+			.where('groupId', 'in', ids)
+			.execute();
+	}
 }
