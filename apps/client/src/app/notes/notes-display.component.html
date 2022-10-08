@@ -8,8 +8,9 @@
 			<button 
 				#noteButton
 				class="note-button"
-				(click)="appStateService.setNoteOnDisplayId(+note.key)"
-				(contextmenu)="showCtxMenu($event, ctxMenu)"
+				(click)="onClickNoteButton($event, +note.key)"
+				(contextmenu)="showCtxMenu($event, ctxMenu, trashOrDeleteButton)"
+				(blur)="onBlurNoteButton($event)"
 				[attr.data-note-id]="note.key" 
 				data-test-id="select-note-button" 
 				draggable="true" 
@@ -35,11 +36,13 @@
 			<div 
 				#ctxMenu 
 				class="ctx-menu" 
-				(blur)="onBlurCtxMenu($event, ctxMenu)" 
+				(blur)="onBlurCtxMenu($event, ctxMenu, vm.displayingTrash, trashOrDeleteButton)" 
 				tabindex="-1"
 				>
-				<button class="ctx-menu-item" 
-					(click)="trashOrDelete(ctxMenu, +note.key, vm.displayingTrash)"
+				<button 
+					#trashOrDeleteButton 
+					class="ctx-menu-item" 
+					(click)="handleTrashOrDelete(ctxMenu, +note.key, vm.displayingTrash, trashOrDeleteButton)"
 					>
 					{{vm.displayingTrash ? 'Delete permanently' : 'Move to trash'}}
 				</button>
@@ -50,12 +53,19 @@
 					>
 					Rename
 				</button>
+				<button
+					*ngIf="vm.displayingTrash"
+					class="ctx-menu-item"
+					(click)="handleRestore(+note.key, ctxMenu)"
+				>
+					Restore
+				</button>
 			</div>
 		</div>
 	</div>
 
 	<form #form="ngForm" [hidden]="isFormHidden" [attr.id]="createNoteFormId"
-		(ngSubmit)="onSubmitCreate($event)">
+		(ngSubmit)="onSubmitCreate(vm.groupOnDisplayId)">
 
 		<input #nameInput [attr.id]="this.noteNameInputId" class="note-button"
 		name='name-input' [(ngModel)]="nameFormValue" minlength=1 required

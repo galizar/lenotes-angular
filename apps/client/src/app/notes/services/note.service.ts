@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable, pipe, throwError } from 'rxjs';
 
-import { ObjectMap, Note } from '@lenotes-ng/model';
+import { ObjectMap, Note, Group } from '@lenotes-ng/model';
 import { INoteService } from '../../interfaces';
 import { EnvObject } from '../../../environments';
 import { CreateNoteDto, UpdateNoteDto } from '@lenotes-ng/api-behavior';
@@ -63,6 +63,20 @@ export class NoteService implements INoteService {
 			);
 	}
 
+	trashInGroups(ids: Group['id'][]) {
+		return this.http.patch(`${this.env.NOTES_API_ROOT}/trashInGroups`, {ids})
+			.pipe(
+				catchError(this.handleError)
+		);
+	}
+
+	restoreInGroups(ids: Group['id'][]) {
+		return this.http.patch(`${this.env.NOTES_API_ROOT}/restoreInGroups`, { ids })
+			.pipe(
+				catchError(this.handleError)
+			);
+	}
+
   delete(id: number): Observable<object> {
     return this.http.delete(`${this.env.NOTES_API_ROOT}/${id}`)
 			.pipe(
@@ -71,7 +85,6 @@ export class NoteService implements INoteService {
   }
 
 	batchDelete(ids: Note['id'][]) {
-		console.log('note service batch delete notes', ids);
 		return this.http.patch(`${this.env.NOTES_API_ROOT}/batchDelete`, {ids})
 			.pipe(
 				catchError(this.handleError)

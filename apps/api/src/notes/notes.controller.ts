@@ -8,15 +8,12 @@ import {
 	Delete, 
 	UsePipes, 
 	ValidationPipe, 
-	Req 
 } from '@nestjs/common';
-import { Request } from 'express';
 
-import { BatchUpdateDto, CreateNoteDto } from '@lenotes-ng/api-behavior';
+import { BatchUpdateDto, CreateNoteDto, ObjectIdsDto } from '@lenotes-ng/api-behavior';
 import { Note } from '@lenotes-ng/model';
 import { NotesService } from './services/notes.service';
 import { UpdateNoteDto } from './dto/update-note.dto';
-import { BatchDeleteDto } from '../dto/batch-delete.dto';
 
 @Controller('notes')
 @UsePipes(
@@ -58,13 +55,24 @@ export class NotesController {
 		return this.notesService.batchUpdate(dto);
 	}
 
+	@Patch('trashInGroups')
+	trashInGroups(@Body() dto: ObjectIdsDto<Note>) {
+		return this.notesService.trashInGroups(dto.ids);
+	}
+
+	@Patch('restoreInGroups')
+	restoreInGroups(@Body() dto: ObjectIdsDto<Note>) {
+		return this.notesService.restoreInGroups(dto.ids);
+	}
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.notesService.delete(+id);
   }
 
 	@Patch('batchDelete')
-	batchDelete(@Body() dto: BatchDeleteDto<Note>) {
+	batchDelete(@Body() dto: ObjectIdsDto<Note>) {
 		return this.notesService.batchDelete(dto.ids);
 	}
+	
 }

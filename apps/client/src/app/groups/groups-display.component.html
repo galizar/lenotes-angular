@@ -10,8 +10,9 @@
 			<button
 				#groupButton
 				class="group-button"
-				(click)="appStateService.setGroupOnDisplayId(+group.key)"
-				(contextmenu)="showCtxMenu($event, ctxMenu)"
+				(click)="onClickGroupButton($event, +group.key)"
+				(contextmenu)="showCtxMenu($event, ctxMenu, trashOrDeleteButton)"
+				(blur)="onBlurGroupButton($event)"
 				[attr.data-group-id]="group.key"
 				draggable="true"
 				(dragstart)="drag($event, {id: +group.key, props: group.value})"
@@ -37,11 +38,13 @@
 			<div 
 				#ctxMenu 
 				class="ctx-menu" 
-				(blur)="onBlurCtxMenu($event, ctxMenu)" 
+				(blur)="onBlurCtxMenu($event, ctxMenu, vm.displayingTrash, trashOrDeleteButton)" 
 				tabindex="-1"
 				>
-				<button class="ctx-menu-item" 
-					(click)="trashOrDelete(ctxMenu, +group.key, vm.displayingTrash)"
+				<button 
+					#trashOrDeleteButton
+					class="ctx-menu-item" 
+					(click)="handleTrashOrDelete(ctxMenu, +group.key, vm.displayingTrash, trashOrDeleteButton)"
 					>
 					{{vm.displayingTrash ? 'Delete permanently' : 'Move to trash'}}
 				</button>
@@ -51,6 +54,13 @@
 					(click)="showRenameInput(renameForm, renameInput, groupButton, ctxMenu)"
 					>
 					Rename
+				</button>
+				<button
+					*ngIf="vm.displayingTrash"
+					class="ctx-menu-item"
+					(click)="handleRestore(+group.key, ctxMenu)"
+				>
+					Restore
 				</button>
 			</div>
 		</div>

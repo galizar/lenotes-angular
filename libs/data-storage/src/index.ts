@@ -1,4 +1,6 @@
 export { DomainObjectStorage } from './abstractions/DomainObjectStorage';
+export { NotesStorage } from './abstractions/NotesStorage';
+
 export { NaiveGroupsStorage } from './implementations/naive/NaiveGroupsStorage';
 export { NaiveNotesStorage } from './implementations/naive/NaiveNotesStorage';
 

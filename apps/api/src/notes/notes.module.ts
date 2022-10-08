@@ -4,7 +4,7 @@ import cookieParser from 'cookie-parser';
 import { NotesService } from './services/notes.service';
 import { NotesController } from './notes.controller';
 import { 
-	DomainObjectStorage, 
+	NotesStorage,
 	SupabaseNotesStorage,
 	NaiveNotesStorage
 } from '@lenotes-ng/data-storage';
@@ -15,7 +15,7 @@ import auth from '../middleware/auth';
   providers: [
 		NotesService, 
 		{
-			provide: DomainObjectStorage,
+			provide: NotesStorage,
 			useValue: new NaiveNotesStorage() 
 		}
 	]

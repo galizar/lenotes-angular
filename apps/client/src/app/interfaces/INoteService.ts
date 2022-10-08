@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 
-import { ObjectMap, Note } from '@lenotes-ng/model';
+import { ObjectMap, Note, Group } from '@lenotes-ng/model';
 import { CreateNoteDto, UpdateNoteDto } from '@lenotes-ng/api-behavior';
 
 export interface INoteService {
@@ -13,6 +13,8 @@ export interface INoteService {
 
 	update(id: Note['id'], dto: UpdateNoteDto): Observable<object>;
 	batchUpdate(ids: Note['id'][], dto: UpdateNoteDto): Observable<object>;
+	trashInGroups(ids: Group['id'][]): Observable<object>;
+	restoreInGroups(ids: Group['id'][]): Observable<object>;
 
 	delete(id: Note['id']): Observable<object>;
 	batchDelete(ids: Note['id'][]): Observable<object>;

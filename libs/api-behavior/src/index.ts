@@ -9,3 +9,4 @@ export { IApiGroupsService } from './groups/iapi-groups.service';
 export { ApiGroupsService } from './groups/impl/api-groups.service';
 
 export { BatchUpdateDto } from './dto/batch-update.dto';
+export { ObjectIdsDto } from './dto/object-ids.dto';

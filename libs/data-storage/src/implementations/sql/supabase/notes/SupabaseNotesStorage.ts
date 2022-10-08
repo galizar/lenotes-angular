@@ -1,12 +1,13 @@
-import { DomainObjectStorage } from "@lenotes-ng/data-storage";
-import { Note, ObjectMap } from "@lenotes-ng/model";
+import { NotesStorage } from "@lenotes-ng/data-storage";
+import { Note, Group, ObjectMap } from "@lenotes-ng/model";
 import { propsCamelCasify, propsSnakeCasify } from '../util/camelCaseUtilities';
 import { supabase } from '../db';
 import { validate } from "../util/validate";
+import { FromNode } from "kysely";
 
 const propColumns = 'name, content, groupId:group_id, isTrashed:is_trashed';
 
-export class SupabaseNotesStorage extends DomainObjectStorage<Note> {
+export class SupabaseNotesStorage extends NotesStorage {
 
 	async create(withProps: Note['props']) {
 
@@ -56,6 +57,27 @@ export class SupabaseNotesStorage extends DomainObjectStorage<Note> {
 		return propsMap;
 	}
 
+	async getInGroup(groupId: Group['id']) {
+
+		const {data, error} = await supabase
+			.from('notes')
+			.select(`id, ${propColumns}`)
+			.eq('group_id', groupId);
+
+		validate(data, error);
+
+		let propsMap: ObjectMap<Note> = {};
+
+		for (let {id, ...props} of data!) {
+			propsMap[id] = {
+				...props,
+				groupId: props.groupId ?? undefined
+			};
+		}
+
+		return propsMap;
+	}
+
 	async update(object: Note) {
 
 		const {error} = await supabase	
@@ -81,6 +103,24 @@ export class SupabaseNotesStorage extends DomainObjectStorage<Note> {
 		if (error) throw Error(error.message)
 	}
 
+	async trashInGroups(ids: Group['id'][]) {
+		const {error} = await supabase
+			.from('notes')
+			.update({'is_trashed': true})
+			.in('group_id', ids);
+
+		if (error) throw Error(error.message);
+	}
+
+	async restoreInGroups(ids: Group['id'][]) {
+		const {error} = await supabase
+			.from('notes')
+			.update({'is_trashed': false})
+			.in('group_id', ids);
+
+		if (error) throw Error(error.message);
+	}
+
 	async delete(id: number) {
 
 		const {error} = await supabase
@@ -99,4 +139,5 @@ export class SupabaseNotesStorage extends DomainObjectStorage<Note> {
 
 		if (error) throw Error(error.message);
 	}
+
 }

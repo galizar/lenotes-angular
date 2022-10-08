@@ -10,4 +10,6 @@ export interface IApiNotesService {
 	batchUpdate(dto: BatchUpdateDto<UpdateNoteDto>): Promise<void>;
 	delete(id: Note['id']): Promise<void>;
 	batchDelete(ids: Array<Note['id']>): Promise<void>;
+	trashInGroups(ids: Group['id'][]): Promise<void>;
+	restoreInGroups(ids: Group['id'][]): Promise<void>;
 }

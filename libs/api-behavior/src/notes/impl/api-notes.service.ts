@@ -1,12 +1,12 @@
 import { IApiNotesService } from "../../index";
 import { CreateNoteDto, UpdateNoteDto, BatchUpdateDto } from '../../index';
-import { DomainObjectStorage } from "@lenotes-ng/data-storage";
+import { NotesStorage } from "@lenotes-ng/data-storage";
 import { Note, Group, ObjectMap } from "@lenotes-ng/model";
 
 export class ApiNotesService implements IApiNotesService {
 
 	constructor(
-		private storage: DomainObjectStorage<Note>
+		private storage: NotesStorage 
 	) {}
 
   async create(dto: CreateNoteDto) {
@@ -24,15 +24,7 @@ export class ApiNotesService implements IApiNotesService {
   }
 
 	async getInGroup(groupId: Group['id']) {
-
-		let notesInGroup: ObjectMap<Note> = Object.create(null);
-
-		for (const [id, props] of Object.entries(await this.storage.getAll())) {
-			if (props.groupId === groupId) {
-				notesInGroup[+id] = props;
-			}
-		}
-		return notesInGroup;
+		return await this.storage.getInGroup(groupId);
 	}
 
 	async update(id: Note['id'], dto: UpdateNoteDto) {
@@ -49,7 +41,15 @@ export class ApiNotesService implements IApiNotesService {
 		await this.storage.delete(id);
 	}
 
-	async batchDelete(ids: Note['id'][]): Promise<void> {
+	async batchDelete(ids: Note['id'][]) {
 		await this.storage.batchDelete(ids);
+	}
+
+	async trashInGroups(ids: Group['id'][]) {
+		await this.storage.trashInGroups(ids);
+	}
+
+	async restoreInGroups(ids: Group['id'][]) {
+		await this.storage.restoreInGroups(ids);
 	}
 }

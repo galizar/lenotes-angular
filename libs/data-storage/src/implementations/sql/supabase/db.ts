@@ -5,7 +5,7 @@ dotenv.config();
 import { Database } from './schema';
 
 /** A supabase client that is set through the setSupabase function */
-export let supabase: SupabaseClient;
+export let supabase: SupabaseClient<Database>;
 
 /** Sets the supabase client. 
  * 

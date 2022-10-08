@@ -1,8 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe } from '@nestjs/common';
+import { 
+	Controller, 
+	Get, 
+	Post, 
+	Body, 
+	Patch, 
+	Param, 
+	Delete, 
+	UsePipes,
+	ValidationPipe 
+} from '@nestjs/common';
+
 import { GroupsService } from './services/groups.service';
-import { BatchUpdateDto, CreateGroupDto } from '@lenotes-ng/api-behavior';
+import { BatchUpdateDto, CreateGroupDto, ObjectIdsDto } from '@lenotes-ng/api-behavior';
 import { UpdateGroupDto } from './dto/update-group.dto';
-import { BatchDeleteDto } from '../dto/batch-delete.dto';
 import { Group } from '@lenotes-ng/model';
 
 @Controller('groups')
@@ -46,7 +56,7 @@ export class GroupsController {
   }
 
 	@Patch('batchDelete')
-	batchDelete(@Body() dto: BatchDeleteDto<Group>) {
+	batchDelete(@Body() dto: ObjectIdsDto<Group>) {
 		return this.groupsService.batchDelete(dto.ids);
 	}
 }

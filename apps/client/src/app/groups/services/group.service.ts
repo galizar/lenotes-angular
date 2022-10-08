@@ -51,7 +51,7 @@ export class GroupService implements IGroupService {
   }
 
 	batchUpdate(ids: number[], dto: UpdateGroupDto): Observable<object> {
-		return this.http.patch(`${this.env.GROUPS_API_ROOT}/batchUpdate`, {ids, dto})
+		return this.http.patch(`${this.env.GROUPS_API_ROOT}/batchUpdate`, {ids, subDto: dto})
 			.pipe(
 				catchError(this.handleError)
 			);

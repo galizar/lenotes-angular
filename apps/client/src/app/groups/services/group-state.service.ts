@@ -38,13 +38,28 @@ export class GroupStateService {
 		this.groupService.update(id, dto).subscribe();
 	}
 
-	trash(id: Group['id']) {
-		this.update(id, {isTrashed: true});
+	batchUpdate(ids: Group['id'][], dto: UpdateGroupDto) {
+
+		for (const id of ids) {
+			for (const prop of Object.keys(dto) as Array<keyof UpdateGroupDto>) {
+				this.groups[id][prop] = dto[prop];
+			}
+		}
+		this.state.next(this.groups);
+		this.groupService.batchUpdate(ids, dto).subscribe();
 	}
 
 	delete(id: Group['id']) {
 		delete this.groups[id];
 		this.state.next(this.groups);
 		this.groupService.delete(id).subscribe();
+	}
+
+	batchDelete(ids: Group['id'][]) {
+		for (const id of ids) {
+			delete this.groups[id];
+		}
+		this.state.next(this.groups);
+		this.groupService.batchDelete(ids).subscribe();
 	}
 }

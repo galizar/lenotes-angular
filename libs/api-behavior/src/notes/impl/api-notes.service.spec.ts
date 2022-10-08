@@ -1,11 +1,11 @@
 import { ApiNotesService } from "./api-notes.service";
-import { DomainObjectStorage, NaiveNotesStorage } from '@lenotes-ng/data-storage';
+import { NotesStorage, NaiveNotesStorage } from '@lenotes-ng/data-storage';
 import { Note, ObjectMap, testNotes } from '@lenotes-ng/model';
 import { UpdateNoteDto } from '../../index';
 
 describe('ApiNotesService', () => {
 
-	let storage: DomainObjectStorage<Note>;
+	let storage: NotesStorage;
 	let service: ApiNotesService;
 
 	beforeEach(() => {

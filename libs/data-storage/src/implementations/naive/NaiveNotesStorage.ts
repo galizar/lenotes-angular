@@ -1,10 +1,10 @@
-import { DomainObjectStorage } from "../../index";
+import { NotesStorage } from "../../index";
 
-import { Note, ObjectMap } from '@lenotes-ng/model';
+import { Note, Group, ObjectMap } from '@lenotes-ng/model';
 import { testNotes } from "@lenotes-ng/model";
 import { UpdateNoteDto } from "@lenotes-ng/api-behavior";
 
-export class NaiveNotesStorage extends DomainObjectStorage<Note> {
+export class NaiveNotesStorage extends NotesStorage {
 
 	private notes: ObjectMap<Note> = testNotes;
 
@@ -33,6 +33,18 @@ export class NaiveNotesStorage extends DomainObjectStorage<Note> {
 		return this.notes;
 	}
 
+	async getInGroup(groupId: Group['id']) {
+
+		const notesInGroup: ObjectMap<Note> = {};
+
+		for (const [id, props] of Object.entries(this.notes)) {
+			if (props.groupId === groupId) {
+				notesInGroup[+id] = props;
+			}
+		}
+		return notesInGroup;
+	}
+
 	async update(obj: Note) {
 		this.notes[obj.id] = obj.props;
 	}
@@ -43,6 +55,26 @@ export class NaiveNotesStorage extends DomainObjectStorage<Note> {
 			for (let prop of Object.keys(dto) as Array<keyof UpdateNoteDto>) {
 				this.notes[id][prop] = dto[prop];
 			};
+		}
+	}
+
+	async trashInGroups(ids: Group['id'][]) {
+		for (const groupId of ids) {
+			for (const [id, props] of Object.entries(this.notes)) {
+				if (props.groupId === groupId) {
+					this.notes[+id] = {...props, isTrashed: true};
+				}
+			}
+		}
+	}
+
+	async restoreInGroups(ids: Group['id'][]): Promise<void> {
+		for (const groupId of ids) {
+			for (const [id, props] of Object.entries(this.notes)) {
+				if (props.groupId === groupId) {
+					this.notes[+id] = {...props, isTrashed: false};
+				}
+			}
 		}
 	}
 

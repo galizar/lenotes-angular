@@ -76,3 +76,7 @@
 	text-align: center;
 	border: 1px solid #FF5959;
 }
+
+.multiselect {
+	border-bottom: 3px solid white;
+}

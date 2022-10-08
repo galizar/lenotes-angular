@@ -116,21 +116,16 @@ export class NoteStateService {
 		this.noteService.batchDelete(ids).subscribe();
 	}
 
-	trash(id: Note['id']) {
+	trashInGroups(ids: Group['id'][]) {
 
-		this.update(id, {isTrashed: true});
+		this.noteService.trashInGroups(ids).subscribe();
+		this.appStateService.setGroupOnDisplayId(undefined); // reset group on display id to see changes
 	}
 
-	trashInGroup(groupId: Group['id']) {
+	restoreInGroups(ids: Group['id'][]) {
 
-		const idsToTrash = [];
-
-		for (const [id, props] of Object.entries(this.state.notes)) {
-			if (props.groupId === groupId) {
-				idsToTrash.push(Number(id));
-			}
-		}
-		this.batchUpdate(idsToTrash, { isTrashed: true });
+		this.noteService.restoreInGroups(ids).subscribe();
+		this.appStateService.setGroupOnDisplayId(undefined);
 	}
 
 	deleteInGroup(groupId: Group['id']) {

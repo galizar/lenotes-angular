@@ -46,14 +46,14 @@ export class AppComponent {
 			const note = JSON.parse(noteString) as Note;
 
 			if (confirm('Are you sure you want to trash this note'))
-				this.noteStateService.trash(note.id);
+				this.noteStateService.update(note.id, {isTrashed: true});
 
 		} else if (groupString) { 
 			const group = JSON.parse(groupString) as Group;
 
 			if (confirm('Are you sure you want to trash this group? This will trash all notes within too.'))
-				this.groupStateService.trash(group.id);
-				this.noteStateService.trashInGroup(group.id);
+				this.groupStateService.update(group.id, {isTrashed: true});
+				this.noteStateService.trashInGroups([group.id]);
 		}
 	}
 
