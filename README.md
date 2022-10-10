@@ -13,7 +13,7 @@ A simple note-taking app.
 	Monorepo functionality. 
 
 ### Architecture
-The app uses a modular architecture througout. Interfaces are the entry point for
+The app uses a modular architecture throughout. Interfaces are the entry point for
 adding new functionality and dependency injection allows for simple swapping of
 implementations.
 
