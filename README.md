@@ -26,13 +26,6 @@ implementations.
 ![demo 2](/assets/demo2.webm.mov)
 
 ![demo 3](/assets/demo3.webm.mov)
-=======
-![demo 1](/assets/demo1.gif)
-
-![demo 2](/assets/demo2.gif)
-
-![demo 3](/assets/demo3.gif)
->>>>>>> f8dccee1560d3183cea5458ed2ad77cb80813e40
 
 ---
 ![log in](/assets/logIn.png)
