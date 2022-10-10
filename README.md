@@ -20,7 +20,6 @@ implementations.
 ![dependency graph](/assets/graph.png)
 
 ### Showcase
-<<<<<<< HEAD
 ![demo 1](/assets/demo1.webm.mov)
 
 ![demo 2](/assets/demo2.webm.mov)
