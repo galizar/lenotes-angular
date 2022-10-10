@@ -20,11 +20,11 @@ implementations.
 ![dependency graph](/assets/graph.png)
 
 ### Showcase
-![demo 1](/assets/demo1.webm.mov)
+![demo 1](/assets/demo1.mov)
 
-![demo 2](/assets/demo2.webm.mov)
+![demo 2](/assets/demo2.mov)
 
-![demo 3](/assets/demo3.webm.mov)
+![demo 3](/assets/demo3.mov)
 
 ---
 ![log in](/assets/logIn.png)
