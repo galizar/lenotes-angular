@@ -13,18 +13,26 @@ A simple note-taking app.
 	Monorepo functionality. 
 
 ### Architecture
-The app uses a modular architecture througout. Interfaces are the entry point for
+The app uses a modular architecture throughout. Interfaces are the entry point for
 adding new functionality and dependency injection allows for simple swapping of
 implementations.
 
 ![dependency graph](/assets/graph.png)
 
 ### Showcase
+<<<<<<< HEAD
 ![demo 1](/assets/demo1.webm.mov)
 
 ![demo 2](/assets/demo2.webm.mov)
 
 ![demo 3](/assets/demo3.webm.mov)
+=======
+![demo 1](/assets/demo1.gif)
+
+![demo 2](/assets/demo2.gif)
+
+![demo 3](/assets/demo3.gif)
+>>>>>>> f8dccee1560d3183cea5458ed2ad77cb80813e40
 
 ---
 ![log in](/assets/logIn.png)
