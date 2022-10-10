@@ -4,7 +4,7 @@
 		<div *ngIf="appStateService.displayingTrash$ | async as displayingTrash; else trashCan">
 			<img id="out-trash-can" src="assets/icons/untrashCan.svg" 
 				alt="out trash can" role="img" (click)="appStateService.toggleDisplayingTrash()"
-				(dragover)="allowDrop($event)" />
+				(dragover)="allowDrop($event)" (drop)="dropToRestore($event)"/>
 		</div>
 		<ng-template #trashCan>
 			<img id="trash-can" src="assets/icons/trashCan.svg" alt="trash can"
