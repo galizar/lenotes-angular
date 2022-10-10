@@ -73,7 +73,7 @@ export class AuthComponent {
 				? await this.auth.signIn(email, password)
 				: await this.auth.signUp(email, password);
 
-		if (!data.user && !error) { // this is a sign up
+		if (type === 'signup' && !error) {
 			alert('Please check your email for verification');
 		} else if (error) {
 			alert(`An error occurred ${error.message}. Please try again.`);

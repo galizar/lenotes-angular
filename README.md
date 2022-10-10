@@ -41,10 +41,13 @@ implementations.
 
 	 or
 
-  b) Set up a supabase app. Run the `schema.sql` file on the provided PostgreSQL database,
-  then create a `.env` file with `SUPABASE_URL` set to the app's URL, and `SUPABASE_KEY` set
-  to the app's `anon` key.
+  b) Set up a supabase app. Create
+  a `.env` file with `SUPABASE_URL` set to the app's URL, and `SUPABASE_KEY` set to the
+  app's `anon` key. Register an user manually (or launch the app and register through the
+  UI, see step below); now modify the
+  [schema.sql](/libs/data-storage/src/implementations/sql/supabase/schema.sql#L54) file to
+  associate the seed data with that user. Then run the schema file in the database. 
 - Run `nx start api` and `nx serve client`.
     If you're using the *naive* version you'll see the app directly, otherwise you'll be
-    taken to the auth page where you'll be able to create an user and then log in.
+    taken to the auth page where you'll be able to log in or create a new user.
 
