@@ -48,4 +48,8 @@ export class AuthService {
 	signUp(email: string, password: string) {
 		return this.supabase.auth.signUp({email, password});
 	}
+
+	logOut() {
+		return this.supabase.auth.signOut();
+	}
 }

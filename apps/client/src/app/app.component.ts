@@ -6,6 +6,7 @@ import { EditorStateService } from './editor/services/editor-state.service';
 import { NoteStateService } from './notes/services/note-state.service';
 import { Group, Note } from '@lenotes-ng/model';
 import { GroupStateService } from './groups/services/group-state.service';
+import { AuthService } from '../auth/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -26,7 +27,8 @@ export class AppComponent {
 		public appStateService: AppStateService,
 		public editorStateService: EditorStateService,
 		public noteStateService: NoteStateService,
-		public groupStateService: GroupStateService
+		public groupStateService: GroupStateService,
+		public auth: AuthService
 	) {}
 
 	allowDrop(event: DragEvent) {
@@ -79,6 +81,12 @@ export class AppComponent {
 					this.noteStateService.restoreInGroups([group.id]);
 				}
 			}
+		}
+	}
+
+	logOut() {
+		if (confirm('Log out?')) {
+			this.auth.logOut();
 		}
 	}
 }

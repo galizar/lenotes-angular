@@ -1,12 +1,10 @@
 <div id="lobby-container">
-	<!-- <div *ngIf="true">  -->
-		<!-- UNCOMMENT AFTER FINISHING WITH STYLING. AND DELETE ABOVE-->
-	<!-- <div *ngIf="this.auth.user | async as user; else elseBlock">  -->
+	<div *ngIf="this.auth.user | async as user; else elseBlock"> 
 		<app-root> 
 		</app-root>
-	<!-- </div> -->
-	<!-- <ng-template #elseBlock>  -->
-		<!-- <auth>  -->
-		<!-- </auth> -->
-	<!-- </ng-template> -->
+	</div>
+	<ng-template #elseBlock> 
+		<auth> 
+		</auth>
+	</ng-template>
 </div>

@@ -16,14 +16,14 @@ import auth from '../middleware/auth';
 		GroupsService,
 		{
 			provide: DomainObjectStorage,
-			useValue: new NaiveGroupsStorage() 
+			useValue: new SupabaseGroupsStorage()
 		}
 	]
 })
-export class GroupsModule { // implements NestModule
-	//configure(consumer: MiddlewareConsumer) {
-	//	consumer
-	//	.apply(cookieParser(), auth)
-	//	.forRoutes(GroupsController);
-	//}
+export class GroupsModule implements NestModule {
+	configure(consumer: MiddlewareConsumer) {
+		consumer
+		.apply(cookieParser(), auth)
+		.forRoutes(GroupsController);
+	}
 }
