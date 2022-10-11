@@ -35,9 +35,11 @@ implementations.
 ### Test launch 
 - Clone this repo.
 - Run `npm i` to install required dependencies.
-- a) Use `git switch naive` to use an in-memory storage that does not need any setup. The
-   auth views will not be visible; you'll be taken directly to the app. Log out will not
-   do anything.
+- a) Use `git switch naive` to use an in-memory storage that does not (mostly)
+  need any setup. The auth views will not be visible; you'll be taken directly to
+  the app. Log out will not do anything. You can use an empty string for the
+  `SUPABASE_URL` and `SUPABASE_KEY` in the client environment files (compilation
+  will fail if not set)
 
 	 or
 
@@ -48,6 +50,6 @@ implementations.
   [schema.sql](/libs/data-storage/src/implementations/sql/supabase/schema.sql#L54) file to
   associate the seed data with that user. Then run the schema file in the database. 
 - Run `nx start api` and `nx serve client`.
-    If you're using the *naive* version you'll see the app directly, otherwise you'll be
-    taken to the auth page where you'll be able to log in or create a new user.
-
+    If you're using the `naive` version you'll see the app directly. If using
+    the `main` version you'll be taken to the auth page where you'll be able to
+    log in or create a new user.
