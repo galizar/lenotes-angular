@@ -10,15 +10,14 @@ import { EnvObject } from "../environments";
 	templateUrl: './lobby.component.html',
 	styleUrls: ['./lobby.component.css'],
 })
-export class LobbyComponent implements OnDestroy {
+export class LobbyComponent { // implements OnDestroy
 
 	constructor(
-		@Inject('env') env: EnvObject,
-		public auth: AuthService
+		// public auth: AuthService
 	) { 
 	}
 
-	ngOnDestroy() {
-		this.auth.listener?.unsubscribe();
-	}
+	// ngOnDestroy() {
+		// this.auth.listener?.unsubscribe();
+	// }
 }

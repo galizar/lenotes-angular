@@ -7,7 +7,7 @@ export default async function auth(req: Request, res: Response, next: NextFuncti
 	const authHeader = req.headers.authorization;
 
 	if (!authHeader) {
-		console.error('not authenticated. missing Authorization header');
+		console.error('not authenticated. missing Authorization header.');
 	}
 
 	setSupabase(authHeader);
