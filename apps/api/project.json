@@ -1,12 +1,12 @@
 {
+  "name": "api",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "name": "@lenotes-ng/api",
   "projectType": "application",
-	"implicitDependencies": [
-		"api-behavior",
-		"data-storage",
-		"model"
-	],
+  "implicitDependencies": [
+    "api-behavior",
+    "data-storage",
+    "model"
+  ],
   "targets": {
     "build": {
       "executor": "nx:run-commands",

@@ -1,6 +1,6 @@
 {
+  "name": "client",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "name": "@lenotes-ng/client",
   "generators": {
     "@schematics/angular:application": {
       "strict": true
@@ -9,11 +9,11 @@
   "projectType": "application",
   "sourceRoot": "apps/client/src",
   "prefix": "client",
-	"implicitDependencies": [
-		"api",
-		"model",
-		"api-behavior"
-	],
+  "implicitDependencies": [
+    "apps/api",
+    "libs/model",
+    "libs/api-behavior"
+  ],
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
