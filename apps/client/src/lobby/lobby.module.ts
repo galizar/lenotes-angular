@@ -13,12 +13,12 @@ import { AuthService } from '../auth/services/auth.service';
 	],
 	imports: [
 		AppModule,
-		AuthComponent,
+		// AuthComponent,
 		CommonModule
 	],
 	providers: [ 
 		{ provide: 'env', useValue: environment},
-		AuthService
+		// AuthService
 	],
 	bootstrap: [ LobbyComponent ]
 })

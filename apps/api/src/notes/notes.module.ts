@@ -16,14 +16,14 @@ import auth from '../middleware/auth';
 		NotesService, 
 		{
 			provide: NotesStorage,
-			useValue: new SupabaseNotesStorage() 
+			useValue: new NaiveNotesStorage() 
 		}
 	]
 })
 export class NotesModule implements NestModule {
 	configure(consumer: MiddlewareConsumer) {
-		consumer
-			.apply(cookieParser(), auth)
-			.forRoutes(NotesController);
+		// consumer
+		// 	.apply(cookieParser(), auth)
+		// 	.forRoutes(NotesController);
 	}
 }
