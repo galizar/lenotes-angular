@@ -3,7 +3,7 @@ import { throwError, of } from 'rxjs';
 import { Note, Group, testNotes, ObjectMap } from '@lenotes-ng/model';
 import { NoteService } from '../../app/notes/services/note.service';
 import { INoteService } from '../../app/interfaces';
-import { CreateNoteDto, UpdateNoteDto } from '@lenotes-ng/api-behavior';
+import { CreateNoteDto, UpdateNoteDto } from '@lenotes-ng/data-storage';
 
 export const noteServiceStubBuilder = {
 	build: () => {

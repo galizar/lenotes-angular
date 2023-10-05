@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 
 import { Group, ObjectMap } from '@lenotes-ng/model';
 import { GroupService } from '../services/group.service';
-import { UpdateGroupDto } from '@lenotes-ng/api-behavior';
+import { UpdateGroupDto } from '@lenotes-ng/data-storage';
 
 @Injectable({
   providedIn: 'root'

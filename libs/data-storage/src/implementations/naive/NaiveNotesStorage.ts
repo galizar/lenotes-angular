@@ -2,7 +2,7 @@ import { NotesStorage } from "../../index";
 
 import { Note, Group, ObjectMap } from '@lenotes-ng/model';
 import { testNotes } from "@lenotes-ng/model";
-import { UpdateNoteDto } from "@lenotes-ng/api-behavior";
+import { UpdateNoteDto } from "@lenotes-ng/data-storage";
 
 export class NaiveNotesStorage extends NotesStorage {
 

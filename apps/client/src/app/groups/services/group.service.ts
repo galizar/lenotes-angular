@@ -4,7 +4,7 @@ import { Observable, throwError, catchError } from 'rxjs';
 
 import { Group, ObjectMap } from '@lenotes-ng/model';
 import { EnvObject } from '../../../environments';
-import { CreateGroupDto, UpdateGroupDto } from '@lenotes-ng/api-behavior';
+import { CreateGroupDto, UpdateGroupDto } from '@lenotes-ng/data-storage';
 import { IGroupService } from '../../interfaces';
 
 @Injectable({

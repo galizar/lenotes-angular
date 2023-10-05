@@ -11,8 +11,7 @@
   "prefix": "client",
   "implicitDependencies": [
     "apps/api",
-    "libs/model",
-    "libs/api-behavior"
+    "libs/model"
   ],
   "targets": {
     "build": {

@@ -10,3 +10,5 @@ export { KyselyNotesStorage } from './implementations/sql/kysely/KyselyNotesStor
 export { SupabaseGroupsStorage } from './implementations/sql/supabase/groups/SupabaseGroupsStorage';
 export { SupabaseNotesStorage } from './implementations/sql/supabase/notes/SupabaseNotesStorage';
 export { supabase, setSupabase } from './implementations/sql/supabase/db';
+
+export * from './dto';

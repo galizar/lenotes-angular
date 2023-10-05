@@ -5,7 +5,7 @@ import { switchMap, map, distinctUntilChanged } from 'rxjs/operators';
 import { Note, Group, ObjectMap } from '@lenotes-ng/model';
 import { AppStateService } from '../../services';
 import { NoteService } from './note.service';
-import { UpdateNoteDto } from '@lenotes-ng/api-behavior';
+import { UpdateNoteDto } from '@lenotes-ng/data-storage';
 
 interface NoteState {
 	notes: ObjectMap<Note>,

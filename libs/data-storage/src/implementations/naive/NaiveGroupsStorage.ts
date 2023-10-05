@@ -1,7 +1,7 @@
 import { DomainObjectStorage } from "../../index";
 import { Group, ObjectMap } from "@lenotes-ng/model";
 import { testGroups } from "@lenotes-ng/model";
-import { UpdateGroupDto } from "@lenotes-ng/api-behavior";
+import { UpdateGroupDto } from "@lenotes-ng/data-storage";
 
 export class NaiveGroupsStorage extends DomainObjectStorage<Group> {
 

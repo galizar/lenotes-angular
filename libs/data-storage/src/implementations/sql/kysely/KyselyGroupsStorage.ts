@@ -1,7 +1,7 @@
 import { Kysely } from "kysely";
 
 import { Group } from '@lenotes-ng/model';
-import { UpdateGroupDto } from "@lenotes-ng/api-behavior";
+import { UpdateGroupDto } from "@lenotes-ng/data-storage";
 import { DomainObjectStorage } from "../../../index";
 import { DB } from "./kyselyDB";
 import { postgresDB } from "./postgresDB";

@@ -1,20 +1,22 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { NotesController } from './notes.controller';
-import { NotesService } from './services/notes.service';
 import { UpdateNoteDto } from './dto/update-note.dto';
-import { DomainObjectStorage, NaiveNotesStorage } from '@lenotes-ng/data-storage';
-import { testNotes } from '@lenotes-ng/model';
+import { 
+	DomainObjectStorage, 
+	NaiveNotesStorage,
+	NotesStorage
+} from '@lenotes-ng/data-storage';
+import { testNotes, Note, ObjectMap } from '@lenotes-ng/model';
 
 describe('NotesController', () => {
   let controller: NotesController;
-	let notesService: NotesService;
+	let notesStorage: NotesStorage;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [NotesController],
       providers: [
-				NotesService,
 				{
 					provide: DomainObjectStorage,
 					useValue: new NaiveNotesStorage()
@@ -23,7 +25,7 @@ describe('NotesController', () => {
     }).compile();
 
     controller = module.get<NotesController>(NotesController);
-		notesService = module.get<NotesService>(NotesService);
+		notesStorage = module.get<NotesStorage>(NotesStorage);
 
 		jest.clearAllMocks();
   });
@@ -44,7 +46,7 @@ describe('NotesController', () => {
 				isTrashed: false,
 			};
 
-			jest.spyOn(notesService, 'create').mockImplementation(() => newNoteId);
+			jest.spyOn(notesStorage, 'create').mockImplementation(async () => await newNoteId);
 
 			expect(controller.create(newNote)).toEqual(newNoteId);
 		});
@@ -54,7 +56,7 @@ describe('NotesController', () => {
 
 		it('returns notes from service', () => {
 			const expectedNotes = testNotes;
-			jest.spyOn(notesService, 'getAll').mockImplementation(() => expectedNotes);
+			jest.spyOn(notesStorage, 'getAll').mockImplementation(async () => await expectedNotes);
 
 			const actualNotes = controller.getAll();
 
@@ -66,9 +68,9 @@ describe('NotesController', () => {
 
 		it('returns note from service', () => {
 			const expectedNote = testNotes[0];
-			jest.spyOn(notesService, 'get').mockImplementation(() => expectedNote);
+			jest.spyOn(notesStorage, 'get').mockImplementation(async () => await expectedNote);
 
-			const actualNote = controller.get(String(expectedNote.id));
+			const actualNote = controller.get(String(0));
 
 			expect(actualNote).toEqual(expectedNote);
 		});
@@ -76,10 +78,16 @@ describe('NotesController', () => {
 
 	describe('getInGroup handler', () => {
 
-		it('returns notes in certain group', () => {
+		it('returns notes in a certain group', () => {
 			const idOfGroupToGetNotesOf = 1;
-			const expectedNotes = testNotes.filter(note => note.id === idOfGroupToGetNotesOf);
-			jest.spyOn(notesService, 'getInGroup').mockImplementation(() => expectedNotes);
+			const expectedNotes: ObjectMap<Note> = {};
+
+			Object.entries(testNotes)
+				.map(([id, props]) => {
+					if (props.groupId === idOfGroupToGetNotesOf) expectedNotes[+id] = props;
+				});
+
+			jest.spyOn(notesStorage, 'getInGroup').mockImplementation(async () => await expectedNotes);
 
 			const actualNotes = controller.getInGroup(String(idOfGroupToGetNotesOf));
 
@@ -93,11 +101,11 @@ describe('NotesController', () => {
 
 			const noteToUpdateId = '0';
 			const newNameObject: UpdateNoteDto = {name: 'dummy'}
-			jest.spyOn(notesService, 'update');
+			jest.spyOn(notesStorage, 'update');
 
 			controller.update(noteToUpdateId, newNameObject);
 
-			expect(notesService.update).toHaveBeenCalledWith(Number(noteToUpdateId), newNameObject);
+			expect(notesStorage.update).toHaveBeenCalledWith(Number(noteToUpdateId), newNameObject);
 		});
 	});
 
@@ -110,11 +118,11 @@ describe('NotesController', () => {
 		it('delegates remove request to service', () => {
 
 			const idOfNoteToRemove = 0;
-			jest.spyOn(notesService, 'delete');
+			jest.spyOn(notesStorage, 'delete');
 
 			controller.remove(String(idOfNoteToRemove));
 
-			expect(notesService.delete).toHaveBeenCalledWith(idOfNoteToRemove);
+			expect(notesStorage.delete).toHaveBeenCalledWith(idOfNoteToRemove);
 		});
 	});
 });

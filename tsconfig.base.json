@@ -22,9 +22,6 @@
       "dom"
     ],
     "paths": {
-      "@lenotes-ng/api-behavior": [
-        "libs/api-behavior/src/index.ts"
-      ],
       "@lenotes-ng/data-storage": [
         "libs/data-storage/src/index.ts"
       ],
