@@ -35,7 +35,7 @@ implementations.
 ### Test launch 
 - Clone this repo.
 - Run `npm i` to install required dependencies.
-- a) Use `git switch naive` to use an in-memory storage that does not (mostly)
+- a) Use `git switch nuNaive` to use an in-memory storage that does not (mostly)
   need any setup. The auth views will not be visible; you'll be taken directly to
   the app. Log out will not do anything. You can use an empty string for the
   `SUPABASE_URL` and `SUPABASE_KEY` in the client environment files (compilation
