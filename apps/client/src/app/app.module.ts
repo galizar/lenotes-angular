@@ -33,12 +33,12 @@ import { AuthInterceptor } from '../auth/interceptors/auth.interceptor';
 		AppComponent
 	],
   providers: [
-		// {provide: 'env', useValue: environment},
-		// {
-		// 	provide: HTTP_INTERCEPTORS, 
-		// 	useClass: AuthInterceptor, 
-		// 	multi: true,
-		// }
+		{provide: 'env', useValue: environment},
+		{
+			provide: HTTP_INTERCEPTORS, 
+			useClass: AuthInterceptor, 
+			multi: true,
+		}
 	],
 })
 export class AppModule { }

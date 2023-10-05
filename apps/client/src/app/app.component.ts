@@ -28,7 +28,7 @@ export class AppComponent {
 		public editorStateService: EditorStateService,
 		public noteStateService: NoteStateService,
 		public groupStateService: GroupStateService,
-		// public auth: AuthService
+		public auth: AuthService
 	) {}
 
 	allowDrop(event: DragEvent) {
@@ -84,9 +84,9 @@ export class AppComponent {
 		}
 	}
 
-	// logOut() {
-	// 	if (confirm('Log out?')) {
-	// 		this.auth.logOut();
-	// 	}
-	// }
+	logOut() {
+		if (confirm('Log out?')) {
+			this.auth.logOut();
+		}
+	}
 }
