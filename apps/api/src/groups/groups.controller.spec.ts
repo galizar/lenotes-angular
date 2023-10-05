@@ -1,20 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { GroupsController } from './groups.controller';
-import { GroupsService } from './services/groups.service';
-import { testGroups } from '@lenotes-ng/model';
-import { CreateGroupDto, UpdateGroupDto } from '@lenotes-ng/api-behavior';
+import { testGroups, Group } from '@lenotes-ng/model';
+import { CreateGroupDto, UpdateGroupDto } from '@lenotes-ng/data-storage';
 import { DomainObjectStorage, NaiveGroupsStorage } from '@lenotes-ng/data-storage';
 
 describe('GroupsController', () => {
   let controller: GroupsController;
-	let groupsService: GroupsService;
+	let groupsStorage: DomainObjectStorage<Group>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [GroupsController],
       providers: [
-				GroupsService,
 				{
 					provide: DomainObjectStorage,
 					useValue: new NaiveGroupsStorage()
@@ -23,7 +21,7 @@ describe('GroupsController', () => {
     }).compile();
 
     controller = module.get<GroupsController>(GroupsController);
-		groupsService = module.get<GroupsService>(GroupsService);
+		groupsStorage = module.get<DomainObjectStorage<Group>>(DomainObjectStorage);
 
 		jest.clearAllMocks();
   });
@@ -42,7 +40,7 @@ describe('GroupsController', () => {
 				isTrashed: false
 			};
 
-			jest.spyOn(groupsService, 'create').mockImplementation(() => resultId);
+			jest.spyOn(groupsStorage, 'create').mockImplementation(async () => await resultId);
 
 			expect(await controller.create(createGroupDto)).toBe(resultId);
 		});
@@ -52,7 +50,7 @@ describe('GroupsController', () => {
 		it('returns groups', () => {
 
 			const expectedGroups = testGroups;
-			jest.spyOn(groupsService, 'getAll').mockImplementation(() => expectedGroups);
+			jest.spyOn(groupsStorage, 'getAll').mockImplementation(async () => await expectedGroups);
 
 			const actualGroups = controller.getAll();
 
@@ -64,16 +62,25 @@ describe('GroupsController', () => {
 		it('returns group', () => {
 
 			const expectedGroup = testGroups[0];
-			jest.spyOn(groupsService, 'get').mockImplementation(() => expectedGroup);
+			jest.spyOn(groupsStorage, 'get').mockImplementation(async () => await expectedGroup);
 
-			const actualGroup = controller.get(String(expectedGroup.id));
+			const actualGroup = controller.get(String(0)); // groups no longer have ID
 
 			expect(actualGroup).toEqual(expectedGroup);
 		});
 	});
 
 	describe('batch update handler', () => {
-		throw Error('no impl');
+		const ids = [0, 1];
+		const newNameObject: UpdateGroupDto = {name: 'dummy'}
+
+		console.log(typeof groupsStorage);
+
+		jest.spyOn(groupsStorage, 'batchUpdate');
+
+		controller.batchUpdate({ids, subDto: newNameObject});
+
+		expect(groupsStorage.batchUpdate).toHaveBeenCalledWith({ids, subDto: newNameObject});
 	});
 
 	describe('update handler', () => {
@@ -82,11 +89,11 @@ describe('GroupsController', () => {
 
 			const groupToUpdateId = '0';
 			const newNameObject: UpdateGroupDto = {name: 'dummy'}
-			jest.spyOn(groupsService, 'update');
+			jest.spyOn(groupsStorage, 'update');
 
 			controller.update(groupToUpdateId, newNameObject);
 
-			expect(groupsService.update).toHaveBeenCalledWith(Number(groupToUpdateId), newNameObject);
+			expect(groupsStorage.update).toHaveBeenCalledWith(Number(groupToUpdateId), newNameObject);
 		});
 	});
 
@@ -95,11 +102,11 @@ describe('GroupsController', () => {
 		it('delegates group removal to group service', () => {
 
 			const groupToRemoveId = '0';
-			jest.spyOn(groupsService, 'delete');
+			jest.spyOn(groupsStorage, 'delete');
 
 			controller.remove(groupToRemoveId);
 
-			expect(groupsService.delete).toHaveBeenCalledWith(Number(groupToRemoveId))
+			expect(groupsStorage.delete).toHaveBeenCalledWith(Number(groupToRemoveId))
 		});
 	});
 });

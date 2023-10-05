@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 
-import { CreateGroupDto, UpdateGroupDto } from '@lenotes-ng/api-behavior';
+import { CreateGroupDto, UpdateGroupDto } from '@lenotes-ng/data-storage';
 import { ObjectMap, Group } from '@lenotes-ng/model';
 
 export interface IGroupService {

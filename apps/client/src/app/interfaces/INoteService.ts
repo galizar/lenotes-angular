@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 
 import { ObjectMap, Note, Group } from '@lenotes-ng/model';
-import { CreateNoteDto, UpdateNoteDto } from '@lenotes-ng/api-behavior';
+import { CreateNoteDto, UpdateNoteDto } from '@lenotes-ng/data-storage';
 
 export interface INoteService {
 	/** Returns id of created note */

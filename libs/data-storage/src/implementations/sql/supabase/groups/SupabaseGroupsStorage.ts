@@ -1,6 +1,6 @@
 import { DomainObjectStorage } from "@lenotes-ng/data-storage";
 import { Group, ObjectMap } from "@lenotes-ng/model";
-import { UpdateGroupDto } from "@lenotes-ng/api-behavior";
+import { UpdateGroupDto } from "@lenotes-ng/data-storage";
 import { propsCamelCasify, propsSnakeCasify } from '../util/camelCaseUtilities';
 import { supabase } from '../db';
 import { validate } from '../util/validate';

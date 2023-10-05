@@ -2,7 +2,7 @@ import { of, throwError } from "rxjs";
 
 import { GroupService } from "../../app/groups/services/group.service";
 import { IGroupService } from "../../app/interfaces";
-import { CreateGroupDto, UpdateGroupDto } from "@lenotes-ng/api-behavior";
+import { CreateGroupDto, UpdateGroupDto } from "@lenotes-ng/data-storage";
 import { Group, testGroups, ObjectMap } from '@lenotes-ng/model';
 
 export const groupServiceStubBuilder = {

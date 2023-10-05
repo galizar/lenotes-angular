@@ -1,4 +1,4 @@
-import { CreateNoteDto } from "@lenotes-ng/api-behavior";
+import { CreateNoteDto } from "@lenotes-ng/data-storage";
 import { PartialType } from "@nestjs/mapped-types";
 
 // need to use the PartialType function to inherit too the validation decorators

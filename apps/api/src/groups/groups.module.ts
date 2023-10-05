@@ -1,7 +1,6 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
 
-import { GroupsService } from './services/groups.service';
 import { GroupsController } from './groups.controller';
 import { 
 	DomainObjectStorage, 
@@ -13,7 +12,6 @@ import auth from '../middleware/auth';
 @Module({
   controllers: [GroupsController],
   providers: [
-		GroupsService,
 		{
 			provide: DomainObjectStorage,
 			useValue: new NaiveGroupsStorage()

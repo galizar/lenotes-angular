@@ -10,10 +10,14 @@ import {
 	ValidationPipe 
 } from '@nestjs/common';
 
-import { GroupsService } from './services/groups.service';
-import { BatchUpdateDto, CreateGroupDto, ObjectIdsDto } from '@lenotes-ng/api-behavior';
 import { UpdateGroupDto } from './dto/update-group.dto';
 import { Group } from '@lenotes-ng/model';
+import { 
+	DomainObjectStorage, 
+	BatchUpdateDto, 
+	CreateGroupDto, 
+	ObjectIdsDto 
+} from '@lenotes-ng/data-storage';
 
 @Controller('groups')
 @UsePipes(
@@ -23,40 +27,45 @@ import { Group } from '@lenotes-ng/model';
 	})
 )
 export class GroupsController {
-  constructor(private readonly groupsService: GroupsService) {}
+  constructor(
+		private storage: DomainObjectStorage<Group>
+		) {}
 
   @Post()
   create(@Body() createGroupDto: CreateGroupDto) {
-    return this.groupsService.create(createGroupDto);
+		return this.storage.create(createGroupDto);
   }
 
   @Get()
   getAll() {
-    return this.groupsService.getAll();
+		return this.storage.getAll();
   }
 
   @Get(':id')
   get(@Param('id') id: string) {
-    return this.groupsService.get(+id);
+		return this.storage.get(+id);
   }
 
   @Patch('updateOne/:id')
-  update(@Param('id') id: string, @Body() updateGroupDto: UpdateGroupDto) {
-    return this.groupsService.update(+id, updateGroupDto);
+  async update(@Param('id') id: string, @Body() dto: UpdateGroupDto) {
+
+		const groupProps = await this.storage.get(+id);
+		await this.storage.update({id: +id, props: {...groupProps, ...dto}});
   }
 
 	@Patch('batchUpdate')
 	batchUpdate(@Body() dto: BatchUpdateDto<UpdateGroupDto>) {
-		return this.groupsService.batchUpdate(dto);
+		return this.storage.batchUpdate(dto.ids, dto.subDto);
+	
 	}
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.groupsService.delete(+id);
+		return this.storage.delete(+id);
   }
 
 	@Patch('batchDelete')
 	batchDelete(@Body() dto: ObjectIdsDto<Group>) {
-		return this.groupsService.batchDelete(dto.ids);
+		return this.storage.batchDelete(dto.ids);
 	}
 }
